@@ -65,7 +65,7 @@ Menu.addMenuItem(separator2);
 orientationLock = new PopupMenu.PopupImageMenuItem( this._systemActions.getName('lock-orientation'), this._systemActions.orientation_lock_icon);
 orientationLock.connect('activate', () => { this._systemActions.activateLockOrientation(); });
 Menu.addMenuItem(orientationLock);
-this._systemActions.bind_property('can-suspend', orientationLock, 'visible', bindFlags);
+this._systemActions.bind_property('can-lock-orientation', orientationLock, 'visible', bindFlags);
 this._systemActions.connect('notify::orientation-lock-icon', () => { let labelText = this._systemActions.getName("lock-orientation"); let iconName = this._systemActions.orientation_lock_icon;
             orientationLock.setIcon(iconName);
             orientationLock.label.text = labelText;  });
