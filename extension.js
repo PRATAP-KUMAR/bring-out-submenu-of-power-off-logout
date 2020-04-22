@@ -31,7 +31,7 @@ _createSubMenu: function() {
 
 let bindFlags = GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE;
 
-logout = new PopupMenu.PopupImageMenuItem(_('Logout'), 'application-exit-symbolic');
+logout = new PopupMenu.PopupImageMenuItem(_('Logout'), 'system-logout-symbolic');
 logout.connect('activate', () => { this._systemActions.activateLogout(); });
 Menu.addMenuItem(logout);
 this._systemActions.bind_property('can-logout', logout, 'visible', bindFlags);
