@@ -50,7 +50,7 @@ Menu.addMenuItem(lock);
 this._systemActions.bind_property('can-lock-screen', lock, 'visible', bindFlags);
 
 suspend = new PopupMenu.PopupImageMenuItem(_('Suspend'), 'media-playback-pause-symbolic');
-suspend.connect('activate', () => { SystemActions.activateSuspend(); });
+suspend.connect('activate', () => { this._systemActions.activateSuspend(); });
 Menu.addMenuItem(suspend);
 this._systemActions.bind_property('can-suspend', suspend, 'visible', bindFlags);
         
