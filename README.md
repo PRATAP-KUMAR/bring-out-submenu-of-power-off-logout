@@ -3,4 +3,4 @@ Bring Out Submenu Of Power Off/Logout Button and Rearrange the Order of System M
 
 This extension removes the Power Off/Logout submenu and merges with system menu. Rearranges the order of System Menu.
 
-![Re arrangement of System Menu](https://imgur.com/9eKL6VD)
+![Re arrangement of System Menu](https://i.stack.imgur.com/LoPmy.png)
