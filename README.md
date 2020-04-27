@@ -5,6 +5,6 @@ This extension removes the Power Off/Logout submenu and merges with system menu.
 
 for getting the extension click this link https://extensions.gnome.org/extension/2917/bring-out-submenu-of-power-offlogout-button/
 
-![Re arrangement of System Menu](https://i.stack.imgur.com/QX5QW.png)
+![Re arrangement of System Menu](https://i.stack.imgur.com/Rhcbn.jpg)
 
 Extension Icon Used in gnome-extensions.org site is the credit of https://materialdesignicons.com/ (https://github.com/google/material-design-icons/blob/master/LICENSE).
