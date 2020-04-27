@@ -36,7 +36,7 @@ logout.connect('activate', () => { this._systemActions.activateLogout(); });
 Menu.addMenuItem(logout);
 this._systemActions.bind_property('can-logout', logout, 'visible', bindFlags);
 
-switchUser = new PopupMenu.PopupImageMenuItem(_('Switch User'), 'system-switch-user-symbolic.svg');
+switchUser = new PopupMenu.PopupImageMenuItem(_('Switch User'), 'system-switch-user-symbolic');
 switchUser.connect('activate', () => { this._systemActions.activateSwitchUser(); });
 Menu.addMenuItem(switchUser);
 this._systemActions.bind_property('can-switch-user', switchUser, 'visible', bindFlags);
