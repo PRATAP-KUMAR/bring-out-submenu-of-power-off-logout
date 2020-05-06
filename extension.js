@@ -85,6 +85,7 @@ if (gnomeTweaksApp) {
 let [name, icon] = [ gnomeTweaksApp.get_name(), gnomeTweaksApp.app_info.get_icon().names[0], ];
 gnomeTweaks = new PopupMenu.PopupImageMenuItem(name, icon);
 gnomeTweaks.connect('activate', () => { Main.overview.hide(); gnomeTweaksApp.activate(); }); }
+else { log('Missing gnomeTweaks'); gnomeTweaks = new St.Widget(); }
 },
 
 _takeaction: function() {
