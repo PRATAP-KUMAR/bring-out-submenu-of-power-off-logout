@@ -1,0 +1,20 @@
+<schemalist>
+  <schema id="org.gnome.shell.extensions.brngout" path="/org/gnome/shell/extensions/brngout/">
+  
+    <key name="remove-suspend-button" type="b">
+      <default>false</default>
+      <summary>Yes? OK.. Turn ON if you wish to remove suspend Item from system's menu.</summary>
+    </key>
+    
+    <key name="remove-power-button" type="b">
+      <default>false</default>
+      <summary>Yes? OK.. Turn ON if you wish to remove powerOff Item from system's menu.</summary>
+    </key>
+    
+    <key name="show-gnome-tweaks" type="b">
+      <default>false</default>
+      <summary>(If Gnome-Tweaks is Installed..) Yes? OK.. Turn ON to show Gnome-Tweaks in the system's menu.</summary>
+    </key>
+    
+  </schema>
+</schemalist>
