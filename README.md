@@ -13,6 +13,10 @@ Problem with tweak system menu extension (just made it disappear)
 by oshikuru  
 great, but any chance of an option to hide the suspend entry? i keep accidently hitting it
 
+![Image](https://i.stack.imgur.com/yWtPV.png)
+
+![Image](https://i.stack.imgur.com/Q7YK7.gif)
+
 Extension Icon Used in gnome-extensions.org site is the credit of [this website.](https://materialdesignicons.com/) [LICENSE](https://github.com/google/material-design-icons/blob/master/LICENSE)
 
 
