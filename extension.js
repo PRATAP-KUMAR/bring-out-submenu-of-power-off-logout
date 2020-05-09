@@ -34,7 +34,6 @@ _init: function() {
 	this._createMenu();
 	this._gsettingsChanged();
 	this._takeAction();
-	Menu.actor.remove_child(Main.panel.statusArea.aggregateMenu._system._sessionSubMenu)
 },
 
 //
@@ -113,4 +112,8 @@ let modifiedMenu;
 
 function enable() {
 modifiedMenu = new _bringOut();
+}
+
+function disable() {
+modifiedMenu.destroy();
 }
