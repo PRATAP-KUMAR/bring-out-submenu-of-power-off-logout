@@ -16,6 +16,8 @@ let separator2;
 let orientationLock;
 let settings;
 
+let settingsApp = Shell.AppSystem.get_default().lookup_app( 'gnome-control-center.desktop' );
+
 var _bringOut = new Lang.Class({
     Name: "Bring Out Submenu Of Power Off/Logout Button and Rearrange the Order of System Menu.",
     Extends: PanelMenu.SystemIndicator,
@@ -70,11 +72,9 @@ this._systemActions.connect('notify::orientation-lock-icon', () => { let labelTe
             orientationLock.setIcon(iconName);
             orientationLock.label.text = labelText;  });
 
-let settingsApp = Shell.AppSystem.get_default().lookup_app( 'gnome-control-center.desktop' );
-let [name, icon] = [ settingsApp.get_name(), settingsApp.app_info.get_icon().names[0] ];
-
-settings = new PopupMenu.PopupImageMenuItem(name, icon);
 if (settingsApp) {
+let [name, icon] = [ settingsApp.get_name(), settingsApp.app_info.get_icon().names[0] ];
+settings = new PopupMenu.PopupImageMenuItem(name, icon);
 settings.connect('activate', () => { Main.overview.hide(); settingsApp.activate(); });
 Menu.addMenuItem(settings); }
 else { log('Missing required core component Settings, expect trouble…'); settings = new St.Widget(); }
