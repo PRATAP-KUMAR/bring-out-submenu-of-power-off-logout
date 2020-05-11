@@ -102,7 +102,7 @@ Menu.box.remove_actor(suspend);
 Menu.box.remove_actor(power);
 Menu.box.remove_actor(separator3);
 Menu.box.remove_actor(gnomeTweaks);
-Menu.actor.add_child(Main.panel.statusArea.aggregateMenu._system._sessionSubMenu)
+Menu.box.insert_child_at_index(Main.panel.statusArea.aggregateMenu._system._sessionSubMenu, Main.panel.statusArea.aggregateMenu._system.menu.numMenuItems);
 }
 });
 
