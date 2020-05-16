@@ -78,7 +78,8 @@ Menu.addMenuItem(separator2);
 this._suspend = this._settings.get_boolean('remove-suspend-button');
 if (!this._suspend) { Menu.addMenuItem(suspend); }; this._systemActions.bind_property('can-suspend', suspend, 'visible', bindFlags);
 	// Power
-this._power = this._settings.get_boolean('remove-power-button'); if (!this._power) { Menu.addMenuItem(power); }; this._systemActions.bind_property('can-power-off', power, 'visible', bindFlags);
+this._power = this._settings.get_boolean('remove-power-button');
+if (!this._power) { Menu.addMenuItem(power); }; this._systemActions.bind_property('can-power-off', power, 'visible', bindFlags);
 	// Separator 3
 Menu.addMenuItem(separator3);
 	// Gnome Tweaks
