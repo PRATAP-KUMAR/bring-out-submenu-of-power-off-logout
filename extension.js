@@ -28,7 +28,6 @@ var _bringOut = new Lang.Class({
     Extends: PanelMenu.SystemIndicator,
 //   
 _init: function() {
-
 	this._settings = ExtensionUtils.getSettings(BRNGOUT_SCHEMA);
 	this._systemActions = new SystemActions.getDefault();
 	this._createMenu();
