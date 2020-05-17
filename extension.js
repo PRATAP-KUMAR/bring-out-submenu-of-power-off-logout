@@ -26,6 +26,7 @@ let bindFlags = GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE;
 var _bringOut = new Lang.Class({
     Name: "Bring Out Submenu Of Power Off/Logout Button and Rearrange the Order of System Menu.",
     Extends: PanelMenu.SystemIndicator,
+
 //   
 _init: function() {
 	this._settings = ExtensionUtils.getSettings(BRNGOUT_SCHEMA);
