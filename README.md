@@ -1,7 +1,7 @@
 # Bring-Out-Submenu-of-Power-Off-Logout
 Bring Out Submenu Of Power Off/Logout Item and merge with System Menu.
 
-This extension removes the Power Off/Logout submenu and merges with system menu. Rearranges the order of System Menu.
+This extension removes the Power Off/Logout submenu and merges with system menu.
 
 This branch is created keeping the user reviews [https://extensions.gnome.org/extension/2917/bring-out-submenu-of-power-offlogout-button/](https://extensions.gnome.org/extension/2917/bring-out-submenu-of-power-offlogout-button/) in mind.
 
