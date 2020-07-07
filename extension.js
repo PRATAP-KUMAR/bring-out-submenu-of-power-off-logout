@@ -36,7 +36,7 @@ _createMenu: function() {
 logout = new PopupMenu.PopupImageMenuItem(_('Log Out'), 'system-log-out-symbolic');
 logout.connect('activate', () => { this._systemActions.activateLogout(); });
 
-switchUser = new PopupMenu.PopupImageMenuItem(_('Switch User'), 'system-switch-user-symbolic.svg');
+switchUser = new PopupMenu.PopupImageMenuItem(_('Switch User…'), 'system-switch-user-symbolic.svg');
 switchUser.connect('activate', () => { this._systemActions.activateSwitchUser(); });
 
 suspend = new PopupMenu.PopupImageMenuItem(_('Suspend'), 'media-playback-pause-symbolic');
@@ -45,7 +45,7 @@ suspend.connect('activate', () => { this._systemActions.activateSuspend(); });
 restart = new PopupMenu.PopupImageMenuItem(_('Restart'), 'system-reboot-symbolic');
 restart.connect('activate', () => { imports.misc.gnomeSession.SessionManager().RebootRemote(); });
 
-power = new PopupMenu.PopupImageMenuItem(_('Power Off'), 'system-shutdown-symbolic');
+power = new PopupMenu.PopupImageMenuItem(_('Power Off…'), 'system-shutdown-symbolic');
 power.connect('activate', () => { this._systemActions.activatePowerOff(); });
 },
 
