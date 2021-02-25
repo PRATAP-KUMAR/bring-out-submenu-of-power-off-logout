@@ -1,6 +1,8 @@
 # Bring-Out-Submenu-of-Power-Off-Logout  
 Bring Out Submenu Of Power Off/Logout Button and merge with System Menu.
 
+this branch v9 is for gnome-shell --version 3.36
+
 v9 is created to make the compiling of schemas easy with the script.
 added restart button.
 
