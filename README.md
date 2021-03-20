@@ -13,3 +13,7 @@ Change the "shell-version:" number at line number 5 from "40.beta" to "40.alfa" 
   "version": 13
 }
 ````
+
+![Preferences of this Extension](https://i.stack.imgur.com/SzoR2.png)
+
+![Preferences of this Extension](https://i.stack.imgur.com/aIjkc.png)
