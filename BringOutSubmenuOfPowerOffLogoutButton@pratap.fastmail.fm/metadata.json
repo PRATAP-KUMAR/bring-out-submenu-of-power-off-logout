@@ -1,0 +1,10 @@
+{
+  "description": "Bring Out Submenu Of Power Off/Logout Button and Rearrange the Order of System Menu.",
+  "name": "Bring Out Submenu Of Power Off/Logout Button",
+  "shell-version": [
+    "40.beta"
+  ],
+  "url": "https://github.com/PRATAP-KUMAR/Bring-Out-Submenu-of-Power-Off-Logout",
+  "uuid": "BringOutSubmenuOfPowerOffLogoutButton@pratap.fastmail.fm",
+  "version": 13
+}
