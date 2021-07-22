@@ -170,7 +170,7 @@ function buildPrefsWidget() {
     /////////////////////////////////////////////////////////////////////////////      
     
     let labelWarning = new Gtk.Label({
-        label: '<b>' + 'Note: \nDo not turn on above keys, if you have changed "org.gnome.desktop.lockdown" keys \nrelated to above via gsettings or dconf-editor. You may force turn on but may have conflicts.' + '</b>',
+        label: 'Note: if you have set gsettings set org.gnome.desktop.lockdown disable-log-out to true(default is false) then "Restart…", "Power Off…" & "Log Out" will not take any Action when you click on them.',
         halign: Gtk.Align.CENTER,
         use_markup: true,
         visible: true
