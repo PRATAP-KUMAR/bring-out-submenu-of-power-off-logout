@@ -1,4 +1,4 @@
-GNOME 40
+gnome-shell --version 40
 
 ![Preferences of this Extension](https://i.stack.imgur.com/SzoR2.png)
 
