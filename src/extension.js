@@ -24,6 +24,7 @@
 const { GObject, Shell, St } = imports.gi;
 
 const Main = imports.ui.main;
+const Status = imports.ui.status;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 const SystemActions = imports.misc.systemActions;
@@ -31,6 +32,10 @@ const ExtensionUtils = imports.misc.extensionUtils;
 const GnomeSession = imports.misc.gnomeSession;
 const SessionManager = GnomeSession.SessionManager();
 const System = Main.panel.statusArea.aggregateMenu._system;
+const AggMenu = Main.panel.statusArea.aggregateMenu.menu;
+const SettingsItem = System._settingsItem;
+const NetworkItem = Main.panel.statusArea.aggregateMenu._network.menu;
+const BluetoothItem = Main.panel.statusArea.aggregateMenu._bluetooth.menu;
 const SystemMenu = System.menu;
 
 const SCHEMA_NAME = 'org.gnome.shell.extensions.brngout';
@@ -73,11 +78,13 @@ logout.connect('activate', () => { DefaultActions.activateLogout(); });
 
 switchUser = new PopupMenu.PopupImageMenuItem(_('Switch User…'), 'system-switch-user-symbolic.svg');
 switchUser.connect('activate', () => { DefaultActions.activateSwitchUser(); });
+
 }
 
 _takeAction() {
 this.destroy();
-SystemMenu.actor.remove_child(System._sessionSubMenu);
+SystemMenu.box.remove_actor(System._sessionSubMenu.actor);
+SystemMenu.box.remove_actor(SettingsItem.actor);
 this._nextAction();
 }
 
@@ -101,6 +108,15 @@ if (!boolean) { SystemMenu.addMenuItem(separator2); };
 	// Logout
 boolean = this.gsettings.get_boolean('remove-logout-button');
 if (!boolean) { SystemMenu.addMenuItem(logout); };
+	// Network
+boolean = this.gsettings.get_boolean('remove-network-button');
+if (!boolean) { AggMenu.addMenuItem(NetworkItem,2); };
+	// Bluetooth
+boolean = this.gsettings.get_boolean('remove-bluetooth-button');
+if (!boolean) { AggMenu.addMenuItem(BluetoothItem,3);  };
+	// Settings
+boolean = this.gsettings.get_boolean('remove-settings-button');
+if (!boolean) { AggMenu.addMenuItem(SettingsItem,4); };
 	// Switch User
 SystemMenu.addMenuItem(switchUser);
 let bindFlags = GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE;
@@ -114,18 +130,31 @@ this.gsettings.connect("changed::remove-power-button", this._takeAction.bind(thi
 this.gsettings.connect("changed::remove-separator-1", this._takeAction.bind(this));
 this.gsettings.connect("changed::remove-separator-2", this._takeAction.bind(this));
 this.gsettings.connect("changed::remove-logout-button", this._takeAction.bind(this));
+this.gsettings.connect("changed::remove-network-button", this._takeAction.bind(this));
+this.gsettings.connect("changed::remove-bluetooth-button", this._takeAction.bind(this));
+this.gsettings.connect("changed::remove-settings-button", this._takeAction.bind(this));
 }
 
 destroy() {
-SystemMenu.box.remove_actor(separator1);
-SystemMenu.box.remove_actor(suspend);
-SystemMenu.box.remove_actor(restart);
-SystemMenu.box.remove_actor(power);
-SystemMenu.box.remove_actor(separator2);
-SystemMenu.box.remove_actor(logout);
-SystemMenu.box.remove_actor(switchUser);
-SystemMenu.box.insert_child_at_index(System._sessionSubMenu, SystemMenu.numMenuItems);
+SystemMenu.box.remove_actor(separator1.actor);
+SystemMenu.box.remove_actor(suspend.actor);
+SystemMenu.box.remove_actor(restart.actor);
+SystemMenu.box.remove_actor(power.actor);
+SystemMenu.box.remove_actor(separator2.actor);
+SystemMenu.box.remove_actor(logout.actor);
+SystemMenu.box.remove_actor(switchUser.actor);
+AggMenu.box.remove_actor(NetworkItem.actor);
+AggMenu.box.remove_actor(BluetoothItem.actor);
+AggMenu.box.remove_actor(SettingsItem.actor);
 }
+
+bringBackup() {
+AggMenu.addMenuItem(NetworkItem,2);
+AggMenu.addMenuItem(BluetoothItem,3);
+SystemMenu.addMenuItem(SettingsItem);
+SystemMenu.addMenuItem(System._sessionSubMenu);
+}
+
 });
 
 function init() {
@@ -139,4 +168,5 @@ modifiedMenu = new _bringOut();
 
 function disable() {
 modifiedMenu.destroy();
+modifiedMenu.bringBackup();
 }

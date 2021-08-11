@@ -8,7 +8,7 @@ const Me = ExtensionUtils.getCurrentExtension();
 
 
 function init() {
-}
+};
 
 function buildPrefsWidget() {
 
@@ -167,7 +167,83 @@ function buildPrefsWidget() {
         Gio.SettingsBindFlags.DEFAULT
     );
     
-    /////////////////////////////////////////////////////////////////////////////      
+    ///////////////////////////////////////////////////////////////////////////// 
+	
+	/////////////////////////////////////////////////////////////////////////////
+    
+    let labelNetwork = new Gtk.Label({
+        label: 'Remove Network',
+        halign: Gtk.Align.START,
+        visible: true
+    });
+    prefsWidget.attach(labelNetwork, 0, 7, 1, 1);
+
+    let toggleNetwork = new Gtk.Switch({
+        active: this.settings.get_boolean ('remove-network-button'),
+        halign: Gtk.Align.END,
+        visible: true
+    });
+    prefsWidget.attach(toggleNetwork, 1, 7, 1, 1);
+
+    this.settings.bind(
+        'remove-network-button',
+        toggleNetwork,
+        'active',
+        Gio.SettingsBindFlags.DEFAULT
+    );
+    
+    /////////////////////////////////////////////////////////////////////////////
+	
+	/////////////////////////////////////////////////////////////////////////////
+    
+    let labelBluetooth = new Gtk.Label({
+        label: 'Remove Bluetooth',
+        halign: Gtk.Align.START,
+        visible: true
+    });
+    prefsWidget.attach(labelBluetooth, 0, 8, 1, 1);
+
+    let toggleBluetooth = new Gtk.Switch({
+        active: this.settings.get_boolean ('remove-bluetooth-button'),
+        halign: Gtk.Align.END,
+        visible: true
+    });
+    prefsWidget.attach(toggleBluetooth, 1, 8, 1, 1);
+
+    this.settings.bind(
+        'remove-bluetooth-button',
+        toggleBluetooth,
+        'active',
+        Gio.SettingsBindFlags.DEFAULT
+    );
+    
+    /////////////////////////////////////////////////////////////////////////////
+	
+	/////////////////////////////////////////////////////////////////////////////
+    
+    let labelSettings = new Gtk.Label({
+        label: 'Remove Settings',
+        halign: Gtk.Align.START,
+        visible: true
+    });
+    prefsWidget.attach(labelSettings, 0, 9, 1, 1);
+
+    let toggleSettings = new Gtk.Switch({
+        active: this.settings.get_boolean ('remove-settings-button'),
+        halign: Gtk.Align.END,
+        visible: true
+    });
+    prefsWidget.attach(toggleSettings, 1, 9, 1, 1);
+
+    this.settings.bind(
+        'remove-settings-button',
+        toggleSettings,
+        'active',
+        Gio.SettingsBindFlags.DEFAULT
+    );
+    
+    /////////////////////////////////////////////////////////////////////////////    
+
     
     let labelWarning = new Gtk.Label({
         label: 'Note: if you have set gsettings set org.gnome.desktop.lockdown disable-log-out to true(default is false) then "Restart…", "Power Off…" & "Log Out" will not take any Action when you click on them.',
@@ -175,7 +251,7 @@ function buildPrefsWidget() {
         use_markup: true,
         visible: true
     });
-    prefsWidget.attach(labelWarning, 0, 7, 2, 1);
+    prefsWidget.attach(labelWarning, 0, 10, 2, 1);
 
     return prefsWidget;
-}
+};

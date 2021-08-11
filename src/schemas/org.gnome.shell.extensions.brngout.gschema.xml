@@ -37,6 +37,24 @@
 <summary>Turn ON if you wish to remove the logout Item from system's menu.</summary>
 <description>Logout Item</description>
 </key>
+
+<key name="remove-network-button" type="b">
+<default>false</default>
+<summary>Turn ON if you wish to remove the network Item from system's menu.</summary>
+<description>Network Item</description>
+</key>
+
+<key name="remove-bluetooth-button" type="b">
+<default>false</default>
+<summary>Turn ON if you wish to remove the bluetooth Item from system's menu.</summary>
+<description>Bluetooth Item</description>
+</key>
+
+<key name="remove-settings-button" type="b">
+<default>false</default>
+<summary>Turn ON if you wish to remove the settings Item from system's menu.</summary>
+<description>Settings Item</description>
+</key>
     
 </schema>
 </schemalist>
