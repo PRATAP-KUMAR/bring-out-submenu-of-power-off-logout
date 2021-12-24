@@ -37,6 +37,12 @@
 <summary>Turn ON if you wish to remove the logout Item from system's menu.</summary>
 <description>Logout Item</description>
 </key>
-    
+
+<key name="remove-switch-user-button" type="b">
+<default>false</default>
+<summary>Turn ON if you wish to remove the switch user Item from system's menu.</summary>
+<description>Switch User Item</description>
+</key>
+
 </schema>
 </schemalist>

@@ -165,16 +165,39 @@ function buildPrefsWidget() {
         'active',
         Gio.SettingsBindFlags.DEFAULT
     );
-    
-    ///////////////////////////////////////////////////////////////////////////// 
-    
+
+    /////////////////////////////////////////////////////////////////////////////
+
+    let labelSwitchUser = new Gtk.Label({
+        label: 'Remove Switch User',
+        halign: Gtk.Align.START,
+        visible: true
+    });
+    prefsWidget.attach(labelSwitchUser, 0, 7, 1, 1);
+
+    let toggleSwitchUser = new Gtk.Switch({
+        active: this.settings.get_boolean ('remove-switch-user-button'),
+        halign: Gtk.Align.END,
+        visible: true
+    });
+    prefsWidget.attach(toggleSwitchUser, 1, 7, 1, 1);
+
+    this.settings.bind(
+        'remove-switch-user-button',
+        toggleSwitchUser,
+        'active',
+        Gio.SettingsBindFlags.DEFAULT
+    );
+
+    /////////////////////////////////////////////////////////////////////////////
+
     let labelWarning = new Gtk.Label({
         label: 'Note: \nif you have set gsettings set org.gnome.desktop.lockdown disable-log-out to true(default is false) then "Restart…", "Power Off…" & "Log Out" will not take any Action when you click on them.',
         halign: Gtk.Align.CENTER,
         use_markup: true,
         visible: true
     });
-    prefsWidget.attach(labelWarning, 0, 7, 2, 1);
+    prefsWidget.attach(labelWarning, 0, 8, 2, 1);
 
     return prefsWidget;
 }

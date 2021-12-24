@@ -100,7 +100,8 @@ if (!boolean) { SystemMenu.addMenuItem(separator2); };
 boolean = this.gsettings.get_boolean('remove-logout-button');
 if (!boolean) { SystemMenu.addMenuItem(logout); };
 	// Switch User
-SystemMenu.addMenuItem(switchUser);
+boolean = this.gsettings.get_boolean('remove-switch-user-button');
+if (!boolean) { SystemMenu.addMenuItem(switchUser); };
 let bindFlags = GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE;
 DefaultActions.bind_property('can-switch-user', switchUser, 'visible', bindFlags);
 }
@@ -112,6 +113,7 @@ this.gsettings.connect("changed::remove-power-button", this._takeAction.bind(thi
 this.gsettings.connect("changed::remove-separator-1", this._takeAction.bind(this));
 this.gsettings.connect("changed::remove-separator-2", this._takeAction.bind(this));
 this.gsettings.connect("changed::remove-logout-button", this._takeAction.bind(this));
+this.gsettings.connect("changed::remove-switch-user-button", this._takeAction.bind(this));
 }
 
 destroy() {
