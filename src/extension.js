@@ -18,7 +18,6 @@
 
 /* exported init */
 
-
 'use strict';
 
 const { GObject, Shell, St } = imports.gi;
@@ -31,99 +30,188 @@ const ExtensionUtils = imports.misc.extensionUtils;
 const System = Main.panel.statusArea.aggregateMenu._system;
 const SystemMenu = System.menu;
 
-const SCHEMA_NAME = 'org.gnome.shell.extensions.brngout';
+const GnomeSession = imports.misc.gnomeSession;
+let SessionManager = null;
+
+const Config = imports.misc.config;
+const SHELL_MAJOR_VERSION = parseInt(Config.PACKAGE_VERSION.split('.')[0]);
 
 let DefaultActions;
-let separator1;
-let suspend;
-let restart;
-let power;
-let separator2;
-let logout;
-let switchUser;
 
 var _bringOut = new GObject.registerClass(
 class BringOutSubmenu extends PanelMenu.SystemIndicator {
 
 _init() {
 	DefaultActions = new SystemActions.getDefault();
-	separator1 = new PopupMenu.PopupSeparatorMenuItem;
-	separator2 = new PopupMenu.PopupSeparatorMenuItem;
-	this.gsettings = ExtensionUtils.getSettings(SCHEMA_NAME);
+	this._settings = ExtensionUtils.getSettings();
+	
+	SystemMenu.actor.remove_child(System._sessionSubMenu);
+	
 	this._createMenu();
-	this._gsettingsChanged();
+	this._connectSettings();
 	this._takeAction();
-}
+	
+	SystemMenu.connect('open-state-changed', (menu, open) => {
+		if(!open)
+		return;
+		DefaultActions._sessionUpdated();
+		DefaultActions.forceUpdate();
+	});
+    	}
 
 _createMenu() {
-
-suspend = new PopupMenu.PopupImageMenuItem(_('Suspend'), 'media-playback-pause-symbolic');
-suspend.connect('activate', () => { DefaultActions.activateSuspend(); });
-
-restart = new PopupMenu.PopupImageMenuItem(_('Restart…'), 'system-reboot-symbolic');
-restart.connect('activate', () => { DefaultActions.activateRestart(); });
-
-power = new PopupMenu.PopupImageMenuItem(_('Power Off…'), 'system-shutdown-symbolic');
-power.connect('activate', () => { DefaultActions.activatePowerOff(); });
-
-logout = new PopupMenu.PopupImageMenuItem(_('Log Out'), 'system-log-out-symbolic');
-logout.connect('activate', () => { DefaultActions.activateLogout(); });
-
-switchUser = new PopupMenu.PopupImageMenuItem(_('Switch User…'), 'system-switch-user-symbolic.svg');
-switchUser.connect('activate', () => { DefaultActions.activateSwitchUser(); });
-}
-
-_takeAction() {
-this.destroy();
-SystemMenu.actor.remove_child(System._sessionSubMenu);
-this._nextAction();
-}
-
-_nextAction() {
-let boolean;
-	// Separator1
-boolean = this.gsettings.get_boolean('remove-separator-1');
-if (!boolean) { SystemMenu.addMenuItem(separator1); };
+	let bindFlags = GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE;
+	let boolean;
+	
 	// Suspend
-boolean = this.gsettings.get_boolean('remove-suspend-button');
-if (!boolean) { SystemMenu.addMenuItem(suspend); };
-	//Restart
-boolean = this.gsettings.get_boolean('remove-restart-button');	
-if (!boolean) { SystemMenu.addMenuItem(restart); };
+
+	this._suspend = new PopupMenu.PopupImageMenuItem(_('Suspend'), 'media-playback-pause-symbolic');
+	this._suspend.connect('activate', () => {
+	DefaultActions.activateSuspend();
+	});
+	
+	boolean = this._settings.get_boolean('remove-suspend-button');
+	
+	if(!boolean) {
+        SystemMenu.addMenuItem(this._suspend);
+	DefaultActions.bind_property('can-suspend', this._suspend, 'visible', bindFlags); }
+	
+				
+	// Restart
+
+	this._restart = new PopupMenu.PopupImageMenuItem(_('Restart…'), 'system-reboot-symbolic');
+	this._restart.connect('activate', () => {
+	SHELL_MAJOR_VERSION >= 40 ? DefaultActions.activateRestart() : SessionManager.RebootRemote();
+        });
+	
+	boolean = this._settings.get_boolean('remove-restart-button');
+	
+	if(!boolean) {
+        SystemMenu.addMenuItem(this._restart);
+	SHELL_MAJOR_VERSION >=40 ? DefaultActions.bind_property('can-restart', this._restart, 'visible', bindFlags) :
+        				DefaultActions.bind_property('can-power-off', this._restart, 'visible', bindFlags) }
+				
 	// Power
-boolean = this.gsettings.get_boolean('remove-power-button');
-if (!boolean) { SystemMenu.addMenuItem(power); };
-	// Separator2
-boolean = this.gsettings.get_boolean('remove-separator-2');
-if (!boolean) { SystemMenu.addMenuItem(separator2); };
+
+	this._power = new PopupMenu.PopupImageMenuItem(_('Power Off…'), 'system-shutdown-symbolic');
+	this._power.connect('activate', () => { DefaultActions.activatePowerOff(); });
+	
+	boolean = this._settings.get_boolean('remove-power-button');
+	
+	if(!boolean) {
+        SystemMenu.addMenuItem(this._power);
+	DefaultActions.bind_property('can-power-off', this._power, 'visible', bindFlags); }
+	
 	// Logout
-boolean = this.gsettings.get_boolean('remove-logout-button');
-if (!boolean) { SystemMenu.addMenuItem(logout); };
+
+	this._logout = new PopupMenu.PopupImageMenuItem(_('Log Out'), 'system-log-out-symbolic');
+	this._logout.connect('activate', () => { DefaultActions.activateLogout(); });
+	
+	boolean = this._settings.get_boolean('remove-logout-button');
+	
+	if(!boolean) {
+        SystemMenu.addMenuItem(this._logout);
+	DefaultActions.bind_property('can-logout', this._logout, 'visible', bindFlags); }
+	
 	// Switch User
-SystemMenu.addMenuItem(switchUser);
-let bindFlags = GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE;
-DefaultActions.bind_property('can-switch-user', switchUser, 'visible', bindFlags);
-}
 
-_gsettingsChanged() {
-this.gsettings.connect("changed::remove-suspend-button", this._takeAction.bind(this));
-this.gsettings.connect("changed::remove-restart-button", this._takeAction.bind(this));
-this.gsettings.connect("changed::remove-power-button", this._takeAction.bind(this));
-this.gsettings.connect("changed::remove-separator-1", this._takeAction.bind(this));
-this.gsettings.connect("changed::remove-separator-2", this._takeAction.bind(this));
-this.gsettings.connect("changed::remove-logout-button", this._takeAction.bind(this));
-}
+	this._switchUser = new PopupMenu.PopupImageMenuItem(_('Switch User…'), 'system-switch-user-symbolic');
+	SystemMenu.addMenuItem(this._switchUser)
+	this._switchUser.connect('activate', () => { DefaultActions.activatSwitchUser(); });
+	DefaultActions.bind_property('can-switch-user', this._switchUser, 'visible', bindFlags);
+	
+	// Separators
+	
+	this._separator1 = new PopupMenu.PopupSeparatorMenuItem;
+	this._separator2 = new PopupMenu.PopupSeparatorMenuItem;
 
-destroy() {
-SystemMenu.box.remove_actor(separator1);
-SystemMenu.box.remove_actor(suspend);
-SystemMenu.box.remove_actor(restart);
-SystemMenu.box.remove_actor(power);
-SystemMenu.box.remove_actor(separator2);
-SystemMenu.box.remove_actor(logout);
-SystemMenu.box.remove_actor(switchUser);
-SystemMenu.box.insert_child_at_index(System._sessionSubMenu, SystemMenu.numMenuItems);
-}
+	SystemMenu.addMenuItem(this._separator1);
+	SystemMenu.addMenuItem(this._separator2);
+	
+	// Main Course
+	
+	this._getAvailableButtons();
+	
+	DefaultActions._sessionUpdated();
+	DefaultActions.forceUpdate();	
+
+	}
+	
+_getAvailableButtons() {
+			let BUTTONS_ORDER = this._settings.get_value('buttons-order').deepUnpack();
+		   	
+		   	const initialArray = [
+				System._orientationLockItem,
+				System._settingsItem,
+				System._lockScreenItem,
+				this._suspend,
+				this._switchUser,
+				this._logout,
+				this._restart,
+				this._power,
+				this._separator1,
+				this._separator2
+			    	]
+				    	
+			const orderedArray = BUTTONS_ORDER.map((idx) => initialArray[idx - 1]);
+			
+			const filterdArray = orderedArray.filter(obj => obj !== null);
+			
+			for (let i = 0; i < filterdArray.length; i++) {
+			SystemMenu.moveMenuItem((filterdArray[i]), i);
+			}
+	}
+	
+_connectSettings() {
+        this.removeSuspendButtonChanged = this._settings.connect('changed::remove-suspend-button', this._takeAction.bind(this));
+        this.removeRestartButtonChanged = this._settings.connect('changed::remove-restart-button', this._takeAction.bind(this));
+        this.removePoweroffButtonChanged = this._settings.connect('changed::remove-power-button', this._takeAction.bind(this));
+        this.removeLogoutButtonChanged = this._settings.connect('changed::remove-logout-button', this._takeAction.bind(this));
+        this.buttonsOrderChanged = this._settings.connect('changed::buttons-order', this._takeAction.bind(this));
+	}
+
+_onDestroy() {
+	
+	if(this.removeSuspendButtonChanged) {
+        this._settings.disconnect(this.removeSuspendButtonChanged);
+        this.removeSuspendButtonChanged = 0;
+        }
+
+        if(this.removeRestartButtonChanged) {
+        this._settings.disconnect(this.removeRestartButtonChanged);
+        this.removeRestartButtonChanged = 0;
+        }
+        
+        if(this.removePoweroffButtonChanged) {
+        this._settings.disconnect(this.removePoweroffButtonChanged);
+        this.removePoweroffButtonChanged = 0;
+        }
+        
+	if(this.removeLogoutButtonChanged) {
+        this._settings.disconnect(this.removeLogoutButtonChanged);
+        this.removeLogoutButtonChanged = 0;
+        }
+        
+        if(this.buttonsOrderChanged) {
+        this._settings.disconnect(this.buttonsOrderChanged);
+        this.buttonsOrderChanged = 0;
+        }
+	}
+	
+_removeActors() {
+	SystemMenu.box.remove_actor(this._separator1);
+	SystemMenu.box.remove_actor(this._separator2);
+	SystemMenu.box.remove_actor(this._suspend);
+	SystemMenu.box.remove_actor(this._restart);
+	SystemMenu.box.remove_actor(this._power);
+	SystemMenu.box.remove_actor(this._logout);
+	SystemMenu.box.remove_actor(this._switchUser);
+	}
+	
+_takeAction() {
+	this._removeActors();
+	this._createMenu();
+	}
 });
 
 function init() {
@@ -132,9 +220,21 @@ function init() {
 let modifiedMenu;
 
 function enable() {
+SessionManager = GnomeSession.SessionManager();
 modifiedMenu = new _bringOut();
 }
 
 function disable() {
-modifiedMenu.destroy();
+	if(SessionManager) {
+	SessionManager = null;
+	}
+	
+	modifiedMenu._removeActors();
+	modifiedMenu._onDestroy();
+	modifiedMenu = null;
+	
+	SystemMenu.moveMenuItem(System._orientationLockItem, 0);		
+	SystemMenu.moveMenuItem(System._settingsItem, 1);
+	SystemMenu.moveMenuItem(System._lockScreenItem, 2);
+	SystemMenu.actor.insert_child_at_index(System._sessionSubMenu, SystemMenu.numMenuItems);
 }

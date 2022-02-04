@@ -1,6 +1,18 @@
 
 <schemalist>
 <schema id="org.gnome.shell.extensions.brngout" path="/org/gnome/shell/extensions/brngout/">
+
+<key name="buttons-order" type="ai">
+<default>[ 1, 2, 3, 9, 4, 5, 10, 6, 7, 8]</default>
+<summary>Default Order</summary>
+<description>Default Order</description>
+</key>
+
+<key name="remove-separator-1" type="b">
+<default>false</default>
+<summary>Turn ON if you wish to remove the separator-1.</summary>
+<description>Separator-1</description>
+</key>
   
 <key name="remove-suspend-button" type="b">
 <default>false</default>
@@ -18,12 +30,6 @@
 <default>false</default>
 <summary>Turn ON if you wish to remove Power Off Item from system's menu.</summary>
 <description>Power Off Item</description>
-</key>
-
-<key name="remove-separator-1" type="b">
-<default>false</default>
-<summary>Turn ON if you wish to remove the separator-1.</summary>
-<description>Separator-1</description>
 </key>
 
 <key name="remove-separator-2" type="b">
