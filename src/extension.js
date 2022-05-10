@@ -117,7 +117,7 @@ _createMenu() {
 
 	this._switchUser = new PopupMenu.PopupImageMenuItem(_('Switch User…'), 'system-switch-user-symbolic');
 	SystemMenu.addMenuItem(this._switchUser)
-	this._switchUser.connect('activate', () => { DefaultActions.activatSwitchUser(); });
+	this._switchUser.connect('activate', () => { DefaultActions.activateSwitchUser(); });
 	DefaultActions.bind_property('can-switch-user', this._switchUser, 'visible', bindFlags);
 	
 	// Separators
