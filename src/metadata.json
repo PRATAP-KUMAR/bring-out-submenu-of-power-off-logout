@@ -4,13 +4,9 @@
   "name": "Bring Out Submenu Of Power Off/Logout Button",
   "settings-schema": "org.gnome.shell.extensions.brngout",
   "shell-version": [
-    "3.36",
-    "3.38",
-    "40",
-    "41",
-    "42"
+    "43"
   ],
   "url": "https://github.com/PRATAP-KUMAR/Bring-Out-Submenu-of-Power-Off-Logout",
   "uuid": "BringOutSubmenuOfPowerOffLogoutButton@pratap.fastmail.fm",
-  "version": 28
+  "version": 30
 }
