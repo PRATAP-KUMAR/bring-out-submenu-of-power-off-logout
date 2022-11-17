@@ -28,6 +28,13 @@ const {QuickSettingsItem} = imports.ui.quickSettings;
 const SystemActions = imports.misc.systemActions;
 const TakeAction = new SystemActions.getDefault();
 const BindFlags = GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE;
+const ExtensionUtils = imports.misc.extensionUtils;
+
+const SUSPEND = 'suspend';
+const SWITCH_USER = 'switch_user';
+const LOGOUT = 'logout';
+const RESTART = 'restart';
+const POWEROFF = 'poweroff';
 
 const LabelLauncher = new GObject.registerClass(
     class LabelLauncher extends St.Widget {
@@ -66,7 +73,7 @@ const LabelLauncher = new GObject.registerClass(
 );
 
 const SyncLabel = GObject.registerClass(
-    class SyncLabel extends QuickSettingsItem  {
+    class SyncLabel extends QuickSettingsItem {
         _init(item) {
             this.item = item;
             this.item._showLabelTimeoutId = 0;
@@ -114,176 +121,155 @@ const SyncLabel = GObject.registerClass(
     });
 
 
-const SuspendItem = GObject.registerClass(
-  class SuspendItem extends QuickSettingsItem {
-      _init() {
-          super._init({
-              style_class: 'icon-button',
-              can_focus: true,
-              track_hover: true,
-              child: new St.Icon({icon_name: 'media-playback-pause-symbolic'}),
-              accessible_name: 'Suspend',
-          });
+const CreateItem = GObject.registerClass(
+    class CreateItem extends QuickSettingsItem {
+        _init(ICON_NAME, ACCESSIBLE_NAME, BINDING_ID, ACTION) {
+            super._init({
+                style_class: 'icon-button',
+                can_focus: true,
+                track_hover: true,
+                child: new St.Icon({icon_name: ICON_NAME}),
+                accessible_name: ACCESSIBLE_NAME,
+            });
 
-          this.connect('clicked', () => {
-              TakeAction.activateSuspend();
-              Main.panel.closeQuickSettings();
-          });
+            this.connect('clicked', () => {
+                switch (ACTION) {
+                case SUSPEND:
+                    TakeAction.activateSuspend();
+                    break;
+                case SWITCH_USER:
+                    TakeAction.activateSwitchUser();
+                    break;
+                case LOGOUT:
+                    TakeAction.activateLogout();
+                    break;
+                case RESTART:
+                    TakeAction.activateRestart();
+                    break;
+                case POWEROFF:
+                    TakeAction.activatePowerOff();
+                    break;
+                }
 
-          TakeAction.bind_property('can-sunspend', this, 'visible', BindFlags);
-          const callSync = new SyncLabel(this);
-          this.connect('notify::hover', () => {
-              callSync._syncLabel();
-          });
-      }
-  }
-);
+                Main.panel.closeQuickSettings();
+            });
 
-const SwitchUserItem = GObject.registerClass(
-  class SwitchUserItem extends QuickSettingsItem {
-      _init() {
-          super._init({
-              style_class: 'icon-button',
-              can_focus: true,
-              child: new St.Icon({icon_name: 'system-switch-user-symbolic'}),
-              accessible_name: 'Switch User…',
-          });
-
-          this.connect('clicked', () => {
-              TakeAction.activateSwitchUser();
-              Main.panel.closeQuickSettings();
-          });
-
-          TakeAction.bind_property('can-switch-user', this, 'visible', BindFlags);
-          const callSync = new SyncLabel(this);
-          this.connect('notify::hover', () => {
-              callSync._syncLabel();
-          });
-      }
-  }
-);
-
-const LogoutItem = GObject.registerClass(
-  class LogoutItem extends QuickSettingsItem {
-      _init() {
-          super._init({
-              style_class: 'icon-button',
-              can_focus: true,
-              child: new St.Icon({icon_name: 'system-log-out-symbolic'}),
-              accessible_name: 'Log Out…',
-          });
-
-          this.connect('clicked', () => {
-              TakeAction.activateLogout();
-              Main.panel.closeQuickSettings();
-          });
-
-          TakeAction.bind_property('can-logout', this, 'visible', BindFlags);
-          const callSync = new SyncLabel(this);
-          this.connect('notify::hover', () => {
-              callSync._syncLabel();
-          });
-      }
-  }
-);
-
-const RestartItem = GObject.registerClass(
-  class RestartItem extends QuickSettingsItem {
-      _init() {
-          super._init({
-              style_class: 'icon-button',
-              can_focus: true,
-              child: new St.Icon({icon_name: 'system-reboot-symbolic'}),
-              accessible_name: 'Restart…',
-          });
-
-          this.connect('clicked', () => {
-              TakeAction.activateRestart();
-              Main.panel.closeQuickSettings();
-          });
-
-          TakeAction.bind_property('can-restart', this, 'visible', BindFlags);
-          const callSync = new SyncLabel(this);
-          this.connect('notify::hover', () => {
-              callSync._syncLabel();
-          });
-      }
-  }
-);
-
-const PowerOffItem = GObject.registerClass(
-  class PowerOffItem extends QuickSettingsItem {
-      _init() {
-          super._init({
-              style_class: 'icon-button',
-              can_focus: true,
-              child: new St.Icon({icon_name: 'system-shutdown-symbolic'}),
-              accessible_name: 'Power Off…',
-          });
-
-          this.connect('clicked', () => {
-              TakeAction.activatePowerOff();
-              Main.panel.closeQuickSettings();
-          });
-
-          TakeAction.bind_property('can-power-off', this, 'visible', BindFlags);
-          const callSync = new SyncLabel(this);
-          this.connect('notify::hover', () => {
-              callSync._syncLabel();
-          });
-      }
-  }
+            TakeAction.bind_property(BINDING_ID, this, 'visible', BindFlags);
+            const callSync = new SyncLabel(this);
+            this.connect('notify::hover', () => {
+                callSync._syncLabel();
+            });
+        }
+    }
 );
 
 let removed = Target.get_children()[6];
 
+const keys = [
+    'remove-suspend-button',
+    null,
+    'remove-logout-button',
+    'remove-restart-button',
+    'remove-power-button',
+];
+
+const BringOutExtension = new GObject.registerClass(
+    class BringOutExtension extends QuickSettingsItem {
+        _init() {
+            Target.remove_child(removed);
+            this._settings = ExtensionUtils.getSettings();
+            this._createMenu();
+            this._connectSettings();
+        }
+
+        _createMenu() {
+            this._suspendItem = new CreateItem('media-playback-pause-symbolic', 'Suspend', 'can-suspend', SUSPEND);
+            this._switchUserItem = new CreateItem('system-switch-user-symbolic', 'Switch User…', 'can-switch-user', SWITCH_USER);
+            this._logoutItem = new CreateItem('system-log-out-symbolic', 'Log Out…', 'can-logout', LOGOUT);
+            this._restartItem = new CreateItem('system-reboot-symbolic', 'Restart…', 'can-restart', RESTART);
+            this._powerItem = new CreateItem('system-shutdown-symbolic', 'Power Off…', 'can-power-off', POWEROFF);
+
+            this._array = [
+                this._suspendItem,
+                this._switchUserItem,
+                this._logoutItem,
+                this._restartItem,
+                this._powerItem,
+            ];
+
+            this._array.forEach((item, index) => {
+                let boolean;
+                if (index !== 1) {
+                    let key = keys[index];
+                    boolean = this._settings.get_boolean(key);
+                    if (!boolean)
+                        Target.add(item);
+                } else {
+                    Target.add(item);
+                }
+            });
+        }
+
+        _connectSettings() {
+            this._array.forEach((item, index) => {
+                if (index !== 1) {
+                    let key = keys[index];
+                    item._buttonShowHide = this._settings.connect(`changed::${key}`, this._settingsChanged.bind(this));
+                }
+            });
+        }
+
+        _settingsChanged() {
+            this._array.forEach(item => {
+                if (item)
+                    Target.remove_child(item);
+            });
+            this._createMenu();
+        }
+
+        _destroy() {
+            this._array = [
+                this._suspendItem,
+                this._switchUserItem,
+                this._logoutItem,
+                this._restartItem,
+                this._powerItem,
+            ];
+
+            this._array.forEach(item => {
+                if (item._resetHoverTimeoutId) {
+                    GLib.source_remove(item._resetHoverTimeoutId);
+                    item._resetHoverTimeoutId = null;
+                }
+
+                if (item._showLabelTimeoutId) {
+                    GLib.source_remove(item._showLabelTimeoutId);
+                    item._showLabelTimeoutId = null;
+                }
+
+                if (item._buttonShowHide)
+                    this._settings.disconnect(item._buttonShowHide);
+
+                item.destroy();
+                item = null;
+            });
+
+            Target.add_child(removed);
+        }
+    }
+);
+
+let modifiedMenu;
+
 class Extension {
     enable() {
-        Target.remove_child(removed);
-
-        this._suspendItem = new SuspendItem();
-        this._switchUserItem = new SwitchUserItem();
-        this._logoutItem = new LogoutItem();
-        this._restartItem = new RestartItem();
-        this._powerOffItem = new PowerOffItem();
-
-        const array = [
-            this._suspendItem,
-            this._switchUserItem,
-            this._logoutItem,
-            this._restartItem,
-            this._powerOffItem,
-        ];
-
-        array.forEach(item => {
-            Target.add_child(item);
-        });
+        modifiedMenu = new BringOutExtension();
     }
 
     disable() {
-        const array = [
-            this._suspendItem,
-            this._switchUserItem,
-            this._logoutItem,
-            this._restartItem,
-            this._powerOffItem,
-        ];
-
-        array.forEach(item => {
-            if (item._resetHoverTimeoutId) {
-                GLib.source_remove(item._resetHoverTimeoutId);
-                item._resetHoverTimeoutId = null;
-            }
-
-            if (item._showLabelTimeoutId) {
-                GLib.source_remove(item._showLabelTimeoutId);
-                item._showLabelTimeoutId = null;
-            }
-            item.destroy();
-            item = null;
-        });
-
-        Target.add_child(removed);
+        modifiedMenu._destroy();
+        modifiedMenu.destroy();
+        modifiedMenu = null;
     }
 }
 
