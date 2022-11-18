@@ -120,7 +120,6 @@ const SyncLabel = GObject.registerClass(
         }
     });
 
-
 const CreateItem = GObject.registerClass(
     class CreateItem extends QuickSettingsItem {
         _init(ICON_NAME, ACCESSIBLE_NAME, BINDING_ID, ACTION) {

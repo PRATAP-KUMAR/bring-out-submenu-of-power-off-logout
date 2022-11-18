@@ -1,8 +1,6 @@
 const {Gtk} = imports.gi;
 const ExtensionUtils = imports.misc.extensionUtils;
 
-const gSettings = ExtensionUtils.getSettings();
-
 /**
  *
  */
@@ -24,11 +22,12 @@ class CreateButton {
     }
 
     _createButton() {
+        this._settings = ExtensionUtils.getSettings();
         const hbox = new Gtk.Box({orientation: Gtk.Orientation.HORIZONTAL, margin_top: 5});
         const buttonLabel = new Gtk.Label({label: this._label, xalign: 0, hexpand: true});
-        const toggleSwitch = new Gtk.Switch({active: gSettings.get_boolean(this._key)});
+        const toggleSwitch = new Gtk.Switch({active: this._settings.get_boolean(this._key)});
         toggleSwitch.connect('notify::active', button => {
-            gSettings.set_boolean(this._key, button.active);
+            this._settings.set_boolean(this._key, button.active);
         });
 
         hbox.append(buttonLabel);
