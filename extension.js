@@ -51,6 +51,7 @@ function hybridSleepOrHibernate(input) {
 
 let items;
 let keys;
+let buttons;
 
 const LabelLauncher = new GObject.registerClass(
     class LabelLauncher extends St.Widget {
@@ -180,11 +181,6 @@ const CreateItem = GObject.registerClass(
             if (BINDING_ID)
                 TakeAction.bind_property(BINDING_ID, this, 'visible', BindFlags);
 
-            const callSync = new SyncLabel(this);
-            this.connect('notify::hover', () => {
-                callSync._syncLabel();
-            });
-
             items.push(this);
             keys.push(KEY);
         }
@@ -198,13 +194,16 @@ const BringOutExtension = new GObject.registerClass(
         _init() {
             Target.remove_child(removed);
             this._settings = ExtensionUtils.getSettings();
+            this._sessionManagerSettings = new Gio.Settings({schema_id: 'org.gnome.SessionManager'});
             this._createMenu();
             this._connectSettings();
+            this._confirmationDialogChanged();
         }
 
         _createMenu() {
             items = [];
             keys = [];
+            buttons = [];
             this._suspendItem = new CreateItem('media-playback-pause-symbolic', 'Suspend', SUSPEND, 'remove-suspend-button', 'can-suspend');
             this._hybridSleepItem = new CreateItem('bosm-hybrid-sleep-symbolic.svg', 'Hybrid Sleep', HYBRID_SLEEP, 'remove-hybrid-sleep-button');
             this._hibernateItem = new CreateItem('bosm-hibernate-symbolic.svg', 'Hibernate', HIBERNATE, 'remove-hibernate-button');
@@ -224,6 +223,16 @@ const BringOutExtension = new GObject.registerClass(
                     Target.add(item);
                 }
             });
+
+            buttons = Main.panel.statusArea.quickSettings._system._systemItem.child.get_children();
+            buttons.forEach(button => {
+                if (button.accessible_name) {
+                    const callSync = new SyncLabel(button);
+                    button._handlerId = button.connect('notify::hover', () => {
+                        callSync._syncLabel();
+                    });
+                }
+            });
         }
 
         _connectSettings() {
@@ -232,6 +241,9 @@ const BringOutExtension = new GObject.registerClass(
                 if (key)
                     item._buttonShowHide = this._settings.connect(`changed::${key}`, this._settingsChanged.bind(this));
             });
+
+            this._confirmId = this._settings.connect('changed::confirmation-dialog', this._confirmationDialogChanged.bind(this));
+            this._sMSId = this._sessionManagerSettings.connect('changed::logout-prompt', this._logoutPromptChanged.bind(this));
         }
 
         _settingsChanged() {
@@ -240,6 +252,14 @@ const BringOutExtension = new GObject.registerClass(
                     Target.remove_child(item);
             });
             this._createMenu();
+        }
+
+        _confirmationDialogChanged() {
+            this._sessionManagerSettings.set_boolean('logout-prompt', this._settings.get_boolean('confirmation-dialog'));
+        }
+
+        _logoutPromptChanged() {
+            this._settings.set_boolean('confirmation-dialog', this._sessionManagerSettings.get_boolean('logout-prompt'));
         }
 
         _destroy() {
@@ -261,9 +281,21 @@ const BringOutExtension = new GObject.registerClass(
                 item = null;
             });
 
+            buttons.forEach(button => {
+                if (button._handlerId)
+                    button.disconnect(button._handlerId);
+            });
+
+            if (this._confirmId)
+                this._settings.disconnect(this._confirmId);
+
+            if (this._sMSId)
+                this._settings.disconnect(this._sMSId);
+
             Target.add_child(removed);
             items = [];
             keys = [];
+            buttons = [];
         }
     }
 );

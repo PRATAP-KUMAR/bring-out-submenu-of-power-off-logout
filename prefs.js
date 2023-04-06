@@ -1,4 +1,4 @@
-const {Gtk} = imports.gi;
+const {Gtk, Gio} = imports.gi;
 const ExtensionUtils = imports.misc.extensionUtils;
 
 /**
@@ -46,10 +46,8 @@ const createGrid = () =>
         visible: true,
     });
 
-
 const createVBox = () =>
     new Gtk.Box({orientation: Gtk.Orientation.VERTICAL, spacing: 10, visible: true});
-
 
 class PrefsWidget {
     constructor() {
@@ -76,6 +74,18 @@ class PrefsWidget {
 
         this._powerButton = new CreateButton('Remove Poweroff Button', 'remove-power-button');
         basicPageVBox.append(this._powerButton._createButton());
+
+        this._settings = ExtensionUtils.getSettings();
+        let logoutSettings = new Gio.Settings({schema_id: 'org.gnome.SessionManager'});
+        let status = logoutSettings.get_boolean('logout-prompt');
+
+        this._checkButton = new Gtk.CheckButton({active: status});
+        this._checkButton.set_label(status ? 'Confirmation Enabled on logout, restart and power off, Safe!' : 'Oh no! no confirmation on logout, restart and poweroff, you know what it means, rite');
+        this._checkButton.connect('notify::active', tickBox => {
+            this._settings.set_boolean('confirmation-dialog', tickBox.active);
+            this._checkButton.set_label(tickBox.active ? '60 seconds confirmation Enabled on logout, restart and power off, Safe!' : 'Oh no! no confirmation on logout, restart and poweroff, you know what it means, rite');
+        });
+        basicPageVBox.append(this._checkButton);
 
         this.notebook.append_page(basicPageGrid, new Gtk.Label({label: 'Basic Settings', visible: true, hexpand: true}));
 

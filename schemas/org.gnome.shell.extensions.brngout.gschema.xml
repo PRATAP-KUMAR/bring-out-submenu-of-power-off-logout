@@ -37,6 +37,12 @@
 <summary>Turn ON if you wish to show HIbernation Item from system's menu.</summary>
 <description>Power Item</description>
 </key>
+
+<key name="confirmation-dialog" type="b">
+<default>true</default>
+<summary>Tick to turn off Confirmation Dialog (please make sure you know the effect)</summary>
+<description>Confirmation Dialog</description>
+</key>
    
 </schema>
 </schemalist>
