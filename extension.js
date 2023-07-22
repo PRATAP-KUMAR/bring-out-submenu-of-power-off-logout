@@ -24,7 +24,7 @@ const {
 
 const Main = imports.ui.main;
 const Target = Main.panel.statusArea.quickSettings._system._systemItem.child;
-const {QuickSettingsItem} = imports.ui.quickSettings;
+const { QuickSettingsItem } = imports.ui.quickSettings;
 const SystemActions = imports.misc.systemActions;
 const BindFlags = GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE;
 const ExtensionUtils = imports.misc.extensionUtils;
@@ -49,6 +49,20 @@ function hybridSleepOrHibernate(input) {
         LoginManager._proxy.call(input, GLib.Variant.new('(b)', [true]), Gio.DBusCallFlags.NONE, -1, null, null);
 }
 
+/**
+ *
+ * @param {string} accessibleName - SystemMenuItem
+ */
+function getItem(accessibleName) {
+    let children = Target.get_children();
+    for (const child of children) {
+        if (child.accessible_name) {
+            if (child.get_accessible_name() === accessibleName)
+                return child;
+        }
+    }
+}
+
 let items;
 let keys;
 let buttons;
@@ -56,7 +70,7 @@ let buttons;
 const LabelLauncher = new GObject.registerClass(
     class LabelLauncher extends St.Widget {
         _init() {
-            this.label = new St.Label({style_class: 'dash-label'});
+            this.label = new St.Label({ style_class: 'dash-label' });
             this.label.hide();
             Main.layoutManager.addTopChrome(this.label);
         }
@@ -144,7 +158,7 @@ const CreateItem = GObject.registerClass(
                 style_class: 'icon-button',
                 can_focus: true,
                 track_hover: true,
-                child: ICON_NAME.startsWith('bosm-') ? new St.Icon({gicon: Gio.icon_new_for_string(`${iconsPath}/${ICON_NAME}`)}) : new St.Icon({icon_name: ICON_NAME}),
+                child: ICON_NAME.startsWith('bosm-') ? new St.Icon({ gicon: Gio.icon_new_for_string(`${iconsPath}/${ICON_NAME}`) }) : new St.Icon({ icon_name: ICON_NAME }),
                 accessible_name: ACCESSIBLE_NAME,
             });
 
@@ -152,27 +166,27 @@ const CreateItem = GObject.registerClass(
 
             this.connect('clicked', () => {
                 switch (ACTION) {
-                case SUSPEND:
-                    TakeAction.activateSuspend();
-                    break;
-                case HYBRID_SLEEP:
-                    hybridSleepOrHibernate('HybridSleep');
-                    break;
-                case HIBERNATE:
-                    hybridSleepOrHibernate('Hibernate');
-                    break;
-                case SWITCH_USER:
-                    TakeAction.activateSwitchUser();
-                    break;
-                case LOGOUT:
-                    TakeAction.activateLogout();
-                    break;
-                case RESTART:
-                    TakeAction.activateRestart();
-                    break;
-                case POWEROFF:
-                    TakeAction.activatePowerOff();
-                    break;
+                    case SUSPEND:
+                        TakeAction.activateSuspend();
+                        break;
+                    case HYBRID_SLEEP:
+                        hybridSleepOrHibernate('HybridSleep');
+                        break;
+                    case HIBERNATE:
+                        hybridSleepOrHibernate('Hibernate');
+                        break;
+                    case SWITCH_USER:
+                        TakeAction.activateSwitchUser();
+                        break;
+                    case LOGOUT:
+                        TakeAction.activateLogout();
+                        break;
+                    case RESTART:
+                        TakeAction.activateRestart();
+                        break;
+                    case POWEROFF:
+                        TakeAction.activatePowerOff();
+                        break;
                 }
 
                 Main.panel.closeQuickSettings();
@@ -187,16 +201,18 @@ const CreateItem = GObject.registerClass(
     }
 );
 
-let removed = Target.get_children()[6];
+let powerMenu = getItem("Power Off Menu");
 
 const BringOutExtension = new GObject.registerClass(
     class BringOutExtension extends QuickSettingsItem {
         _init() {
-            Target.remove_child(removed);
+            Target.remove_child(powerMenu);
             this._settings = ExtensionUtils.getSettings();
-            this._sessionManagerSettings = new Gio.Settings({schema_id: 'org.gnome.SessionManager'});
+            this._sessionManagerSettings = new Gio.Settings({ schema_id: 'org.gnome.SessionManager' });
+            this._lockDownSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.lockdown' });
             this._createMenu();
             this._connectSettings();
+            this._lockScreenChanged();
             this._confirmationDialogChanged();
         }
 
@@ -242,6 +258,8 @@ const BringOutExtension = new GObject.registerClass(
                     item._buttonShowHide = this._settings.connect(`changed::${key}`, this._settingsChanged.bind(this));
             });
 
+            this._lockScreenId = this._settings.connect('changed::remove-lock-button', this._lockScreenChanged.bind(this));
+            this._lockDownlockScreenId = this._lockDownSettings.connect('changed::disable-lock-screen', this._lockScreenChanged.bind(this));
             this._confirmId = this._settings.connect('changed::confirmation-dialog', this._confirmationDialogChanged.bind(this));
             this._sMSId = this._sessionManagerSettings.connect('changed::logout-prompt', this._logoutPromptChanged.bind(this));
         }
@@ -252,6 +270,23 @@ const BringOutExtension = new GObject.registerClass(
                     Target.remove_child(item);
             });
             this._createMenu();
+        }
+
+        _lockScreenChanged() {
+            const lockItem = getItem("Lock Screen");
+            let systemDconf = this._lockDownSettings.get_boolean('disable-lock-screen');
+            if (systemDconf) {
+                lockItem.hide();
+                return;
+            }
+            if (lockItem) {
+                let localDconf = this._settings.get_boolean('remove-lock-button');
+                if (!localDconf) {
+                    lockItem.show();
+                } else {
+                    lockItem.hide();
+                }
+            }
         }
 
         _confirmationDialogChanged() {
@@ -286,13 +321,19 @@ const BringOutExtension = new GObject.registerClass(
                     button.disconnect(button._handlerId);
             });
 
+            if (this._lockScreenId)
+                this._settings.disconnect(this._lockScreenId);
+
+            if (this._lockDownlockScreenId)
+                this._settings.disconnect(this._lockDownlockScreenId);
+
             if (this._confirmId)
                 this._settings.disconnect(this._confirmId);
 
             if (this._sMSId)
                 this._settings.disconnect(this._sMSId);
 
-            Target.add_child(removed);
+            Target.add_child(powerMenu);
             items = [];
             keys = [];
             buttons = [];

@@ -1,48 +1,53 @@
-
 <schemalist>
-<schema id="org.gnome.shell.extensions.brngout" path="/org/gnome/shell/extensions/brngout/">
+    <schema id="org.gnome.shell.extensions.brngout" path="/org/gnome/shell/extensions/brngout/">
 
-<key name="remove-suspend-button" type="b">
-<default>false</default>
-<summary>Turn ON if you wish to remove Suspend Item from system's menu.</summary>
-<description>Suspend Item</description>
-</key>
+        <key name="remove-lock-button" type="b">
+            <default>false</default>
+            <summary>Turn ON if you wish to remove Lock Item from system's menu.</summary>
+            <description>Lock Item</description>
+        </key>
 
-<key name="remove-logout-button" type="b">
-<default>false</default>
-<summary>Turn ON if you wish to remove Logout Item from system's menu.</summary>
-<description>Logout Item</description>
-</key>
+        <key name="remove-suspend-button" type="b">
+            <default>false</default>
+            <summary>Turn ON if you wish to remove Suspend Item from system's menu.</summary>
+            <description>Suspend Item</description>
+        </key>
 
-<key name="remove-restart-button" type="b">
-<default>false</default>
-<summary>Turn ON if you wish to remove Restart Item from system's menu.</summary>
-<description>Restart Item</description>
-</key>
+        <key name="remove-logout-button" type="b">
+            <default>false</default>
+            <summary>Turn ON if you wish to remove Logout Item from system's menu.</summary>
+            <description>Logout Item</description>
+        </key>
 
-<key name="remove-power-button" type="b">
-<default>false</default>
-<summary>Turn ON if you wish to remove Power Item from system's menu.</summary>
-<description>Power Item</description>
-</key>
+        <key name="remove-restart-button" type="b">
+            <default>false</default>
+            <summary>Turn ON if you wish to remove Restart Item from system's menu.</summary>
+            <description>Restart Item</description>
+        </key>
 
-<key name="remove-hybrid-sleep-button" type="b">
-<default>true</default>
-<summary>Turn ON if you wish to show HybridSleep Item from systems' menu.</summary>
-<description>Restart Item</description>
-</key>
+        <key name="remove-power-button" type="b">
+            <default>false</default>
+            <summary>Turn ON if you wish to remove Power Item from system's menu.</summary>
+            <description>Power Item</description>
+        </key>
 
-<key name="remove-hibernate-button" type="b">
-<default>true</default>
-<summary>Turn ON if you wish to show HIbernation Item from system's menu.</summary>
-<description>Power Item</description>
-</key>
+        <key name="remove-hybrid-sleep-button" type="b">
+            <default>true</default>
+            <summary>Turn ON if you wish to show HybridSleep Item from systems' menu.</summary>
+            <description>Restart Item</description>
+        </key>
 
-<key name="confirmation-dialog" type="b">
-<default>true</default>
-<summary>Tick to turn off Confirmation Dialog (please make sure you know the effect)</summary>
-<description>Confirmation Dialog</description>
-</key>
-   
-</schema>
+        <key name="remove-hibernate-button" type="b">
+            <default>true</default>
+            <summary>Turn ON if you wish to show HIbernation Item from system's menu.</summary>
+            <description>Power Item</description>
+        </key>
+
+        <key name="confirmation-dialog" type="b">
+            <default>true</default>
+            <summary>Tick to turn off Confirmation Dialog (please make sure you know the effect)</summary>
+            <description>Confirmation Dialog</description>
+        </key>
+
+    </schema>
 </schemalist>

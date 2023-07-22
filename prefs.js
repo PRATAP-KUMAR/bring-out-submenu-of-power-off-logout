@@ -63,6 +63,9 @@ class PrefsWidget {
 
         basicPageGrid.attach(basicPageVBox, 0, 0, 3, 1);
 
+        this._lockButton = new CreateButton('Remove Lock Button', 'remove-lock-button');
+        basicPageVBox.append(this._lockButton._createButton());
+
         this._suspendButton = new CreateButton('Remove Suspend Button', 'remove-suspend-button');
         basicPageVBox.append(this._suspendButton._createButton());
 
