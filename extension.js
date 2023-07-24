@@ -24,8 +24,6 @@ const {
 
 const Main = imports.ui.main;
 const Target = Main.panel.statusArea.quickSettings._system._systemItem.child;
-const lockItem = Target.get_children()[5];
-const powerMenu = Target.get_children()[6];
 const { QuickSettingsItem } = imports.ui.quickSettings;
 const SystemActions = imports.misc.systemActions;
 const BindFlags = GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE;
@@ -51,6 +49,8 @@ function hybridSleepOrHibernate(input) {
         LoginManager._proxy.call(input, GLib.Variant.new('(b)', [true]), Gio.DBusCallFlags.NONE, -1, null, null);
 }
 
+let powerMenu;
+let lockItem;
 let items;
 let keys;
 let buttons;
@@ -326,6 +326,8 @@ const BringOutExtension = new GObject.registerClass(
             }
 
             Target.add_child(powerMenu);
+            lockItem = null;
+            powerMenu = null;
             items = [];
             keys = [];
             buttons = [];
@@ -337,6 +339,8 @@ let modifiedMenu;
 
 class Extension {
     enable() {
+        lockItem = Target.get_children()[5];
+        powerMenu = Target.get_children()[6];
         modifiedMenu = new BringOutExtension();
     }
 
