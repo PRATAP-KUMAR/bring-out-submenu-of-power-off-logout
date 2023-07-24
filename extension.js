@@ -24,6 +24,8 @@ const {
 
 const Main = imports.ui.main;
 const Target = Main.panel.statusArea.quickSettings._system._systemItem.child;
+const lockItem = Target.get_children()[5];
+const powerMenu = Target.get_children()[6];
 const { QuickSettingsItem } = imports.ui.quickSettings;
 const SystemActions = imports.misc.systemActions;
 const BindFlags = GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE;
@@ -47,20 +49,6 @@ function hybridSleepOrHibernate(input) {
     const LoginManager = imports.misc.loginManager.getLoginManager();
     if (LoginManager._proxy)
         LoginManager._proxy.call(input, GLib.Variant.new('(b)', [true]), Gio.DBusCallFlags.NONE, -1, null, null);
-}
-
-/**
- *
- * @param {string} accessibleName - SystemMenuItem
- */
-function getItem(accessibleName) {
-    let children = Target.get_children();
-    for (const child of children) {
-        if (child.accessible_name) {
-            if (child.get_accessible_name() === accessibleName)
-                return child;
-        }
-    }
 }
 
 let items;
@@ -201,8 +189,6 @@ const CreateItem = GObject.registerClass(
     }
 );
 
-let powerMenu = getItem("Power Off Menu");
-
 const BringOutExtension = new GObject.registerClass(
     class BringOutExtension extends QuickSettingsItem {
         _init() {
@@ -273,7 +259,6 @@ const BringOutExtension = new GObject.registerClass(
         }
 
         _lockScreenChanged() {
-            const lockItem = getItem("Lock Screen");
             let systemDconf = this._lockDownSettings.get_boolean('disable-lock-screen');
             if (systemDconf) {
                 lockItem.hide();
@@ -332,6 +317,13 @@ const BringOutExtension = new GObject.registerClass(
 
             if (this._sMSId)
                 this._settings.disconnect(this._sMSId);
+
+            let systemDconf = this._lockDownSettings.get_boolean('disable-lock-screen');
+            if (systemDconf) {
+                lockItem.hide();
+            } else {
+                lockItem.show();
+            }
 
             Target.add_child(powerMenu);
             items = [];
