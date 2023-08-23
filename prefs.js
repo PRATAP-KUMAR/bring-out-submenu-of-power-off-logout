@@ -1,8 +1,6 @@
-import Gio from 'gi://Gio';
 import Adw from 'gi://Adw';
 
 import { ExtensionPreferences } from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
-
 
 export default class ExamplePreferences extends ExtensionPreferences {
     fillPreferencesWindow(window) {
@@ -28,7 +26,5 @@ export default class ExamplePreferences extends ExtensionPreferences {
 
         // Create a settings object and bind the row to the `show-indicator` key
         window._settings = this.getSettings();
-        window._settings.bind('show-indicator', row, 'active',
-            Gio.SettingsBindFlags.DEFAULT);
     }
 }
