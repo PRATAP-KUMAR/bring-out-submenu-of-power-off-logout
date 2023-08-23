@@ -3,7 +3,7 @@ import GObject from 'gi://GObject';
 import Gio from 'gi://Gio';
 import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
 import {QuickSettingsItem} from 'resource:///org/gnome/shell/ui/quickSettings.js';
-import CreateItem from './CreateItem.js';
+import CreateActionItem from './CreateActionItem.js';
 import SyncLabel from './SyncLabel.js';
 
 const SUSPEND = 'suspend';
@@ -14,8 +14,8 @@ const POWEROFF = 'poweroff';
 
 let actionButtons;
 
-const BringoutExtension = new GObject.registerClass(
-    class BringoutExtension extends QuickSettingsItem {
+const BringoutMenu = new GObject.registerClass(
+    class BringoutMenu extends QuickSettingsItem {
         _init() {
             this._extension = Extension.lookupByURL(import.meta.url);
             this._settings = this._extension.getSettings();
@@ -67,11 +67,11 @@ const BringoutExtension = new GObject.registerClass(
         _createMenu() {
             this._items = [];
             this._keys = [];
-            this._suspendItem = new CreateItem('media-playback-pause-symbolic', 'Suspend', SUSPEND, 'can-suspend');
-            this._switchUserItem = new CreateItem('system-switch-user-symbolic', 'Switch User���', SWITCH_USER, 'can-switch-user');
-            this._logoutItem = new CreateItem('system-log-out-symbolic', 'Log Out', LOGOUT, 'can-logout');
-            this._restartItem = new CreateItem('system-reboot-symbolic', 'Restart', RESTART, 'can-restart');
-            this._powerItem = new CreateItem('system-shutdown-symbolic', 'Power Off', POWEROFF, 'can-power-off');
+            this._suspendItem = new CreateActionItem('media-playback-pause-symbolic', 'Suspend', SUSPEND, 'can-suspend');
+            this._switchUserItem = new CreateActionItem('system-switch-user-symbolic', 'Switch User���', SWITCH_USER, 'can-switch-user');
+            this._logoutItem = new CreateActionItem('system-log-out-symbolic', 'Log Out', LOGOUT, 'can-logout');
+            this._restartItem = new CreateActionItem('system-reboot-symbolic', 'Restart', RESTART, 'can-restart');
+            this._powerItem = new CreateActionItem('system-shutdown-symbolic', 'Power Off', POWEROFF, 'can-power-off');
 
             this._items = [
                 this._suspendItem,
@@ -143,4 +143,4 @@ const BringoutExtension = new GObject.registerClass(
     }
 );
 
-export default BringoutExtension;
+export default BringoutMenu;

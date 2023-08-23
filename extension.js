@@ -1,13 +1,13 @@
 import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import GLib from 'gi://GLib';
-import BringoutExtension from './BringoutExtension.js';
+import BringoutMenu from './BringoutMenu.js';
 
 let modifiedMenu;
 
-export default class ExampleExtension extends Extension {
+export default class BringoutExtension extends Extension {
     _modifySystemItem() {
-        modifiedMenu = new BringoutExtension();
+        modifiedMenu = new BringoutMenu();
     }
 
     _queueModifySystemItem() {

@@ -11,8 +11,8 @@ const LOGOUT = 'logout';
 const RESTART = 'restart';
 const POWEROFF = 'poweroff';
 
-const CreateItem = GObject.registerClass(
-    class CreateItem extends QuickSettingsItem {
+const CreateActionItem = GObject.registerClass(
+    class CreateActionItem extends QuickSettingsItem {
         _init(ICON_NAME, ACCESSIBLE_NAME, ACTION, BINDING_ID) {
             super._init({
                 style_class: 'icon-button',
@@ -52,4 +52,4 @@ const CreateItem = GObject.registerClass(
     }
 );
 
-export default CreateItem;
+export default CreateActionItem;
