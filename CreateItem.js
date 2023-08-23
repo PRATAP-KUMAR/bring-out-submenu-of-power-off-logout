@@ -1,5 +1,5 @@
 import GObject from 'gi://GObject';
-import { QuickSettingsItem } from 'resource:///org/gnome/shell/ui/quickSettings.js';
+import {QuickSettingsItem} from 'resource:///org/gnome/shell/ui/quickSettings.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as SystemActions from 'resource:///org/gnome/shell/misc/systemActions.js';
 
@@ -13,7 +13,7 @@ const POWEROFF = 'poweroff';
 
 const CreateItem = GObject.registerClass(
     class CreateItem extends QuickSettingsItem {
-        _init(ICON_NAME, ACCESSIBLE_NAME, ACTION, KEY = null, BINDING_ID = null) {
+        _init(ICON_NAME, ACCESSIBLE_NAME, ACTION, BINDING_ID) {
             super._init({
                 style_class: 'icon-button',
                 can_focus: true,
@@ -25,23 +25,22 @@ const CreateItem = GObject.registerClass(
             const TakeAction = new SystemActions.getDefault();
 
             this.connect('clicked', () => {
-
                 switch (ACTION) {
-                    case SUSPEND:
-                        TakeAction.activateSuspend();
-                        break;
-                    case SWITCH_USER:
-                        TakeAction.activateSwitchUser();
-                        break;
-                    case LOGOUT:
-                        TakeAction.activateLogout();
-                        break;
-                    case RESTART:
-                        TakeAction.activateRestart();
-                        break;
-                    case POWEROFF:
-                        TakeAction.activatePowerOff();
-                        break;
+                case SUSPEND:
+                    TakeAction.activateSuspend();
+                    break;
+                case SWITCH_USER:
+                    TakeAction.activateSwitchUser();
+                    break;
+                case LOGOUT:
+                    TakeAction.activateLogout();
+                    break;
+                case RESTART:
+                    TakeAction.activateRestart();
+                    break;
+                case POWEROFF:
+                    TakeAction.activatePowerOff();
+                    break;
                 }
 
                 Main.panel.closeQuickSettings();

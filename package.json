@@ -1,0 +1,10 @@
+{
+    "name": "bring-out-submenu-extension",
+    "version": "1.0.0",
+    "description": "gnome-shell-extension",
+    "main": "extension.js",
+    "author": "PRATAP PANABAKA",
+    "devDependencies": {
+      "eslint-plugin-jsdoc": "^46.5.0"
+    }
+  }
