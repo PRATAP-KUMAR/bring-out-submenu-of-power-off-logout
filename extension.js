@@ -4,6 +4,7 @@ import GLib from 'gi://GLib';
 import BringoutMenu from './BringoutMenu.js';
 
 let modifiedMenu;
+let sourceId = null;
 
 export default class BringoutExtension extends Extension {
     _modifySystemItem() {
@@ -11,7 +12,7 @@ export default class BringoutExtension extends Extension {
     }
 
     _queueModifySystemItem() {
-        GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
+        sourceId = GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
             if (!Main.panel.statusArea.quickSettings._system)
                 return GLib.SOURCE_CONTINUE;
 
@@ -33,5 +34,9 @@ export default class BringoutExtension extends Extension {
         modifiedMenu._destroy();
         modifiedMenu.destroy();
         modifiedMenu = null;
+        if (sourceId) {
+            GLib.Source.remove(sourceId);
+            sourceId = null;
+        }
     }
 }

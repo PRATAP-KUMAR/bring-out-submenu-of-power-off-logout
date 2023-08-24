@@ -26,6 +26,7 @@ const BringoutMenu = new GObject.registerClass(
             this._actionItems.remove_child(this._powerOffMenuItem);
             this._items = [];
             this._keys = [];
+            this._labelLaunchers = [];
             this._createMenu();
             this._lockScreenChanged();
             this._connectSettings();
