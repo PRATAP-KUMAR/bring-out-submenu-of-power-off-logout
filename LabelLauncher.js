@@ -37,6 +37,11 @@ const LabelLauncher = new GObject.registerClass(
                 onComplete: () => this.label.hide(),
             });
         }
+
+        _destroy() {
+            Main.layoutManager.removeChrome(this.label);
+            this.label = null;
+        }
     }
 );
 

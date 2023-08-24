@@ -1,7 +1,6 @@
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import GObject from 'gi://GObject';
 import Gio from 'gi://Gio';
-import GLib from 'gi://GLib';
 import {QuickSettingsItem} from 'resource:///org/gnome/shell/ui/quickSettings.js';
 
 import CreateActionItem from './CreateActionItem.js';
@@ -20,25 +19,27 @@ const BringoutMenu = new GObject.registerClass(
         _init(settings) {
             this._settings = settings;
             this._lockDownSettings = new Gio.Settings({schema_id: 'org.gnome.desktop.lockdown'});
-            this._actionItems = Main.panel.statusArea.quickSettings._system._systemItem.child;
-            this._powerOffMenuItem = this._actionItems.get_child_at_index(6);
-            this._lockItem = this._actionItems.get_child_at_index(5);
-            this._actionItems.remove_child(this._powerOffMenuItem);
-            this._items = [];
+            this._containerRow = Main.panel.statusArea.quickSettings._system._systemItem.child;
+            this._powerOffMenuItem = this._containerRow.get_child_at_index(6);
+            this._lockItem = this._containerRow.get_child_at_index(5);
+            this._containerRow.remove_child(this._powerOffMenuItem);
+            this._customButtons = [];
             this._keys = [];
-            this._labelLaunchers = [];
+            this._instancesOfSyncLabels = [];
+            this._instancesOfLabelLaunchers = [];
             this._createMenu();
             this._lockScreenChanged();
             this._connectSettings();
         }
 
         _connectSettings() {
-            this._items.forEach((item, idx) => {
+            this._customButtons.forEach((button, idx) => {
                 let key = this._keys[idx];
                 if (key)
-                    item._buttonToggle = this._settings.connect(`changed::${key}`, this._settingsChanged.bind(this));
+                    // settings id to destroy - Ref 1
+                    button._settingsId = this._settings.connect(`changed::${key}`, this._settingsChanged.bind(this));
             });
-
+            // id to destory - Ref 2
             this._lockScreenId = this._settings.connect('changed::remove-lock-button', this._lockScreenChanged.bind(this));
         }
 
@@ -58,24 +59,25 @@ const BringoutMenu = new GObject.registerClass(
         }
 
         _settingsChanged() {
-            this._items.forEach(item => {
+            this._customButtons.forEach(item => {
                 if (item)
-                    this._actionItems.remove_child(item);
+                    this._containerRow.remove_child(item);
             });
             this._createMenu();
         }
 
         _createMenu() {
-            this._items = [];
+            this._customButtons = [];
             this._keys = [];
-            this._labelLaunchers = [];
+            this._instancesOfSyncLabels = [];
+            this._instancesOfLabelLaunchers = [];
             this._suspendItem = new CreateActionItem('media-playback-pause-symbolic', 'Suspend', SUSPEND, 'can-suspend');
             this._switchUserItem = new CreateActionItem('system-switch-user-symbolic', 'Switch User', SWITCH_USER, 'can-switch-user');
             this._logoutItem = new CreateActionItem('system-log-out-symbolic', 'Log Out', LOGOUT, 'can-logout');
             this._restartItem = new CreateActionItem('system-reboot-symbolic', 'Restart', RESTART, 'can-restart');
             this._powerItem = new CreateActionItem('system-shutdown-symbolic', 'Power Off', POWEROFF, 'can-power-off');
 
-            this._items = [
+            this._customButtons = [
                 this._suspendItem,
                 this._switchUserItem,
                 this._logoutItem,
@@ -91,26 +93,30 @@ const BringoutMenu = new GObject.registerClass(
                 'remove-power-button',
             ];
 
-            this._items.forEach((item, idx) => {
+            this._customButtons.forEach((button, idx) => {
                 let boolean;
                 let key = this._keys[idx];
                 if (key) {
                     boolean = this._settings.get_boolean(key);
                     if (!boolean)
-                        this._actionItems.add(item);
+                        this._containerRow.add(button);
                 } else {
-                    this._actionItems.add(item);
+                    this._containerRow.add(button);
                 }
             });
 
-            actionButtons = this._actionItems.get_children();
+            actionButtons = this._containerRow.get_children();
             actionButtons.forEach(button => {
                 if (button.accessible_name) {
                     const callSync = new SyncLabel(button);
 
-                    // stack St label widget from Line 12 of LabelLauncher.js to remove in _destroy()
-                    this._labelLaunchers.push(callSync._toolTip.label);
+                    // stack instances of SyncLabel to use in _destroy() - Ref 3
+                    this._instancesOfSyncLabels.push(callSync);
 
+                    // stack St label widget from Line 12 of LabelLauncher.js to remove in _destroy() - Ref 4
+                    this._instancesOfLabelLaunchers.push(callSync._toolTip);
+
+                    // button handler id's to destroy - Ref 5
                     button._handlerId = button.connect('notify::hover', () => {
                         callSync._syncLabel();
                     });
@@ -119,37 +125,37 @@ const BringoutMenu = new GObject.registerClass(
         }
 
         _destroy() {
-            // refer to line 108 above
-            this._labelLaunchers.forEach(launcher => {
-                if (launcher) {
-                    Main.layoutManager.removeChrome(launcher);
-                    launcher.destroy();
-                    launcher = null;
-                }
+            // Ref 1
+            this._customButtons.forEach(button => {
+                if (button._settingsId)
+                    this._settings.disconnect(button._settingsId);
             });
 
-            actionButtons.forEach(button => {
-                if (button._showLabelTimeoutId) {
-                    GLib.source_remove(button._showLabelTimeoutId);
-                    button._showLabelTimeoutId = null;
-                }
-
-                if (button._resetHoverTimeoutId) {
-                    GLib.source_remove(button._resetHoverTimeoutId);
-                    button._resetHoverTimeoutId = null;
-                }
-            });
-
-            this._items.forEach(item => {
-                if (item._buttonToggle)
-                    this._settings.disconnect(item._buttonToggle);
-                this._actionItems.remove_child(item);
-                item.destroy();
-                item = null;
-            });
-
+            // Ref 2
             if (this._lockScreenId)
                 this._settings.disconnect(this._lockScreenId);
+
+            // Ref 3
+            this._instancesOfSyncLabels.forEach(instance => {
+                instance._destroy();
+            });
+
+            // Ref 4
+            this._instancesOfLabelLaunchers.forEach(instance => {
+                instance._destroy();
+            });
+
+            // Ref 5
+            actionButtons.forEach(button => {
+                if (button._handlerId)
+                    button.disconnect(button._handlerId);
+            });
+
+            this._customButtons.forEach(button => {
+                this._containerRow.remove_child(button);
+                button.destroy();
+                button = null;
+            });
 
             let systemDconf = this._lockDownSettings.get_boolean('disable-lock-screen');
             if (systemDconf)
@@ -157,15 +163,11 @@ const BringoutMenu = new GObject.registerClass(
             else
                 this._lockItem.show();
 
-            actionButtons.forEach(button => {
-                if (button._handlerId)
-                    button.disconnect(button._handlerId);
-            });
-
-            this._items = [];
+            this._customButtons = [];
             this._keys = [];
-            this._labelLaunchers = [];
-            this._actionItems.add_child(this._powerOffMenuItem);
+            this._instancesOfSyncLabels = [];
+            this._instancesOfLabelLaunchers = [];
+            this._containerRow.add_child(this._powerOffMenuItem);
         }
     }
 );

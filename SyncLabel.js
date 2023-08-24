@@ -49,6 +49,18 @@ const SyncLabel = GObject.registerClass(
                 }
             }
         }
+
+        _destroy() {
+            if (this._button._showLabelTimeoutId) {
+                GLib.source_remove(this._button._showLabelTimeoutId);
+                this._button._showLabelTimeoutId = null;
+            }
+
+            if (this._button._resetHoverTimeoutId) {
+                GLib.source_remove(this._button._resetHoverTimeoutId);
+                this._button._resetHoverTimeoutId = null;
+            }
+        }
     }
 );
 

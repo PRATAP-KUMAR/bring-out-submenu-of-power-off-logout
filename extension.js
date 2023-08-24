@@ -30,7 +30,6 @@ export default class BringoutExtension extends Extension {
     }
 
     disable() {
-        this._settings = null;
         modifiedMenu._destroy();
         modifiedMenu.destroy();
         modifiedMenu = null;
@@ -38,5 +37,6 @@ export default class BringoutExtension extends Extension {
             GLib.Source.remove(sourceId);
             sourceId = null;
         }
+        this._settings = null;
     }
 }
