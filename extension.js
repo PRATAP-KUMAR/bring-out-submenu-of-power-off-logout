@@ -7,7 +7,7 @@ let modifiedMenu;
 
 export default class BringoutExtension extends Extension {
     _modifySystemItem() {
-        modifiedMenu = new BringoutMenu();
+        modifiedMenu = new BringoutMenu(this._settings);
     }
 
     _queueModifySystemItem() {
@@ -29,9 +29,9 @@ export default class BringoutExtension extends Extension {
     }
 
     disable() {
+        this._settings = null;
         modifiedMenu._destroy();
         modifiedMenu.destroy();
         modifiedMenu = null;
-        this._settings = null;
     }
 }

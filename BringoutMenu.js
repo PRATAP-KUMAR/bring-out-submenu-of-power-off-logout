@@ -1,8 +1,9 @@
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import GObject from 'gi://GObject';
 import Gio from 'gi://Gio';
-import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
+import GLib from 'gi://GLib';
 import {QuickSettingsItem} from 'resource:///org/gnome/shell/ui/quickSettings.js';
+
 import CreateActionItem from './CreateActionItem.js';
 import SyncLabel from './SyncLabel.js';
 
@@ -16,9 +17,8 @@ let actionButtons;
 
 const BringoutMenu = new GObject.registerClass(
     class BringoutMenu extends QuickSettingsItem {
-        _init() {
-            this._extension = Extension.lookupByURL(import.meta.url);
-            this._settings = this._extension.getSettings();
+        _init(settings) {
+            this._settings = settings;
             this._lockDownSettings = new Gio.Settings({schema_id: 'org.gnome.desktop.lockdown'});
             this._actionItems = Main.panel.statusArea.quickSettings._system._systemItem.child;
             this._powerOffMenuItem = this._actionItems.get_child_at_index(6);
@@ -67,8 +67,9 @@ const BringoutMenu = new GObject.registerClass(
         _createMenu() {
             this._items = [];
             this._keys = [];
+            this._labelLaunchers = [];
             this._suspendItem = new CreateActionItem('media-playback-pause-symbolic', 'Suspend', SUSPEND, 'can-suspend');
-            this._switchUserItem = new CreateActionItem('system-switch-user-symbolic', 'Switch User���', SWITCH_USER, 'can-switch-user');
+            this._switchUserItem = new CreateActionItem('system-switch-user-symbolic', 'Switch User', SWITCH_USER, 'can-switch-user');
             this._logoutItem = new CreateActionItem('system-log-out-symbolic', 'Log Out', LOGOUT, 'can-logout');
             this._restartItem = new CreateActionItem('system-reboot-symbolic', 'Restart', RESTART, 'can-restart');
             this._powerItem = new CreateActionItem('system-shutdown-symbolic', 'Power Off', POWEROFF, 'can-power-off');
@@ -105,6 +106,10 @@ const BringoutMenu = new GObject.registerClass(
             actionButtons.forEach(button => {
                 if (button.accessible_name) {
                     const callSync = new SyncLabel(button);
+
+                    // stack St label widget from Line 12 of LabelLauncher.js to remove in _destroy()
+                    this._labelLaunchers.push(callSync._toolTip.label);
+
                     button._handlerId = button.connect('notify::hover', () => {
                         callSync._syncLabel();
                     });
@@ -113,6 +118,27 @@ const BringoutMenu = new GObject.registerClass(
         }
 
         _destroy() {
+            // refer to line 108 above
+            this._labelLaunchers.forEach(launcher => {
+                if (launcher) {
+                    Main.layoutManager.removeChrome(launcher);
+                    launcher.destroy();
+                    launcher = null;
+                }
+            });
+
+            actionButtons.forEach(button => {
+                if (button._showLabelTimeoutId) {
+                    GLib.source_remove(button._showLabelTimeoutId);
+                    button._showLabelTimeoutId = null;
+                }
+
+                if (button._resetHoverTimeoutId) {
+                    GLib.source_remove(button._resetHoverTimeoutId);
+                    button._resetHoverTimeoutId = null;
+                }
+            });
+
             this._items.forEach(item => {
                 if (item._buttonToggle)
                     this._settings.disconnect(item._buttonToggle);
@@ -130,7 +156,6 @@ const BringoutMenu = new GObject.registerClass(
             else
                 this._lockItem.show();
 
-
             actionButtons.forEach(button => {
                 if (button._handlerId)
                     button.disconnect(button._handlerId);
@@ -138,6 +163,7 @@ const BringoutMenu = new GObject.registerClass(
 
             this._items = [];
             this._keys = [];
+            this._labelLaunchers = [];
             this._actionItems.add_child(this._powerOffMenuItem);
         }
     }

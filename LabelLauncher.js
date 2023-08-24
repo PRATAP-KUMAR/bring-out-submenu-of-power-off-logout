@@ -5,18 +5,19 @@ import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 
 const LabelLauncher = new GObject.registerClass(
     class LabelLauncher extends St.Widget {
-        _init() {
+        _init(button) {
+            this._button = button;
             this.label = new St.Label({style_class: 'dash-label'});
             this.label.hide();
-            Main.layoutManager.addTopChrome(this.label);
+            Main.layoutManager.addChrome(this.label);
         }
 
-        showLabel(button) {
-            this.label.set_text(button.accessible_name);
+        showLabel() {
+            this.label.set_text(this._button.accessible_name);
             this.label.opacity = 0;
             this.label.show();
 
-            const center = button.get_transformed_position();
+            const center = this._button.get_transformed_position();
             const x = center[0] - 20;
             const y = 10;
 
