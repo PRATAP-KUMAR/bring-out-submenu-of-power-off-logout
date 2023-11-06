@@ -8,39 +8,64 @@ export default class BringoutExtensionPreferences extends ExtensionPreferences {
         const page = new Adw.PreferencesPage();
         window.add(page);
 
-        const group = new Adw.PreferencesGroup();
-        page.add(group);
+        const hideButtonsGroup = new Adw.PreferencesGroup({
+            title: 'Action Buttons',
+        });
+        page.add(hideButtonsGroup);
 
         const lockButtonRow = new Adw.SwitchRow({
-            title: 'Remove Lock Button',
+            title: 'Hide Lock Button',
         });
-        group.add(lockButtonRow);
+        hideButtonsGroup.add(lockButtonRow);
 
         const suspendButtonRow = new Adw.SwitchRow({
-            title: 'Remove Suspend Button',
+            title: 'Hide Suspend Button',
         });
-        group.add(suspendButtonRow);
+        hideButtonsGroup.add(suspendButtonRow);
 
         const logoutButtonRow = new Adw.SwitchRow({
-            title: 'Remove Logout Button',
+            title: 'Hide Logout Button',
         });
-        group.add(logoutButtonRow);
+        hideButtonsGroup.add(logoutButtonRow);
 
         const restartButtonRow = new Adw.SwitchRow({
-            title: 'Remove Restart Button',
+            title: 'Hide Restart Button',
         });
-        group.add(restartButtonRow);
+        hideButtonsGroup.add(restartButtonRow);
 
         const powerButtonRow = new Adw.SwitchRow({
-            title: 'Remove Power Button',
+            title: 'Hide Power Button',
         });
-        group.add(powerButtonRow);
+        hideButtonsGroup.add(powerButtonRow);
+
+
+        const spacersGroup = new Adw.PreferencesGroup({
+            title: 'Spacers',
+        });
+        page.add(spacersGroup);
+
+        const spacersRow = new Adw.SwitchRow({
+            title: 'Hide Spacers',
+        });
+        spacersGroup.add(spacersRow);
+
+        const tooltipGroup = new Adw.PreferencesGroup({
+            title: 'Tooltip',
+        });
+        page.add(tooltipGroup);
+
+        const tooltipRow = new Adw.SwitchRow({
+            title: 'Show Tooltip',
+        });
+        tooltipGroup.add(tooltipRow);
 
         window._settings = this.getSettings();
-        window._settings.bind('remove-lock-button', lockButtonRow, 'active', Gio.SettingsBindFlags.DEFAULT);
-        window._settings.bind('remove-suspend-button', suspendButtonRow, 'active', Gio.SettingsBindFlags.DEFAULT);
-        window._settings.bind('remove-logout-button', logoutButtonRow, 'active', Gio.SettingsBindFlags.DEFAULT);
-        window._settings.bind('remove-restart-button', restartButtonRow, 'active', Gio.SettingsBindFlags.DEFAULT);
-        window._settings.bind('remove-power-button', powerButtonRow, 'active', Gio.SettingsBindFlags.DEFAULT);
+        window._settings.bind('hide-lock-button', lockButtonRow, 'active', Gio.SettingsBindFlags.DEFAULT);
+        window._settings.bind('hide-suspend-button', suspendButtonRow, 'active', Gio.SettingsBindFlags.DEFAULT);
+        window._settings.bind('hide-logout-button', logoutButtonRow, 'active', Gio.SettingsBindFlags.DEFAULT);
+        window._settings.bind('hide-restart-button', restartButtonRow, 'active', Gio.SettingsBindFlags.DEFAULT);
+        window._settings.bind('hide-power-button', powerButtonRow, 'active', Gio.SettingsBindFlags.DEFAULT);
+        window._settings.bind('hide-spacers', spacersRow, 'active', Gio.SettingsBindFlags.DEFAULT);
+        window._settings.bind('show-tooltip', tooltipRow, 'active', Gio.SettingsBindFlags.DEFAULT);
     }
 }

@@ -7,21 +7,25 @@ const LabelLauncher = new GObject.registerClass(
     class LabelLauncher extends St.Widget {
         _init(button) {
             this._button = button;
-            this.label = new St.Label({style_class: 'dash-label'});
+            this.label = new St.Label({style_class: 'dash-label brng-out-ext-tooltip'});
             this.label.hide();
             Main.layoutManager.addChrome(this.label);
         }
 
         showLabel() {
             this.label.set_text(this._button.accessible_name);
-            this.label.opacity = 0;
-            this.label.show();
+            let width = this.label.width;
+            let height = this.label.height;
 
-            const center = this._button.get_transformed_position();
-            const x = center[0] - 20;
-            const y = 10;
+            let centerX = this._button.get_transformed_extents().get_center().x;
+
+            const x = centerX - width / 2;
+            const y = Main.panel.statusArea.quickSettings.menu.box.get_transformed_position()[1] - height;
 
             this.label.set_position(x, y);
+            this.label.show();
+
+            this.label.opacity = 0;
             this.label.ease({
                 opacity: 255,
                 duration: 100,
