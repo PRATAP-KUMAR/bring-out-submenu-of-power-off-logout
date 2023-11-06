@@ -25,11 +25,6 @@
             <summary>Turn ON if you wish to remove Power Item from system's menu.</summary>
             <description>Power Item</description>
         </key>
-        <key name="hide-spacers" type="b">
-            <default>false</default>
-            <summary>Turn ON if you wish to remove spacers</summary>
-            <description>Spacers</description>
-        </key>
         <key name="show-tooltip" type="b">
             <default>false</default>
             <summary>Turn ON if you wish to show tooltip for action buttons.</summary>

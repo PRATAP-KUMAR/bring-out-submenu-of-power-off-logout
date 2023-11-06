@@ -38,17 +38,6 @@ export default class BringoutExtensionPreferences extends ExtensionPreferences {
         });
         hideButtonsGroup.add(powerButtonRow);
 
-
-        const spacersGroup = new Adw.PreferencesGroup({
-            title: 'Spacers',
-        });
-        page.add(spacersGroup);
-
-        const spacersRow = new Adw.SwitchRow({
-            title: 'Hide Spacers',
-        });
-        spacersGroup.add(spacersRow);
-
         const tooltipGroup = new Adw.PreferencesGroup({
             title: 'Tooltip',
         });
@@ -56,6 +45,7 @@ export default class BringoutExtensionPreferences extends ExtensionPreferences {
 
         const tooltipRow = new Adw.SwitchRow({
             title: 'Show Tooltip',
+            subtitle: 'You can customize tooltip style using this extensions stylesheet.css file',
         });
         tooltipGroup.add(tooltipRow);
 
@@ -65,7 +55,6 @@ export default class BringoutExtensionPreferences extends ExtensionPreferences {
         window._settings.bind('hide-logout-button', logoutButtonRow, 'active', Gio.SettingsBindFlags.DEFAULT);
         window._settings.bind('hide-restart-button', restartButtonRow, 'active', Gio.SettingsBindFlags.DEFAULT);
         window._settings.bind('hide-power-button', powerButtonRow, 'active', Gio.SettingsBindFlags.DEFAULT);
-        window._settings.bind('hide-spacers', spacersRow, 'active', Gio.SettingsBindFlags.DEFAULT);
         window._settings.bind('show-tooltip', tooltipRow, 'active', Gio.SettingsBindFlags.DEFAULT);
     }
 }
