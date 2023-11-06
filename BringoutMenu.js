@@ -37,44 +37,6 @@ const BringoutMenu = new GObject.registerClass(
             this._toolTip();
         }
 
-        _connectSettings() {
-            this._customButtons.forEach((button, idx) => {
-                let key = this._keys[idx];
-                if (key)
-                    // settings id to destroy - Ref 1
-                    button._settingsId = this._settings.connect(`changed::${key}`, this._settingsChanged.bind(this, [button, key]));
-            });
-            // id to destory - Ref 2
-            this._lockScreenId = this._settings.connect('changed::hide-lock-button', this._lockScreenChanged.bind(this));
-            this._tooltipId = this._settings.connect('changed::show-tooltip', this._toolTip.bind(this));
-        }
-
-        _lockScreenChanged() {
-            let systemDconf = this._lockDownSettings.get_boolean('disable-lock-screen');
-            if (systemDconf) {
-                this._lockItem.hide();
-                return;
-            }
-            if (this._lockItem) {
-                let localDconf = this._settings.get_boolean('hide-lock-button');
-                if (!localDconf)
-                    this._lockItem.show();
-                else
-                    this._lockItem.hide();
-            }
-        }
-
-        _settingsChanged(args) {
-            const [button, key] = [...args];
-            let shouldShowButton = this._settings.get_boolean(key);
-            if (shouldShowButton) {
-                if (button.visible)
-                    button.hide();
-            } else if (!button.visible) {
-                button.show();
-            }
-        }
-
         _createMenu() {
             this._customButtons = [];
             this._keys = [];
@@ -111,6 +73,33 @@ const BringoutMenu = new GObject.registerClass(
             });
         }
 
+        _connectSettings() {
+            this._customButtons.forEach((button, idx) => {
+                let key = this._keys[idx];
+                if (key)
+                    // settings id to destroy - Ref 1
+                    button._settingsId = this._settings.connect(`changed::${key}`, this._settingsChanged.bind(this, [button, key]));
+            });
+            // id to destory - Ref 2
+            this._lockScreenId = this._settings.connect('changed::hide-lock-button', this._lockScreenChanged.bind(this));
+            this._tooltipId = this._settings.connect('changed::show-tooltip', this._toolTip.bind(this));
+        }
+
+        _lockScreenChanged() {
+            let systemDconf = this._lockDownSettings.get_boolean('disable-lock-screen');
+            if (systemDconf) {
+                this._lockItem.hide();
+                return;
+            }
+            if (this._lockItem) {
+                let localDconf = this._settings.get_boolean('hide-lock-button');
+                if (!localDconf)
+                    this._lockItem.show();
+                else
+                    this._lockItem.hide();
+            }
+        }
+
         _toolTip() {
             actionButtons = this._containerRow.get_children();
             actionButtons.forEach(button => {
@@ -134,6 +123,17 @@ const BringoutMenu = new GObject.registerClass(
                     this._destroyTooltips();
                 }
             });
+        }
+
+        _settingsChanged(args) {
+            const [button, key] = [...args];
+            let shouldShowButton = this._settings.get_boolean(key);
+            if (shouldShowButton) {
+                if (button.visible)
+                    button.hide();
+            } else if (!button.visible) {
+                button.show();
+            }
         }
 
         _destroyTooltips() {
