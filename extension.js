@@ -27,6 +27,8 @@ export default class BringoutExtension extends Extension {
     enable() {
         this._settings = this.getSettings();
         this._gettext = gettext;
+        this._dir = this.dir;
+
         if (Main.panel.statusArea.quickSettings._system)
             this._modifySystemItem();
         else

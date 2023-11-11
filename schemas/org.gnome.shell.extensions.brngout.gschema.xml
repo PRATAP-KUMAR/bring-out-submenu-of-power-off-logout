@@ -10,6 +10,18 @@
             <summary>Turn ON if you wish to remove Suspend Item from system's menu.</summary>
             <description>Suspend Item</description>
         </key>
+        <!-- Hibernation  -->
+        <key name="show-hybrid-sleep-button" type="b">
+            <default>false</default>
+            <summary>Turn ON if you wish to show HybridSleep Item from systems' menu.</summary>
+            <description>Restart Item</description>
+        </key>
+        <key name="show-hibernate-button" type="b">
+            <default>false</default>
+            <summary>Turn ON if you wish to show HIbernation Item from system's menu.</summary>
+            <description>Power Item</description>
+        </key>
+        <!--  -->
         <key name="hide-logout-button" type="b">
             <default>false</default>
             <summary>Turn ON if you wish to remove Logout Item from system's menu.</summary>

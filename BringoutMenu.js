@@ -8,6 +8,10 @@ import CreateActionItem from './CreateActionItem.js';
 import SyncLabel from './SyncLabel.js';
 
 const SUSPEND = 'suspend';
+//
+const HYBRID_SLEEP = 'hybrid_sleep';
+const HIBERNATE = 'hibernate';
+//
 const SWITCH_USER = 'switch_user';
 const LOGOUT = 'logout';
 const RESTART = 'restart';
@@ -27,6 +31,7 @@ const BringoutMenu = new GObject.registerClass(
             this._containerRow = this._systemItem.child;
 
             this._powerOffMenuItem = this._containerRow.get_child_at_index(6);
+
             this._lockItem = this._containerRow.get_child_at_index(5);
 
             this._containerRow.remove_child(this._powerOffMenuItem);
@@ -43,6 +48,10 @@ const BringoutMenu = new GObject.registerClass(
             this._instancesOfSyncLabels = [];
             this._instancesOfLabelLaunchers = [];
             this._suspendItem = new CreateActionItem('media-playback-pause-symbolic', this._gettext('Suspend'), SUSPEND, 'can-suspend');
+            //
+            this._hybridSleepItem = new CreateActionItem('bosm-hybrid-sleep.svg', 'Hybrid Sleep', HYBRID_SLEEP, 'show-hybrid-sleep-button');
+            this._hibernateItem = new CreateActionItem('bosm-hibernate.svg', 'Hibernate', HIBERNATE, 'show-hibernate-button');
+            //
             this._switchUserItem = new CreateActionItem('system-switch-user-symbolic', this._gettext('Switch User…'), SWITCH_USER, 'can-switch-user');
             this._logoutItem = new CreateActionItem('system-log-out-symbolic', this._gettext('Log Out…'), LOGOUT, 'can-logout');
             this._restartItem = new CreateActionItem('system-reboot-symbolic', this._gettext('Restart…'), RESTART, 'can-restart');
@@ -50,6 +59,8 @@ const BringoutMenu = new GObject.registerClass(
 
             this._customButtons = [
                 this._suspendItem,
+                this._hybridSleepItem,
+                this._hibernateItem,
                 this._switchUserItem,
                 this._logoutItem,
                 this._restartItem,
@@ -58,6 +69,8 @@ const BringoutMenu = new GObject.registerClass(
 
             this._keys = [
                 'hide-suspend-button',
+                'show-hybrid-sleep-button',
+                'show-hibernate-button',
                 null,
                 'hide-logout-button',
                 'hide-restart-button',
@@ -127,8 +140,18 @@ const BringoutMenu = new GObject.registerClass(
 
         _settingsChanged(args) {
             const [button, key] = [...args];
+
             let shouldShowButton = this._settings.get_boolean(key);
-            if (shouldShowButton) {
+
+            if (['show-hybrid-sleep-button', 'show-hibernate-button'].includes(key)) {
+                Main.notify('yes key is in');
+                if (shouldShowButton) {
+                    if (!button.visible)
+                        button.show();
+                } else if (button.visible) {
+                    button.hide();
+                }
+            } else if (shouldShowButton) {
                 if (button.visible)
                     button.hide();
             } else if (!button.visible) {
