@@ -144,7 +144,6 @@ const BringoutMenu = new GObject.registerClass(
             let shouldShowButton = this._settings.get_boolean(key);
 
             if (['show-hybrid-sleep-button', 'show-hibernate-button'].includes(key)) {
-                Main.notify('yes key is in');
                 if (shouldShowButton) {
                     if (!button.visible)
                         button.show();
