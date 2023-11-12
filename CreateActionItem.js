@@ -1,7 +1,6 @@
 import GObject from 'gi://GObject';
 import Gio from 'gi://Gio';
 import St from 'gi://St';
-import Clutter from 'gi://Clutter';
 
 import {QuickSettingsItem} from 'resource:///org/gnome/shell/ui/quickSettings.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
@@ -29,9 +28,8 @@ const CreateActionItem = GObject.registerClass(
                 style_class: 'icon-button',
                 can_focus: true,
                 track_hover: true,
-                icon_name: ICON_NAME.startsWith('bosm-') ? null : ICON_NAME,
+                icon_name: ICON_NAME,
                 accessible_name: ACCESSIBLE_NAME,
-                y_align: Clutter.ActorAlign.CENTER,
             });
 
             if (ICON_NAME.startsWith('bosm-')) {

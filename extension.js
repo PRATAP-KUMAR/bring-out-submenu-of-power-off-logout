@@ -37,7 +37,6 @@ export default class BringoutExtension extends Extension {
 
     disable() {
         modifiedMenu._destroy();
-        modifiedMenu.destroy();
         modifiedMenu = null;
         if (sourceId) {
             GLib.Source.remove(sourceId);

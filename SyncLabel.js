@@ -45,7 +45,7 @@ const SyncLabel = GObject.registerClass(
                             return GLib.SOURCE_REMOVE;
                         }
                     );
-                    GLib.Source.set_name_by_id(this._button._resetHoverTimeoutId, '[gnome-shell] this.item._labelShowing');
+                    GLib.Source.set_name_by_id(this._button._resetHoverTimeoutId, '[gnome-shell] this.toolTip.hideLabel');
                 }
             }
         }

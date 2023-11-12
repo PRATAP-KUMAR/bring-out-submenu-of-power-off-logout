@@ -49,8 +49,8 @@ const BringoutMenu = new GObject.registerClass(
             this._instancesOfLabelLaunchers = [];
             this._suspendItem = new CreateActionItem('media-playback-pause-symbolic', this._gettext('Suspend'), SUSPEND, 'can-suspend');
             //
-            this._hybridSleepItem = new CreateActionItem('bosm-hybrid-sleep.svg', 'Hybrid Sleep', HYBRID_SLEEP, 'show-hybrid-sleep-button');
-            this._hibernateItem = new CreateActionItem('bosm-hibernate.svg', 'Hibernate', HIBERNATE, 'show-hibernate-button');
+            this._hybridSleepItem = new CreateActionItem('bosm-hybrid-sleep.svg', 'Hybrid Sleep', HYBRID_SLEEP, null);
+            this._hibernateItem = new CreateActionItem('bosm-hibernate.svg', 'Hibernate', HIBERNATE, null);
             //
             this._switchUserItem = new CreateActionItem('system-switch-user-symbolic', this._gettext('Switch User…'), SWITCH_USER, 'can-switch-user');
             this._logoutItem = new CreateActionItem('system-log-out-symbolic', this._gettext('Log Out…'), LOGOUT, 'can-logout');
