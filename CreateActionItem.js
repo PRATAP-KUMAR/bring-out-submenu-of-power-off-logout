@@ -1,21 +1,17 @@
 import GObject from 'gi://GObject';
-import Gio from 'gi://Gio';
-import St from 'gi://St';
 import Clutter from 'gi://Clutter';
 
-import { QuickSettingsItem } from 'resource:///org/gnome/shell/ui/quickSettings.js';
+import {QuickSettingsItem} from 'resource:///org/gnome/shell/ui/quickSettings.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as SystemActions from 'resource:///org/gnome/shell/misc/systemActions.js';
-import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
 
 import ConfirmDialog from './Hibernation/confirmDialog.js';
 import hybridSleepOrHibernate from './Hibernation/hibernation.js';
 
-
 const BindFlags = GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE;
 
 const SUSPEND = 'suspend';
-//
+// Hibernation
 const HYBRID_SLEEP = 'hybrid_sleep';
 const HIBERNATE = 'hibernate';
 //
@@ -69,58 +65,47 @@ const CreateActionItem = GObject.registerClass(
                 accessible_name: ACCESSIBLE_NAME,
             });
 
-            if (ICON_NAME.startsWith('bosm-')) {
-                const extension = Extension.lookupByURL(import.meta.url);
-                const dir = extension.dir;
-                const iconsPath = dir.get_child('icons').get_path();
-                let icon = new St.Icon({
-                    gicon: Gio.icon_new_for_string(`${iconsPath}/${ICON_NAME}`),
-                });
-                this.set_child(icon);
-            }
-
             const TakeAction = new SystemActions.getDefault();
 
             this.connect('clicked', () => {
                 switch (ACTION) {
-                    case SUSPEND:
-                        TakeAction.activateSuspend();
-                        break;
-                    //
-                    case HYBRID_SLEEP: {
-                        let hybridSleep = new ConfirmDialog(HybridSleepDialog);
-                        hybridSleep.connect('cancel', () => {
-                            //
-                        });
-                        hybridSleep.connect('proceed', () => {
-                            hybridSleepOrHibernate('HybridSleep');
-                        });
-                        hybridSleep.open();
-                        break;
-                    }
-                    case HIBERNATE: {
-                        let hibernate = new ConfirmDialog(HibernateDialog);
-                        hibernate.connect('cancel', () => {
-                            //
-                        });
-                        hibernate.connect('proceed', () => {
-                            hybridSleepOrHibernate('Hibernate');
-                        });
-                        hibernate.open();
-                        break;
-                    }
-                    case SWITCH_USER:
-                        TakeAction.activateSwitchUser();
-                        break;
-                    case LOGOUT:
-                        TakeAction.activateLogout();
-                        break;
-                    case RESTART:
-                        TakeAction.activateRestart();
-                        break;
-                    case POWEROFF:
-                        TakeAction.activatePowerOff();
-                        break;
+                case SUSPEND:
+                    TakeAction.activateSuspend();
+                    break;
+                    // Hibernation
+                case HYBRID_SLEEP: {
+                    let hybridSleep = new ConfirmDialog(HybridSleepDialog);
+                    hybridSleep.connect('cancel', () => {
+                    });
+                    hybridSleep.connect('proceed', () => {
+                        hybridSleepOrHibernate('HybridSleep');
+                    });
+                    hybridSleep.open();
+                    break;
+                }
+                case HIBERNATE: {
+                    let hibernate = new ConfirmDialog(HibernateDialog);
+                    hibernate.connect('cancel', () => {
+                    });
+                    hibernate.connect('proceed', () => {
+                        hybridSleepOrHibernate('Hibernate');
+                    });
+                    hibernate.open();
+                    break;
+                }
+                //
+                case SWITCH_USER:
+                    TakeAction.activateSwitchUser();
+                    break;
+                case LOGOUT:
+                    TakeAction.activateLogout();
+                    break;
+                case RESTART:
+                    TakeAction.activateRestart();
+                    break;
+                case POWEROFF:
+                    TakeAction.activatePowerOff();
+                    break;
                 }
 
                 Main.panel.closeQuickSettings();
