@@ -6,7 +6,7 @@ import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as SystemActions from 'resource:///org/gnome/shell/misc/systemActions.js';
 
 import ConfirmDialog from './Hibernation/confirmDialog.js';
-import hybridSleepOrHibernate from './Hibernation/hibernation.js';
+import hybridSleepOrHibernate from './Hibernation/hybridSleepOrHibernate.js';
 
 const BindFlags = GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE;
 
