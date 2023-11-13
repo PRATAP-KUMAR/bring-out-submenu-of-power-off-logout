@@ -3,10 +3,10 @@ import Gio from 'gi://Gio';
 import St from 'gi://St';
 import Clutter from 'gi://Clutter';
 
-import {QuickSettingsItem} from 'resource:///org/gnome/shell/ui/quickSettings.js';
+import { QuickSettingsItem } from 'resource:///org/gnome/shell/ui/quickSettings.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as SystemActions from 'resource:///org/gnome/shell/misc/systemActions.js';
-import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
+import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
 
 import ConfirmDialog from './Hibernation/confirmDialog.js';
 import hybridSleepOrHibernate from './Hibernation/hibernation.js';
@@ -83,46 +83,44 @@ const CreateActionItem = GObject.registerClass(
 
             this.connect('clicked', () => {
                 switch (ACTION) {
-                case SUSPEND:
-                    TakeAction.activateSuspend();
-                    break;
+                    case SUSPEND:
+                        TakeAction.activateSuspend();
+                        break;
                     //
-                case HYBRID_SLEEP: {
-                    let hybridSleep = new ConfirmDialog(HybridSleepDialog);
-                    hybridSleep.connect('cancel', () => {
-                        //
-                    });
-                    hybridSleep.connect('proceed', () => {
-                        Main.notify('OK');
-                        hybridSleepOrHibernate('HybridSleep');
-                    });
-                    hybridSleep.open();
-                    break;
-                }
-                case HIBERNATE: {
-                    let hibernate = new ConfirmDialog(HibernateDialog);
-                    hibernate.connect('cancel', () => {
-                        //
-                    });
-                    hibernate.connect('proceed', () => {
-                        Main.notify('OK');
-                        hybridSleepOrHibernate('Hibernate');
-                    });
-                    hibernate.open();
-                    break;
-                }
-                case SWITCH_USER:
-                    TakeAction.activateSwitchUser();
-                    break;
-                case LOGOUT:
-                    TakeAction.activateLogout();
-                    break;
-                case RESTART:
-                    TakeAction.activateRestart();
-                    break;
-                case POWEROFF:
-                    TakeAction.activatePowerOff();
-                    break;
+                    case HYBRID_SLEEP: {
+                        let hybridSleep = new ConfirmDialog(HybridSleepDialog);
+                        hybridSleep.connect('cancel', () => {
+                            //
+                        });
+                        hybridSleep.connect('proceed', () => {
+                            hybridSleepOrHibernate('HybridSleep');
+                        });
+                        hybridSleep.open();
+                        break;
+                    }
+                    case HIBERNATE: {
+                        let hibernate = new ConfirmDialog(HibernateDialog);
+                        hibernate.connect('cancel', () => {
+                            //
+                        });
+                        hibernate.connect('proceed', () => {
+                            hybridSleepOrHibernate('Hibernate');
+                        });
+                        hibernate.open();
+                        break;
+                    }
+                    case SWITCH_USER:
+                        TakeAction.activateSwitchUser();
+                        break;
+                    case LOGOUT:
+                        TakeAction.activateLogout();
+                        break;
+                    case RESTART:
+                        TakeAction.activateRestart();
+                        break;
+                    case POWEROFF:
+                        TakeAction.activatePowerOff();
+                        break;
                 }
 
                 Main.panel.closeQuickSettings();
