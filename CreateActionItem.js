@@ -1,13 +1,16 @@
 import GObject from 'gi://GObject';
 import Gio from 'gi://Gio';
 import St from 'gi://St';
+import Clutter from 'gi://Clutter';
 
 import {QuickSettingsItem} from 'resource:///org/gnome/shell/ui/quickSettings.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as SystemActions from 'resource:///org/gnome/shell/misc/systemActions.js';
 import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
 
-import hybridSleepOrHibernate from './helperFunctions/hibernation.js';
+import ConfirmDialog from './Hibernation/confirmDialog.js';
+import hybridSleepOrHibernate from './Hibernation/hibernation.js';
+
 
 const BindFlags = GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE;
 
@@ -20,6 +23,40 @@ const SWITCH_USER = 'switch_user';
 const LOGOUT = 'logout';
 const RESTART = 'restart';
 const POWEROFF = 'poweroff';
+
+const HybridSleepDialog = {
+    subject: C_('title', 'HybridSleep'),
+    description: 'Are you sure to HybridSleep the system?',
+    confirmButtons: [
+        {
+            signal: 'cancel',
+            label: C_('button', 'Cancel'),
+            key: Clutter.KEY_Escape,
+        },
+        {
+            signal: 'proceed',
+            label: C_('button', 'Hybrid Sleep'),
+            default: true,
+        },
+    ],
+};
+
+const HibernateDialog = {
+    subject: C_('title', 'Hibernate'),
+    description: 'Are you sure to Hibernate the system?',
+    confirmButtons: [
+        {
+            signal: 'cancel',
+            label: C_('button', 'Cancel'),
+            key: Clutter.KEY_Escape,
+        },
+        {
+            signal: 'proceed',
+            label: C_('button', 'Hibernate'),
+            default: true,
+        },
+    ],
+};
 
 const CreateActionItem = GObject.registerClass(
     class CreateActionItem extends QuickSettingsItem {
@@ -50,13 +87,30 @@ const CreateActionItem = GObject.registerClass(
                     TakeAction.activateSuspend();
                     break;
                     //
-                case HYBRID_SLEEP:
-                    hybridSleepOrHibernate('HybridSleep');
+                case HYBRID_SLEEP: {
+                    let hybridSleep = new ConfirmDialog(HybridSleepDialog);
+                    hybridSleep.connect('cancel', () => {
+                        //
+                    });
+                    hybridSleep.connect('proceed', () => {
+                        Main.notify('OK');
+                        hybridSleepOrHibernate('HybridSleep');
+                    });
+                    hybridSleep.open();
                     break;
-                case HIBERNATE:
-                    hybridSleepOrHibernate('Hibernate');
+                }
+                case HIBERNATE: {
+                    let hibernate = new ConfirmDialog(HibernateDialog);
+                    hibernate.connect('cancel', () => {
+                        //
+                    });
+                    hibernate.connect('proceed', () => {
+                        Main.notify('OK');
+                        hybridSleepOrHibernate('Hibernate');
+                    });
+                    hibernate.open();
                     break;
-                    //
+                }
                 case SWITCH_USER:
                     TakeAction.activateSwitchUser();
                     break;
