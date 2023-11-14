@@ -1,5 +1,5 @@
 # bring-out-submenu-of-power-off-logout
-Bring Out Submenu Of Power Off/Logout for `gnome-shell` V45.
+Bring Out Submenu Of Poweroff Button for `gnome-shell` V45.
 
 ## Action Buttons
 
