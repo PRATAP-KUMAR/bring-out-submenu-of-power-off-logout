@@ -12,19 +12,42 @@ With this Extension
 Tooltip - Do not show by default - You can turn on and off via extension settings  
 ![image](https://github.com/PRATAP-KUMAR/bring-out-submenu-of-power-off-logout/assets/40719899/4af3c901-247b-4382-bb9c-17e77e7e0ecd)
 
-You can customize the tooltip styling via extension's `stylesheet.css` file
-example code
+You can customize the tooltip styling via extension's `stylesheet.css` file, example code
+
 ```
 .brng-out-ext-tooltip {
     font-weight: bold;
-    background-color: lightcoral;
-    color: brown;
+    background-color: red;
+    color: black;
 }
 ```
+
+![image](https://github.com/PRATAP-KUMAR/bring-out-submenu-of-power-off-logout/assets/40719899/df10b360-92cf-49cd-879c-eb190319ad82)
+
 You can hide individual buttons starting from lock-screen to shutdown via extension settings except switch-user
 ![image](https://github.com/PRATAP-KUMAR/bring-out-submenu-of-power-off-logout/assets/40719899/683f0588-c04b-4a06-b2a2-3c5ca8dd300b)
 
-switch-user  
-https://github.com/PRATAP-KUMAR/bring-out-submenu-of-power-off-logout/issues/32
+switch-user https://github.com/PRATAP-KUMAR/bring-out-submenu-of-power-off-logout/issues/32
 
-## Hibernation Buttons
+## Optional - Hibernation Buttons
+You can optionally choose to show HybridSleep and Hibernation buttons if HybridSleep and Hibernation work in your system.
+
+some useful links on this topic are
+    <a href="https://ubuntuhandbook.org/index.php/2021/08/enable-hibernate-ubuntu-21-10/">Link 1</a>
+    <a href="https://github.com/arelange/gnome-shell-extension-hibernate-status#hibernation-button-does-not-show-up-but-systemctl-hibernate-works">Link 2</a>
+    <a href="https://support.system76.com/articles/enable-hibernation/">Link 3</a>
+    <a href="https://extensions.gnome.org/extension/755/hibernate-status-button/">Source</a>
+    <a href="https://github.com/PRATAP-KUMAR/bring-out-submenu-of-power-off-logout/issues/28">Github Issue</a>
+
+If you choose to show the buttons, the icons are not visible by default. you have to copy the icons from
+extensions `icons` directory to `.icons` of your home directory. you can do this with command line below
+assuming you already have `.icons` folder in your home directory.
+
+```
+cd && cp .local/share/gnome-shell/extensions/BringOutSubmenuOfPowerOffLogoutButton@pratap.fastmail.fm/icons/* .icons/
+```
+
+![image](https://github.com/PRATAP-KUMAR/bring-out-submenu-of-power-off-logout/assets/40719899/32dc8d98-64d0-4f3e-ad48-b0bdc4fc95b4)
+
+<div align="center" <a href="https://www.buymeacoffee.com/pratappanabaka"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=☕&slug=pratappanabaka&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff" /></a></div>
+
