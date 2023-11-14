@@ -12,8 +12,15 @@ With this Extension
 Tooltip - Do not show by default - You can turn on and off via extension settings  
 ![image](https://github.com/PRATAP-KUMAR/bring-out-submenu-of-power-off-logout/assets/40719899/4af3c901-247b-4382-bb9c-17e77e7e0ecd)
 
-You can customize the tooltip styling via extension's `stylesheet.css` file  
-
+You can customize the tooltip styling via extension's `stylesheet.css` file
+example code
+```
+.brng-out-ext-tooltip {
+    font-weight: bold;
+    background-color: lightcoral;
+    color: brown;
+}
+```
 You can hide individual buttons starting from lock-screen to shutdown via extension settings except switch-user
 ![image](https://github.com/PRATAP-KUMAR/bring-out-submenu-of-power-off-logout/assets/40719899/683f0588-c04b-4a06-b2a2-3c5ca8dd300b)
 
