@@ -1,5 +1,5 @@
 # bring-out-submenu-of-power-off-logout
-Bring Out Submenu Of Power Off/Logout
+Bring Out Submenu Of Power Off/Logout for `gnome-shell` V45.
 
 ## Action Buttons
 
@@ -49,6 +49,21 @@ cd && cp .local/share/gnome-shell/extensions/BringOutSubmenuOfPowerOffLogoutButt
 
 ![image](https://github.com/PRATAP-KUMAR/bring-out-submenu-of-power-off-logout/assets/40719899/32dc8d98-64d0-4f3e-ad48-b0bdc4fc95b4)
 
+## Install
+
+### Option 1
+You can install the extension from extensions.gnome.org from below link  
+<a href="https://extensions.gnome.org/extension/2917/bring-out-submenu-of-power-offlogout-button/">Link to extensions.gnome.org</a>
+
+### Option 2
+or optionally you can download the latest version which is under review from GNOME dev.  
+Download the zip file <a href="https://extensions.gnome.org/review/download/48109.shell-extension.zip">Link to zip file which is under review from GNOME dev</a>
+
+Once the zip file is downloaded,
+from the source directory of download, run the below command to install the extension.
+```
+gnome-extensions install -f BringOutSubmenuOfPowerOffLogoutButtonpratap.fastmail.fm.v49.shell-extension.zip
+```
 <hr/>
 
-<a href="https://www.buymeacoffee.com/pratappanabaka"><img src="https://img.buymeacoffee.com/button-api/?text=hi, wd u like to buy me a cf&emoji=☕&slug=pratappanabaka&button_colour=40DCA5&font_colour=ffffff&font_family=Cookie&outline_colour=000000&coffee_colour=FFDD00" /></a>
+<a href="https://www.buymeacoffee.com/pratappanabaka"><img src="https://img.buymeacoffee.com/button-api/?text=Wish to BuyMeACoffee ?&emoji=☕&slug=pratappanabaka&button_colour=40DCA5&font_colour=ffffff&font_family=Cookie&outline_colour=000000&coffee_colour=FFDD00" /></a>
