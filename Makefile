@@ -11,8 +11,11 @@ JS_FILES       = $(shell find -type f -and \( -name "*.js" \))
 ICONS          = $(shell find -maxdepth 2 -type f -and \( -name "*.svg" \))
 
 # These files will be included in the extension zip file.
-ZIP_CONTENT = $(JS_FILES) $(ICONS) \
-              schemas/* schemas/gschemas.compiled metadata.json
+ZIP_CONTENT = $(JS_FILES) \
+	      	  $(ICONS) \
+              schemas/* \
+              schemas/gschemas.compiled \
+              metadata.json
 
 # These five recipes can be invoked by the user.
 .PHONY: all zip install uninstall clean
