@@ -62,4 +62,4 @@ cd && cp .local/share/gnome-shell/extensions/BringOutSubmenuOfPowerOffLogoutButt
 
 <hr/>
 
-<a href="https://www.buymeacoffee.com/pratappanabaka"><img src="https://img.buymeacoffee.com/button-api/?text=hi, wd u like to buy me a cf&emoji=☕&slug=pratappanabaka&button_colour=40DCA5&font_colour=ffffff&font_family=Cookie&outline_colour=000000&coffee_colour=FFDD00" /></a>
+<a href="https://www.buymeacoffee.com/pratappanabaka"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=☕&slug=pratappanabaka&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff" /></a>
