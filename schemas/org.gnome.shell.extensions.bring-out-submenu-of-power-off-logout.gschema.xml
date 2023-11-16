@@ -1,5 +1,5 @@
 <schemalist>
-    <schema id="org.gnome.shell.extensions.brngout" path="/org/gnome/shell/extensions/brngout/">
+    <schema id="org.gnome.shell.extensions.bring-out-submenu-of-power-off-logout" path="/org/gnome/shell/extensions/org.gnome.shell.extensions.bring-out-submenu-of-power-off-logout/">
         <key name="hide-lock-button" type="b">
             <default>false</default>
             <summary>Turn ON if you wish to remove Lock Item from system's menu.</summary>
