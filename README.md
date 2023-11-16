@@ -1,5 +1,4 @@
-# bring-out-submenu-of-power-off-logout
-Bring Out Submenu Of Power Off/Logout
+# Bring Out Submenu of Power Off Button
 
 ## Action Buttons
 
@@ -28,6 +27,18 @@ You can hide individual buttons starting from lock-screen to shutdown via extens
 ![image](https://github.com/PRATAP-KUMAR/bring-out-submenu-of-power-off-logout/assets/40719899/683f0588-c04b-4a06-b2a2-3c5ca8dd300b)
 
 switch-user https://github.com/PRATAP-KUMAR/bring-out-submenu-of-power-off-logout/issues/32
+
+## Install
+### Option 1
+from extensions.gnome.org <a href="https://extensions.gnome.org/extension/2917/bring-out-submenu-of-power-offlogout-button/">Official</a>
+
+### Option 2
+Install latest version from github
+1. `git clone https://github.com/PRATAP-KUMAR/bring-out-submenu-of-power-off-logout.git`
+2. `cd bring-out-submenu-of-power-off-logout`
+3. `make`
+4. `make install`
+
 
 ## Optional - Hibernation Buttons
 You can optionally choose to show HybridSleep and Hibernation buttons if HybridSleep and Hibernation work in your system.
