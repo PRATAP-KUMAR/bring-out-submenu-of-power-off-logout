@@ -50,13 +50,8 @@ some useful links on this topic are
     <a href="https://extensions.gnome.org/extension/755/hibernate-status-button/">Source</a>
     <a href="https://github.com/PRATAP-KUMAR/bring-out-submenu-of-power-off-logout/issues/28">Github Issue</a>
 
-If you choose to show the buttons, the icons are not visible by default. you have to copy the icons from
-extensions `icons` directory to `.icons` of your home directory. you can do this with command line below
-assuming you already have `.icons` folder in your home directory.
-
-```
-cd && cp .local/share/gnome-shell/extensions/BringOutSubmenuOfPowerOffLogoutButton@pratap.fastmail.fm/icons/* .icons/
-```
+If you choose to show the buttons, you can customize the icons. you have to keep svg icons of your choice
+with the names **hibrid-sleep-symbolic.svg** and **hibernate-symbolic.svg** into `.icons` folder of your home directory.
 
 ![image](https://github.com/PRATAP-KUMAR/bring-out-submenu-of-power-off-logout/assets/40719899/32dc8d98-64d0-4f3e-ad48-b0bdc4fc95b4)
 

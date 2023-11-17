@@ -93,8 +93,12 @@ const BringoutMenu = new GObject.registerClass(
             this._suspendItem = new CreateActionItem('media-playback-pause-symbolic', _('Suspend'), SUSPEND, 'can-suspend');
             // Hibernation
             this._createDialogs();
-            this._hybridSleepItem = new CreateActionItem('bosm-hybrid-sleep-symbolic', _('Hybrid Sleep'), HYBRID_SLEEP, null, this._hybridSleepDialog);
-            this._hibernateItem = new CreateActionItem('bosm-hibernate-symbolic', _('Hibernate'), HIBERNATE, null, this._hibernateDialog);
+
+            this._hybridSleepItem = new CreateActionItem('hybrid-sleep-symbolic', _('Hybrid Sleep'), HYBRID_SLEEP, null, this._hybridSleepDialog);
+            this._hybridSleepItem.child.set_fallback_icon_name('gnome-disks-state-standby-symbolic');
+            
+            this._hibernateItem = new CreateActionItem('hibernate-symbolic', _('Hibernate'), HIBERNATE, null, this._hibernateDialog);
+            this._hibernateItem.child.set_fallback_icon_name('document-save-symbolic');
             //
             this._switchUserItem = new CreateActionItem('system-switch-user-symbolic', _('Switch User'), SWITCH_USER, 'can-switch-user');
             this._logoutItem = new CreateActionItem('system-log-out-symbolic', _('Log Out'), LOGOUT, 'can-logout');
