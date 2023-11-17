@@ -51,7 +51,7 @@ some useful links on this topic are
     <a href="https://github.com/PRATAP-KUMAR/bring-out-submenu-of-power-off-logout/issues/28">Github Issue</a>
 
 If you choose to show the buttons, you can customize the icons. you have to keep svg icons of your choice
-with the names **hibrid-sleep-symbolic.svg** and **hibernate-symbolic.svg** into `.icons` folder of your home directory.
+with the names **hybrid-sleep-symbolic.svg** and **hibernate-symbolic.svg** into `.icons` folder of your home directory.
 
 ![image](https://github.com/PRATAP-KUMAR/bring-out-submenu-of-power-off-logout/assets/40719899/32dc8d98-64d0-4f3e-ad48-b0bdc4fc95b4)
 
