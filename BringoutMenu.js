@@ -1,4 +1,5 @@
 import GObject from 'gi://GObject';
+import Clutter from 'gi://Clutter';
 import Gio from 'gi://Gio';
 
 import {QuickSettingsItem} from 'resource:///org/gnome/shell/ui/quickSettings.js';
@@ -21,9 +22,10 @@ let actionButtons;
 
 const BringoutMenu = new GObject.registerClass(
     class BringoutMenu extends QuickSettingsItem {
-        _init(settings, gettext) {
+        _init(settings, gettext, pgettext) {
             this._settings = settings;
             this._gettext = gettext;
+            this._pgettext = pgettext;
 
             this._lockDownSettings = new Gio.Settings({schema_id: 'org.gnome.desktop.lockdown'});
 
@@ -42,20 +44,62 @@ const BringoutMenu = new GObject.registerClass(
             this._toolTip();
         }
 
+        _createDialogs() {
+            const _ = this._gettext;
+            const pgettext = this._pgettext;
+
+            this._hybridSleepDialog = {
+                subject: pgettext('title', 'Hybrid Sleep'),
+                description: _('Are you sure to Hybrid Sleep the system?'),
+                confirmButtons: [
+                    {
+                        signal: 'cancel',
+                        label: pgettext('button', 'Cancel'),
+                        key: Clutter.KEY_Escape,
+                    },
+                    {
+                        signal: 'proceed',
+                        label: pgettext('button', 'Hybrid Sleep'),
+                        default: true,
+                    },
+                ],
+            };
+
+            this._hibernateDialog = {
+                subject: pgettext('title', 'Hibernate'),
+                description: _('Are you sure to Hibernate the system?'),
+                confirmButtons: [
+                    {
+                        signal: 'cancel',
+                        label: pgettext('button', 'Cancel'),
+                        key: Clutter.KEY_Escape,
+                    },
+                    {
+                        signal: 'proceed',
+                        label: pgettext('button', 'Hibernate'),
+                        default: true,
+                    },
+                ],
+            };
+        }
+
         _createMenu() {
             this._customButtons = [];
             this._keys = [];
             this._instancesOfSyncLabels = [];
             this._instancesOfLabelLaunchers = [];
-            this._suspendItem = new CreateActionItem('media-playback-pause-symbolic', this._gettext('Suspend'), SUSPEND, 'can-suspend');
+
+            const _ = this._gettext;
+            this._suspendItem = new CreateActionItem('media-playback-pause-symbolic', _('Suspend'), SUSPEND, 'can-suspend');
             // Hibernation
-            this._hybridSleepItem = new CreateActionItem('bosm-hybrid-sleep-symbolic', 'Hybrid Sleep', HYBRID_SLEEP, null);
-            this._hibernateItem = new CreateActionItem('bosm-hibernate-symbolic', 'Hibernate', HIBERNATE, null);
+            this._createDialogs();
+            this._hybridSleepItem = new CreateActionItem('bosm-hybrid-sleep-symbolic', _('Hybrid Sleep'), HYBRID_SLEEP, null, this._hybridSleepDialog);
+            this._hibernateItem = new CreateActionItem('bosm-hibernate-symbolic', _('Hibernate'), HIBERNATE, null, this._hibernateDialog);
             //
-            this._switchUserItem = new CreateActionItem('system-switch-user-symbolic', this._gettext('Switch User…'), SWITCH_USER, 'can-switch-user');
-            this._logoutItem = new CreateActionItem('system-log-out-symbolic', this._gettext('Log Out…'), LOGOUT, 'can-logout');
-            this._restartItem = new CreateActionItem('system-reboot-symbolic', this._gettext('Restart…'), RESTART, 'can-restart');
-            this._powerItem = new CreateActionItem('system-shutdown-symbolic', this._gettext('Power Off…'), POWEROFF, 'can-power-off');
+            this._switchUserItem = new CreateActionItem('system-switch-user-symbolic', _('Switch User'), SWITCH_USER, 'can-switch-user');
+            this._logoutItem = new CreateActionItem('system-log-out-symbolic', _('Log Out'), LOGOUT, 'can-logout');
+            this._restartItem = new CreateActionItem('system-reboot-symbolic', _('Restart'), RESTART, 'can-restart');
+            this._powerItem = new CreateActionItem('system-shutdown-symbolic', _('Power Off'), POWEROFF, 'can-power-off');
 
             this._customButtons = [
                 this._suspendItem,
@@ -210,6 +254,8 @@ const BringoutMenu = new GObject.registerClass(
 
             this._customButtons = [];
             this._keys = [];
+            this._hybridSleepDialog = null;
+            this._hibernationDialog = null;
             this._containerRow.add_child(this._powerOffMenuItem);
         }
     }

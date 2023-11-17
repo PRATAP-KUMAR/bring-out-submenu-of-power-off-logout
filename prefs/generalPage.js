@@ -12,43 +12,43 @@ const GeneralPage = new GObject.registerClass(
             });
 
             const hideButtonsGroup = new Adw.PreferencesGroup({
-                title: 'Action Buttons',
+                title: _('Action Buttons'),
             });
             this.add(hideButtonsGroup);
 
             const lockButtonRow = new Adw.SwitchRow({
-                title: 'Hide Lock Button',
+                title: _('Hide Lock Button'),
             });
             hideButtonsGroup.add(lockButtonRow);
 
             const suspendButtonRow = new Adw.SwitchRow({
-                title: 'Hide Suspend Button',
+                title: _('Hide Suspend Button'),
             });
             hideButtonsGroup.add(suspendButtonRow);
 
             const logoutButtonRow = new Adw.SwitchRow({
-                title: 'Hide Logout Button',
+                title: _('Hide Logout Button'),
             });
             hideButtonsGroup.add(logoutButtonRow);
 
             const restartButtonRow = new Adw.SwitchRow({
-                title: 'Hide Restart Button',
+                title: _('Hide Restart Button'),
             });
             hideButtonsGroup.add(restartButtonRow);
 
             const powerButtonRow = new Adw.SwitchRow({
-                title: 'Hide Power Button',
+                title: _('Hide Power Button'),
             });
             hideButtonsGroup.add(powerButtonRow);
 
             const tooltipGroup = new Adw.PreferencesGroup({
-                title: 'Tooltip',
+                title: _('Tooltip'),
             });
             this.add(tooltipGroup);
 
             const tooltipRow = new Adw.SwitchRow({
-                title: 'Show Tooltip',
-                subtitle: 'You can customize tooltip style using this extensions stylesheet.css file',
+                title: _('Show Tooltip'),
+                subtitle: _('You can customize tooltip style using this extensions stylesheet.css file'),
             });
             tooltipGroup.add(tooltipRow);
 

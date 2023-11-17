@@ -1,5 +1,4 @@
 import GObject from 'gi://GObject';
-import Clutter from 'gi://Clutter';
 
 import {QuickSettingsItem} from 'resource:///org/gnome/shell/ui/quickSettings.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
@@ -20,43 +19,9 @@ const LOGOUT = 'logout';
 const RESTART = 'restart';
 const POWEROFF = 'poweroff';
 
-const HybridSleepDialog = {
-    subject: C_('title', 'HybridSleep'),
-    description: 'Are you sure to HybridSleep the system?',
-    confirmButtons: [
-        {
-            signal: 'cancel',
-            label: C_('button', 'Cancel'),
-            key: Clutter.KEY_Escape,
-        },
-        {
-            signal: 'proceed',
-            label: C_('button', 'Hybrid Sleep'),
-            default: true,
-        },
-    ],
-};
-
-const HibernateDialog = {
-    subject: C_('title', 'Hibernate'),
-    description: 'Are you sure to Hibernate the system?',
-    confirmButtons: [
-        {
-            signal: 'cancel',
-            label: C_('button', 'Cancel'),
-            key: Clutter.KEY_Escape,
-        },
-        {
-            signal: 'proceed',
-            label: C_('button', 'Hibernate'),
-            default: true,
-        },
-    ],
-};
-
 const CreateActionItem = GObject.registerClass(
     class CreateActionItem extends QuickSettingsItem {
-        _init(ICON_NAME, ACCESSIBLE_NAME, ACTION, BINDING_ID) {
+        _init(ICON_NAME, ACCESSIBLE_NAME, ACTION, BINDING_ID, DIALOG = null) {
             super._init({
                 style_class: 'icon-button',
                 can_focus: true,
@@ -74,7 +39,7 @@ const CreateActionItem = GObject.registerClass(
                     break;
                     // Hibernation
                 case HYBRID_SLEEP: {
-                    let hybridSleep = new ConfirmDialog(HybridSleepDialog);
+                    let hybridSleep = new ConfirmDialog(DIALOG);
                     hybridSleep.connect('cancel', () => {
                     });
                     hybridSleep.connect('proceed', () => {
@@ -84,7 +49,7 @@ const CreateActionItem = GObject.registerClass(
                     break;
                 }
                 case HIBERNATE: {
-                    let hibernate = new ConfirmDialog(HibernateDialog);
+                    let hibernate = new ConfirmDialog(DIALOG);
                     hibernate.connect('cancel', () => {
                     });
                     hibernate.connect('proceed', () => {

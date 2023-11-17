@@ -31,10 +31,6 @@ const HibernationPage = new GObject.registerClass(
                 revealed: true,
                 'use-markup': true,
             });
-            banner.connect('button_clicked', () => {
-                banner.title = labelText;
-                delete banner['button-label'];
-            });
             infoGroup.add(banner);
 
             const hibernationGroup = new Adw.PreferencesGroup({

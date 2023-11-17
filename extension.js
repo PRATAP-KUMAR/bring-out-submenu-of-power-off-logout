@@ -1,4 +1,4 @@
-import {Extension, gettext} from 'resource:///org/gnome/shell/extensions/extension.js';
+import {Extension, gettext, pgettext} from 'resource:///org/gnome/shell/extensions/extension.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import GLib from 'gi://GLib';
 import BringoutMenu from './BringoutMenu.js';
@@ -10,7 +10,8 @@ export default class BringoutExtension extends Extension {
     _modifySystemItem() {
         modifiedMenu = new BringoutMenu(
             this._settings,
-            this._gettext
+            this._gettext,
+            this._pgettext
         );
     }
 
@@ -27,7 +28,7 @@ export default class BringoutExtension extends Extension {
     enable() {
         this._settings = this.getSettings();
         this._gettext = gettext;
-        this._dir = this.dir;
+        this._pgettext = pgettext;
 
         if (Main.panel.statusArea.quickSettings._system)
             this._modifySystemItem();
@@ -42,6 +43,7 @@ export default class BringoutExtension extends Extension {
             GLib.Source.remove(sourceId);
             sourceId = null;
         }
+        this._pgettext = null;
         this._gettext = null;
         this._settings = null;
     }
