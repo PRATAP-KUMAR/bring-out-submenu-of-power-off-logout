@@ -117,6 +117,16 @@ msgstr ""
 "Vous pouvez personnaliser le style de l'info-bulle à l'aide de ce fichier "
 "d'extensions stylesheet.css"
 
+#: prefs/hibernationPage.js:11
+msgid ""
+"This page is useful only if Hybrid Sleep and Hibernation are already working "
+"on yoursystem, "
+msgstr "Cette page n'est utile que si Hybrid Sleep et Hibernation fonctionnent déjà sur votre système, "
+
+#: prefs/hibernationPage.js:12
+msgid "some useful links on this topic are "
+msgstr "quelques liens utiles sur ce sujet sont "
+
 #: prefs/hibernationPage.js:20
 msgid "Hibernation Settings"
 msgstr "Paramètres d'hibernation"
@@ -133,6 +143,18 @@ msgstr "Hibernation"
 msgid "Show Hybrid Sleep Button"
 msgstr "Afficher le bouton de veille hybride"
 
+#: prefs/hibernationPage.js:43
+msgid ""
+"you can set the logo by placing an svg icon with the name \"hybrid-sleep-"
+"symbolic.svg\" in \".icons\" folder of home directory"
+msgstr "Vous pouvez définir le logo en plaçant une icône SVG portant le nom « hybrid-sleep-symbolic.svg » dans le dossier « .icons » du répertoire personnel."
+
 #: prefs/hibernationPage.js:47
 msgid "Show Hibernate Button"
 msgstr "Afficher le bouton Hibernation"
+
+#: prefs/hibernationPage.js:49
+msgid ""
+"you can set the logo by placing an svg icon with the name \"hibernate-"
+"symbolic.svg\" in \".icons\" folder of home directory"
+msgstr "Vous pouvez définir le logo en plaçant une icône SVG portant le nom « hibernate-symbolic.svg » dans le dossier « .icons » du répertoire personnel."
