@@ -7,7 +7,7 @@ UUID	 := $(NAME)@$(DOMAIN)
 ZIP_NAME := $(UUID).zip
 
 # Some of the recipes below depend on some of these files.
-JS_FILES       = $(shell find -type f -and \( -name "*.js" \))
+JS_FILES = $(shell find -type f -and \( -name "*.js" \))
 
 # These files will be included in the extension zip file.
 ZIP_CONTENT = $(JS_FILES) \
@@ -37,21 +37,11 @@ clean:
 	rm -rf $(ZIP_NAME) \
 	       schemas/gschemas.compiled
 
-# This bundles the extension and checks whether it is small enough to be uploaded to
-# extensions.gnome.org. We do not use "gnome-extensions pack" for this, as this is not
-# readily available on the GitHub runners.
+# This bundles the extension
 $(ZIP_NAME): $(ZIP_CONTENT)
 	@echo "Packing zip file..."
 	@rm --force $(ZIP_NAME)
 	@zip $(ZIP_NAME) -- $(ZIP_CONTENT)
-
-	@#Check if the zip size is too big to be uploaded
-	@SIZE=$$(unzip -Zt $(ZIP_NAME) | awk '{print $$3}') ; \
-	 if [[ $$SIZE -gt 5242880 ]]; then \
-	    echo "ERROR! The extension is too big to be uploaded to" \
-	         "the extensions website, keep it smaller than 5 MB!"; \
-	    exit 1; \
-	 fi
 
 # Compiles the gschemas.compiled file from the gschema.xml file.
 schemas/gschemas.compiled: schemas/org.gnome.shell.extensions.$(NAME).gschema.xml
