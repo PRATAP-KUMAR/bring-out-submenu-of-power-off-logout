@@ -96,7 +96,7 @@ const BringoutMenu = new GObject.registerClass(
 
             this._hybridSleepItem = new CreateActionItem('hybrid-sleep-symbolic', _('Hybrid Sleep'), HYBRID_SLEEP, null, this._hybridSleepDialog);
             this._hybridSleepItem.child.set_fallback_icon_name('gnome-disks-state-standby-symbolic');
-            
+
             this._hibernateItem = new CreateActionItem('hibernate-symbolic', _('Hibernate'), HIBERNATE, null, this._hibernateDialog);
             this._hibernateItem.child.set_fallback_icon_name('document-save-symbolic');
             //

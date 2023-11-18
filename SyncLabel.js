@@ -25,7 +25,7 @@ const SyncLabel = GObject.registerClass(
                             this._button._showLabelTimeoutId = 0;
                             return GLib.SOURCE_REMOVE;
                         });
-                    GLib.Source.set_name_by_id(this._showLabelTimeoutId, '[gnome-shell this.toolTip.showLabel');
+                    GLib.Source.set_name_by_id(this._showLabelTimeoutId, '[gnome-shell] this.toolTip.showLabel');
                     if (this._button._resetHoverTimeoutId > 0) {
                         GLib.source_remove(this._button._resetHoverTimeoutId);
                         this._button._resetHoverTimeoutId = 0;

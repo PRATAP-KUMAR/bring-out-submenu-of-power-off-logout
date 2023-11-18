@@ -39,7 +39,6 @@ Install latest version from github
 3. `make`
 4. `make install`
 
-
 ## Optional - Hibernation Buttons
 You can optionally choose to show HybridSleep and Hibernation buttons if HybridSleep and Hibernation work in your system.
 
