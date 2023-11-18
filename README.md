@@ -43,9 +43,9 @@ Install latest version from github
 You can optionally choose to show HybridSleep and Hibernation buttons if HybridSleep and Hibernation work in your system.
 
 some useful links on this topic are
-    <a href="https://ubuntuhandbook.org/index.php/2021/08/enable-hibernate-ubuntu-21-10/">Link 1</a>
-    <a href="https://github.com/arelange/gnome-shell-extension-hibernate-status#hibernation-button-does-not-show-up-but-systemctl-hibernate-works">Link 2</a>
-    <a href="https://support.system76.com/articles/enable-hibernation/">Link 3</a>
+    <a href="https://ubuntuhandbook.org/index.php/2021/08/enable-hibernate-ubuntu-21-10/">Ubuntu Hand Book</a>
+    <a href="https://github.com/arelange/gnome-shell-extension-hibernate-status#hibernation-button-does-not-show-up-but-systemctl-hibernate-works">Github</a>
+    <a href="https://support.system76.com/articles/enable-hibernation/">System 76</a>
     <a href="https://extensions.gnome.org/extension/755/hibernate-status-button/">Source</a>
     <a href="https://github.com/PRATAP-KUMAR/bring-out-submenu-of-power-off-logout/issues/28">Github Issue</a>
 
