@@ -54,6 +54,16 @@ with the names **hybrid-sleep-symbolic.svg** and **hibernate-symbolic.svg** into
 
 ![image](https://github.com/PRATAP-KUMAR/bring-out-submenu-of-power-off-logout/assets/40719899/32dc8d98-64d0-4f3e-ad48-b0bdc4fc95b4)
 
+## Other Language Support
+French Language is supported. Once you have installed the extension with the Makefile,
+then copy the folder `locale` from this repo and paste in the root directory of the extension.
+
+```
+$HOME/.local/share/gnome-shell/extensions/bring-out-submenu-of-power-off-logout@pratap.fastmail.fm
+```
+
+![image](https://github.com/PRATAP-KUMAR/bring-out-submenu-of-power-off-logout/assets/40719899/d5be0cc6-f22b-4dbc-9308-9efc14762237)
+
 <hr/>
 
 <a href="https://www.buymeacoffee.com/pratappanabaka"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=☕&slug=pratappanabaka&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff" /></a>
