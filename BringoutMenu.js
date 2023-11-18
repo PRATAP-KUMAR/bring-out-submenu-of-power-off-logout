@@ -141,6 +141,7 @@ const BringoutMenu = new GObject.registerClass(
                     // settings id to destroy - Ref 1
                     button._settingsId = this._settings.connect(`changed::${key}`, this._settingsChanged.bind(this, [button, key]));
             });
+
             // id to destory - Ref 2
             this._lockScreenId = this._settings.connect('changed::hide-lock-button', this._lockScreenChanged.bind(this));
             this._tooltipId = this._settings.connect('changed::show-tooltip', this._toolTip.bind(this));
@@ -258,8 +259,10 @@ const BringoutMenu = new GObject.registerClass(
 
             this._customButtons = [];
             this._keys = [];
+
             this._hybridSleepDialog = null;
             this._hibernationDialog = null;
+
             this._containerRow.add_child(this._powerOffMenuItem);
         }
     }
