@@ -30,7 +30,7 @@ switch-user https://github.com/PRATAP-KUMAR/bring-out-submenu-of-power-off-logou
 
 ## Install
 ### Option 1
-from extensions.gnome.org <a href="https://extensions.gnome.org/extension/2917/bring-out-submenu-of-power-offlogout-button/">Official</a>
+from extensions.gnome.org <a href="https://extensions.gnome.org/extension/2917/bring-out-submenu-of-power-offlogout-button/">Gnome Extensions</a>
 
 ### Option 2
 Install latest version from github
