@@ -7,7 +7,7 @@ const LabelLauncher = new GObject.registerClass(
     class LabelLauncher extends St.Widget {
         _init(button) {
             this._button = button;
-            this.label = new St.Label({style_class: 'dash-label brng-out-ext-tooltip'});
+            this.label = new St.Label({style_class: 'dash-label bring-out-ext-tooltip'});
             this.label.hide();
             Main.layoutManager.addChrome(this.label);
         }
