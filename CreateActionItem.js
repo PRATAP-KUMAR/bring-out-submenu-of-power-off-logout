@@ -40,8 +40,6 @@ const CreateActionItem = GObject.registerClass(
                     // Hibernation
                 case HYBRID_SLEEP: {
                     let hybridSleep = new ConfirmDialog(DIALOG);
-                    hybridSleep.connect('cancel', () => {
-                    });
                     hybridSleep.connect('proceed', () => {
                         hybridSleepOrHibernate('HybridSleep');
                     });
@@ -50,8 +48,6 @@ const CreateActionItem = GObject.registerClass(
                 }
                 case HIBERNATE: {
                     let hibernate = new ConfirmDialog(DIALOG);
-                    hibernate.connect('cancel', () => {
-                    });
                     hibernate.connect('proceed', () => {
                         hybridSleepOrHibernate('Hibernate');
                     });
