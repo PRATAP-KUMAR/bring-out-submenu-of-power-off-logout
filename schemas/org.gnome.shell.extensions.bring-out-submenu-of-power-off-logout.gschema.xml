@@ -38,7 +38,7 @@
             <description>Power Item</description>
         </key>
         <key name="show-tooltip" type="b">
-            <default>false</default>
+            <default>true</default>
             <summary>Turn ON if you wish to show tooltip for action buttons.</summary>
             <description>Tooltip</description>
         </key>
