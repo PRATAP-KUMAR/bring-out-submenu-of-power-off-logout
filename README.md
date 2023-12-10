@@ -8,7 +8,7 @@ The default
 With this Extension  
 ![image](https://github.com/PRATAP-KUMAR/bring-out-submenu-of-power-off-logout/assets/40719899/a395f347-f1eb-441c-970d-ed09718f2bf2)
 
-Tooltip - Do not show by default - You can turn on and off via extension settings  
+Tooltip - show by default - You can turn off and on via extension settings  
 ![image](https://github.com/PRATAP-KUMAR/bring-out-submenu-of-power-off-logout/assets/40719899/4af3c901-247b-4382-bb9c-17e77e7e0ecd)
 
 You can customize the tooltip styling via extension's `stylesheet.css` file, example code
