@@ -31,8 +31,13 @@ You can hide individual buttons starting from lock-screen to shutdown via extens
 switch-user https://github.com/PRATAP-KUMAR/bring-out-submenu-of-power-off-logout/issues/32
 
 ## Install
-
+### Option 1
 from extensions.gnome.org <a href="https://extensions.gnome.org/extension/2917/bring-out-submenu-of-power-offlogout-button/">Gnome Extensions</a>
+
+### Option 2
+1. Download the zip file BringOutExtension.zip and run the below command
+2. `gnome-extensions install -f BringOutExtension.zip`
+3. Refresh the shell with Alt+F2 'r' Enter or logout and login
 
 ## Optional - Hibernation Buttons
 You can optionally choose to show HybridSleep and Hibernation buttons if HybridSleep and Hibernation work in your system.
