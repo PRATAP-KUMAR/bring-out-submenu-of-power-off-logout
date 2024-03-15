@@ -5,6 +5,8 @@ import Gio from 'gi://Gio';
 import {QuickSettingsItem} from 'resource:///org/gnome/shell/ui/quickSettings.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 
+import * as SystemActions from 'resource:///org/gnome/shell/misc/systemActions.js';
+
 import CreateActionItem from './CreateActionItem.js';
 import SyncLabel from './SyncLabel.js';
 
@@ -28,13 +30,17 @@ const BringoutMenu = new GObject.registerClass(
             this._pgettext = pgettext;
 
             this._lockDownSettings = new Gio.Settings({schema_id: 'org.gnome.desktop.lockdown'});
+            this._shellSettings = new Gio.Settings({schema_id: 'org.gnome.shell'});
+
+            this._systemActions = SystemActions.getDefault();
+            this._systemActions._updateLogout = null; // Force stop 'always-show-log-out'
 
             this._systemItem = Main.panel.statusArea.quickSettings._system._systemItem;
+
             this._containerRow = this._systemItem.child;
 
-            this._powerOffMenuItem = this._containerRow.get_child_at_index(6);
-
             this._lockItem = this._containerRow.get_child_at_index(5);
+            this._powerOffMenuItem = this._containerRow.get_child_at_index(6);
 
             this._containerRow.remove_child(this._powerOffMenuItem);
 
@@ -125,7 +131,7 @@ const BringoutMenu = new GObject.registerClass(
                 'hide-power-button',
             ];
 
-            this._customButtons.forEach(button => this._containerRow.add(button));
+            this._customButtons.forEach(button => this._containerRow.add_child(button));
 
             this._customButtons.forEach((button, idx) => {
                 let key = this._keys[idx];
@@ -137,9 +143,10 @@ const BringoutMenu = new GObject.registerClass(
         _connectSettings() {
             this._customButtons.forEach((button, idx) => {
                 let key = this._keys[idx];
-                if (key)
+                if (key) {
                     // settings id to destroy - Ref 1
                     button._settingsId = this._settings.connect(`changed::${key}`, this._settingsChanged.bind(this, [button, key]));
+                }
             });
 
             // id to destory - Ref 2

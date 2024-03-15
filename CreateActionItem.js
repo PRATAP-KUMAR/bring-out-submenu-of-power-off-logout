@@ -30,7 +30,7 @@ const CreateActionItem = GObject.registerClass(
                 accessible_name: ACCESSIBLE_NAME,
             });
 
-            const TakeAction = new SystemActions.getDefault();
+            const TakeAction = SystemActions.getDefault();
 
             this.connect('clicked', () => {
                 switch (ACTION) {
