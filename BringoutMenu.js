@@ -2,10 +2,8 @@ import GObject from 'gi://GObject';
 import Clutter from 'gi://Clutter';
 import Gio from 'gi://Gio';
 
-import {QuickSettingsItem} from 'resource:///org/gnome/shell/ui/quickSettings.js';
+import { QuickSettingsItem } from 'resource:///org/gnome/shell/ui/quickSettings.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
-
-import * as SystemActions from 'resource:///org/gnome/shell/misc/systemActions.js';
 
 import CreateActionItem from './CreateActionItem.js';
 import SyncLabel from './SyncLabel.js';
@@ -29,10 +27,7 @@ const BringoutMenu = new GObject.registerClass(
             this._gettext = gettext;
             this._pgettext = pgettext;
 
-            this._lockDownSettings = new Gio.Settings({schema_id: 'org.gnome.desktop.lockdown'});
-
-            this._systemActions = SystemActions.getDefault();
-            this._systemActions._updateLogout = null; // Force stop 'always-show-log-out'
+            this._lockDownSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.lockdown' });
 
             this._systemItem = Main.panel.statusArea.quickSettings._system._systemItem;
 
