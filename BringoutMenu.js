@@ -30,7 +30,6 @@ const BringoutMenu = new GObject.registerClass(
             this._pgettext = pgettext;
 
             this._lockDownSettings = new Gio.Settings({schema_id: 'org.gnome.desktop.lockdown'});
-            this._shellSettings = new Gio.Settings({schema_id: 'org.gnome.shell'});
 
             this._systemActions = SystemActions.getDefault();
             this._systemActions._updateLogout = null; // Force stop 'always-show-log-out'
