@@ -8,6 +8,7 @@ import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import CreateActionItem from './CreateActionItem.js';
 import SyncLabel from './SyncLabel.js';
 
+const LOCK = 'lock';
 const SUSPEND = 'suspend';
 // Hibernation
 const HYBRID_SLEEP = 'hybrid_sleep';
@@ -27,20 +28,20 @@ const BringoutMenu = new GObject.registerClass(
             this._gettext = gettext;
             this._pgettext = pgettext;
 
-            this._lockDownSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.lockdown' });
+            // this._lockDownSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.lockdown' });
 
             this._systemItem = Main.panel.statusArea.quickSettings._system._systemItem;
 
             this._containerRow = this._systemItem.child;
 
-            this._lockItem = this._containerRow.get_child_at_index(5);
-            this._powerOffMenuItem = this._containerRow.get_child_at_index(6);
+            this.lockItem = this._containerRow.get_child_at_index(5);
+            this.powerOffMenuItem = this._containerRow.get_child_at_index(6);
 
-            this._containerRow.remove_child(this._powerOffMenuItem);
+            this._containerRow.remove_child(this.lockItem);
+            this._containerRow.remove_child(this.powerOffMenuItem);
 
             this._createMenu();
             this._connectSettings();
-            this._lockScreenChanged();
             this._toolTip();
         }
 
@@ -81,6 +82,63 @@ const BringoutMenu = new GObject.registerClass(
                     },
                 ],
             };
+
+            this._lockDialog = {
+                subject: pgettext('title', 'Lock Screen'),
+                description: _('Oops! lock screen is disabled'),
+                confirmButtons: [
+                    {
+                        signal: 'cancel',
+                        label: pgettext('button', 'Cancel'),
+                        key: Clutter.KEY_Escape,
+                    }
+                ],
+            };
+
+            this._switchUserDialog = {
+                subject: pgettext('title', 'Switch User'),
+                description: _('Oops! user switching is disabled'),
+                confirmButtons: [
+                    {
+                        signal: 'cancel',
+                        label: pgettext('button', 'Cancel'),
+                        key: Clutter.KEY_Escape,
+                    }
+                ]
+            }
+            this._logoutDialog = {
+                subject: pgettext('title', 'Logout'),
+                description: _('Oops Logout is disabled, this means Logout, restart and poweroff are disabled'),
+                confirmButtons: [
+                    {
+                        signal: 'cancel',
+                        label: pgettext('button', 'Cancel'),
+                        key: Clutter.KEY_Escape,
+                    }
+                ]
+            }
+            this._restartDialog = {
+                subject: pgettext('title', 'Restart'),
+                description: _('Oops Logout is disabled, this means Logout, restart and poweroff are disabled'),
+                confirmButtons: [
+                    {
+                        signal: 'cancel',
+                        label: pgettext('button', 'Cancel'),
+                        key: Clutter.KEY_Escape,
+                    }
+                ]
+            }
+            this._powerOffDialog = {
+                subject: pgettext('title', 'Power Off'),
+                description: _('Oops Logout is disabled, this means Logout, restart and poweroff are disabled'),
+                confirmButtons: [
+                    {
+                        signal: 'cancel',
+                        label: pgettext('button', 'Cancel'),
+                        key: Clutter.KEY_Escape,
+                    }
+                ]
+            }
         }
 
         _createMenu() {
@@ -90,22 +148,26 @@ const BringoutMenu = new GObject.registerClass(
             this._instancesOfLabelLaunchers = [];
 
             const _ = this._gettext;
-            this._suspendItem = new CreateActionItem('media-playback-pause-symbolic', _('Suspend'), SUSPEND, 'can-suspend');
-            // Hibernation
+
             this._createDialogs();
 
-            this._hybridSleepItem = new CreateActionItem('hybrid-sleep-symbolic', _('Hybrid Sleep'), HYBRID_SLEEP, null, this._hybridSleepDialog);
+            this._lockItem = new CreateActionItem('system-lock-screen-symbolic', _('Lock Screen'), LOCK, this._lockDialog);
+            this._suspendItem = new CreateActionItem('media-playback-pause-symbolic', _('Suspend'), SUSPEND, null, null);
+
+            // Hibernation
+            this._hybridSleepItem = new CreateActionItem('hybrid-sleep-symbolic', _('Hybrid Sleep'), HYBRID_SLEEP, this._hybridSleepDialog, null);
             this._hybridSleepItem.child.set_fallback_icon_name('gnome-disks-state-standby-symbolic');
 
-            this._hibernateItem = new CreateActionItem('hibernate-symbolic', _('Hibernate'), HIBERNATE, null, this._hibernateDialog);
+            this._hibernateItem = new CreateActionItem('hibernate-symbolic', _('Hibernate'), HIBERNATE, this._hibernateDialog, null);
             this._hibernateItem.child.set_fallback_icon_name('document-save-symbolic');
             //
-            this._switchUserItem = new CreateActionItem('system-switch-user-symbolic', _('Switch User'), SWITCH_USER, 'can-switch-user');
-            this._logoutItem = new CreateActionItem('system-log-out-symbolic', _('Log Out'), LOGOUT, 'can-logout');
-            this._restartItem = new CreateActionItem('system-reboot-symbolic', _('Restart'), RESTART, 'can-restart');
-            this._powerItem = new CreateActionItem('system-shutdown-symbolic', _('Power Off'), POWEROFF, 'can-power-off');
+            this._switchUserItem = new CreateActionItem('system-switch-user-symbolic', _('Switch User'), SWITCH_USER, this._switchUserDialog);
+            this._logoutItem = new CreateActionItem('system-log-out-symbolic', _('Log Out'), LOGOUT, this._logoutDialog);
+            this._restartItem = new CreateActionItem('system-reboot-symbolic', _('Restart'), RESTART, this._restartDialog);
+            this._powerItem = new CreateActionItem('system-shutdown-symbolic', _('Power Off'), POWEROFF, this._powerOffDialog);
 
             this._customButtons = [
+                this._lockItem,
                 this._suspendItem,
                 this._hybridSleepItem,
                 this._hibernateItem,
@@ -116,10 +178,11 @@ const BringoutMenu = new GObject.registerClass(
             ];
 
             this._keys = [
+                'hide-lock-button',
                 'hide-suspend-button',
-                'show-hybrid-sleep-button',
-                'show-hibernate-button',
-                null,
+                'hide-hybrid-sleep-button',
+                'hide-hibernate-button',
+                'hide-switch-user-button',
                 'hide-logout-button',
                 'hide-restart-button',
                 'hide-power-button',
@@ -130,7 +193,7 @@ const BringoutMenu = new GObject.registerClass(
             this._customButtons.forEach((button, idx) => {
                 let key = this._keys[idx];
                 if (key)
-                    this._settingsChanged([button, key]);
+                    this._settingsChanged(button, key);
             });
         }
 
@@ -139,28 +202,12 @@ const BringoutMenu = new GObject.registerClass(
                 let key = this._keys[idx];
                 if (key) {
                     // settings id to destroy - Ref 1
-                    button._settingsId = this._settings.connect(`changed::${key}`, this._settingsChanged.bind(this, [button, key]));
+                    button._settingsId = this._settings.connect(`changed::${key}`, this._settingsChanged.bind(this, button, key));
                 }
             });
 
             // id to destory - Ref 2
-            this._lockScreenId = this._settings.connect('changed::hide-lock-button', this._lockScreenChanged.bind(this));
             this._tooltipId = this._settings.connect('changed::show-tooltip', this._toolTip.bind(this));
-        }
-
-        _lockScreenChanged() {
-            let systemDconf = this._lockDownSettings.get_boolean('disable-lock-screen');
-            if (systemDconf) {
-                this._lockItem.hide();
-                return;
-            }
-            if (this._lockItem) {
-                let localDconf = this._settings.get_boolean('hide-lock-button');
-                if (!localDconf)
-                    this._lockItem.show();
-                else
-                    this._lockItem.hide();
-            }
         }
 
         _toolTip() {
@@ -188,22 +235,13 @@ const BringoutMenu = new GObject.registerClass(
             });
         }
 
-        _settingsChanged(args) {
-            const [button, key] = [...args];
+        _settingsChanged(button, key) {
 
-            let shouldShowButton = this._settings.get_boolean(key);
+            let shallHideButton = this._settings.get_boolean(key);
 
-            if (['show-hybrid-sleep-button', 'show-hibernate-button'].includes(key)) {
-                if (shouldShowButton) {
-                    if (!button.visible)
-                        button.show();
-                } else if (button.visible) {
-                    button.hide();
-                }
-            } else if (shouldShowButton) {
-                if (button.visible)
-                    button.hide();
-            } else if (!button.visible) {
+            if (shallHideButton) {
+                button.hide();
+            } else {
                 button.show();
             }
         }
@@ -237,9 +275,6 @@ const BringoutMenu = new GObject.registerClass(
             });
 
             // Ref 2
-            if (this._lockScreenId)
-                this._settings.disconnect(this._lockScreenId);
-
             if (this._toolTipId)
                 this._settings.disconnect(this._toolTipId);
 
@@ -252,19 +287,14 @@ const BringoutMenu = new GObject.registerClass(
                 button = null;
             });
 
-            let systemDconf = this._lockDownSettings.get_boolean('disable-lock-screen');
-            if (systemDconf)
-                this._lockItem.hide();
-            else
-                this._lockItem.show();
-
             this._customButtons = [];
             this._keys = [];
 
             this._hybridSleepDialog = null;
             this._hibernationDialog = null;
 
-            this._containerRow.add_child(this._powerOffMenuItem);
+            this._containerRow.add_child(this.lockItem);
+            this._containerRow.add_child(this.powerOffMenuItem);
         }
     }
 );

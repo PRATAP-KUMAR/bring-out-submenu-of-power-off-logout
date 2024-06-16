@@ -1,14 +1,16 @@
 import GObject from 'gi://GObject';
+import Gio from 'gi://Gio';
 
-import {QuickSettingsItem} from 'resource:///org/gnome/shell/ui/quickSettings.js';
+import { QuickSettingsItem } from 'resource:///org/gnome/shell/ui/quickSettings.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as SystemActions from 'resource:///org/gnome/shell/misc/systemActions.js';
 
 import ConfirmDialog from './Hibernation/confirmDialog.js';
 import hybridSleepOrHibernate from './Hibernation/hybridSleepOrHibernate.js';
 
-const BindFlags = GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE;
+const LOCK_DOWN_SETTINGS = new Gio.Settings({ schema_id: 'org.gnome.desktop.lockdown' });
 
+const LOCK = 'lock';
 const SUSPEND = 'suspend';
 // Hibernation
 const HYBRID_SLEEP = 'hybrid_sleep';
@@ -21,7 +23,7 @@ const POWEROFF = 'poweroff';
 
 const CreateActionItem = GObject.registerClass(
     class CreateActionItem extends QuickSettingsItem {
-        _init(ICON_NAME, ACCESSIBLE_NAME, ACTION, BINDING_ID, DIALOG = null) {
+        _init(ICON_NAME, ACCESSIBLE_NAME, ACTION, DIALOG) {
             super._init({
                 style_class: 'icon-button',
                 can_focus: true,
@@ -34,46 +36,82 @@ const CreateActionItem = GObject.registerClass(
 
             this.connect('clicked', () => {
                 switch (ACTION) {
-                case SUSPEND:
-                    TakeAction.activateSuspend();
-                    break;
+                    case LOCK: {
+                        let boolean = LOCK_DOWN_SETTINGS.get_boolean('disable-lock-screen')
+                        if (boolean) {
+                            let lockInformation = new ConfirmDialog(DIALOG);
+                            lockInformation.open();
+                        } else {
+                            TakeAction.activateLockScreen();
+                        }
+                        break;
+                    }
+                    case SUSPEND:
+                        TakeAction.activateSuspend();
+                        break;
                     // Hibernation
-                case HYBRID_SLEEP: {
-                    let hybridSleep = new ConfirmDialog(DIALOG);
-                    hybridSleep.connect('proceed', () => {
-                        hybridSleepOrHibernate('HybridSleep');
-                    });
-                    hybridSleep.open();
-                    break;
-                }
-                case HIBERNATE: {
-                    let hibernate = new ConfirmDialog(DIALOG);
-                    hibernate.connect('proceed', () => {
-                        hybridSleepOrHibernate('Hibernate');
-                    });
-                    hibernate.open();
-                    break;
-                }
-                //
-                case SWITCH_USER:
-                    TakeAction.activateSwitchUser();
-                    break;
-                case LOGOUT:
-                    TakeAction.activateLogout();
-                    break;
-                case RESTART:
-                    TakeAction.activateRestart();
-                    break;
-                case POWEROFF:
-                    TakeAction.activatePowerOff();
-                    break;
+                    case HYBRID_SLEEP: {
+                        let hybridSleep = new ConfirmDialog(DIALOG);
+                        hybridSleep.connect('proceed', () => {
+                            hybridSleepOrHibernate('HybridSleep');
+                        });
+                        hybridSleep.open();
+                        break;
+                    }
+                    case HIBERNATE: {
+                        let hibernate = new ConfirmDialog(DIALOG);
+                        hibernate.connect('proceed', () => {
+                            hybridSleepOrHibernate('Hibernate');
+                        });
+                        hibernate.open();
+                        break;
+                    }
+                    //
+                    case SWITCH_USER: {
+                        let boolean = LOCK_DOWN_SETTINGS.get_boolean('disable-user-switching')
+                        if (boolean) {
+                            let lockInformation = new ConfirmDialog(DIALOG);
+                            lockInformation.open();
+                        } else {
+                            TakeAction.activateSwitchUser();
+                        }
+                        break;
+                    }
+
+                    case LOGOUT: {
+                        let boolean = LOCK_DOWN_SETTINGS.get_boolean('disable-log-out')
+                        if (boolean) {
+                            let lockInformation = new ConfirmDialog(DIALOG);
+                            lockInformation.open();
+                        } else {
+                            TakeAction.activateLogout();
+                        }
+                        break;
+                    }
+                    case RESTART: {
+                        let boolean = LOCK_DOWN_SETTINGS.get_boolean('disable-log-out')
+                        if (boolean) {
+                            let lockInformation = new ConfirmDialog(DIALOG);
+                            lockInformation.open();
+                        } else {
+                            TakeAction.activateRestart();
+                        }
+                        break;
+                    }
+                    case POWEROFF: {
+                        let boolean = LOCK_DOWN_SETTINGS.get_boolean('disable-log-out')
+                        if (boolean) {
+                            let lockInformation = new ConfirmDialog(DIALOG);
+                            lockInformation.open();
+                        } else {
+                            TakeAction.activatePowerOff();
+                        }
+                        break;
+                    }
                 }
 
                 Main.panel.closeQuickSettings();
             });
-
-            if (BINDING_ID)
-                TakeAction.bind_property(BINDING_ID, this, 'visible', BindFlags);
         }
     }
 );

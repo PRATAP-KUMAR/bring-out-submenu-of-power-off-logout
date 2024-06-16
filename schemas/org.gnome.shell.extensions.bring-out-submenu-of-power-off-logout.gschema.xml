@@ -1,5 +1,6 @@
 <schemalist>
-    <schema id="org.gnome.shell.extensions.bring-out-submenu-of-power-off-logout" path="/org/gnome/shell/extensions/bring-out-submenu-of-power-off-logout/">
+    <schema id="org.gnome.shell.extensions.bring-out-submenu-of-power-off-logout"
+        path="/org/gnome/shell/extensions/bring-out-submenu-of-power-off-logout/">
         <key name="hide-lock-button" type="b">
             <default>false</default>
             <summary>Turn ON if you wish to remove Lock Item from system's menu.</summary>
@@ -11,17 +12,22 @@
             <description>Suspend Item</description>
         </key>
         <!-- Hibernation  -->
-        <key name="show-hybrid-sleep-button" type="b">
-            <default>false</default>
-            <summary>Turn ON if you wish to show HybridSleep Item from systems' menu.</summary>
+        <key name="hide-hybrid-sleep-button" type="b">
+            <default>true</default>
+            <summary>Turn Off if you wish to show HybridSleep Item from systems' menu.</summary>
             <description>Restart Item</description>
         </key>
-        <key name="show-hibernate-button" type="b">
-            <default>false</default>
-            <summary>Turn ON if you wish to show HIbernation Item from system's menu.</summary>
+        <key name="hide-hibernate-button" type="b">
+            <default>true</default>
+            <summary>Turn Off if you wish to show Hibernation Item from system's menu.</summary>
             <description>Power Item</description>
         </key>
         <!--  -->
+        <key name="hide-switch-user-button" type="b">
+            <default>false</default>
+            <summary>Turn ON if you wish to remove SwitchUser Item from system's menu.</summary>
+            <description>Logout Item</description>
+        </key>
         <key name="hide-logout-button" type="b">
             <default>false</default>
             <summary>Turn ON if you wish to remove Logout Item from system's menu.</summary>

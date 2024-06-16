@@ -26,6 +26,11 @@ const GeneralPage = new GObject.registerClass(
             });
             hideButtonsGroup.add(suspendButtonRow);
 
+            const switchUserButtonRow = new Adw.SwitchRow({
+                title: _('Hide Switch User Button'),
+            });
+            hideButtonsGroup.add(switchUserButtonRow);
+
             const logoutButtonRow = new Adw.SwitchRow({
                 title: _('Hide Logout Button'),
             });
@@ -54,6 +59,7 @@ const GeneralPage = new GObject.registerClass(
 
             settings.bind('hide-lock-button', lockButtonRow, 'active', Gio.SettingsBindFlags.DEFAULT);
             settings.bind('hide-suspend-button', suspendButtonRow, 'active', Gio.SettingsBindFlags.DEFAULT);
+            settings.bind('hide-switch-user-button', switchUserButtonRow, 'active', Gio.SettingsBindFlags.DEFAULT);
             settings.bind('hide-logout-button', logoutButtonRow, 'active', Gio.SettingsBindFlags.DEFAULT);
             settings.bind('hide-restart-button', restartButtonRow, 'active', Gio.SettingsBindFlags.DEFAULT);
             settings.bind('hide-power-button', powerButtonRow, 'active', Gio.SettingsBindFlags.DEFAULT);

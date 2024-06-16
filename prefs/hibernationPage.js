@@ -39,19 +39,19 @@ const HibernationPage = new GObject.registerClass(
             this.add(hibernationGroup);
 
             const hybridSleepRow = new Adw.SwitchRow({
-                title: _('Show Hybrid Sleep Button'),
+                title: _('Hide Hybrid Sleep Button'),
                 subtitle: _('you can set the logo by placing an svg icon with the name "hybrid-sleep-symbolic.svg" in ".icons" folder of home directory'),
             });
             hibernationGroup.add(hybridSleepRow);
 
             const hibernateRow = new Adw.SwitchRow({
-                title: _('Show Hibernate Button'),
+                title: _('Hide Hibernate Button'),
                 subtitle: _('you can set the logo by placing an svg icon with the name "hibernate-symbolic.svg" in ".icons" folder of home directory'),
             });
             hibernationGroup.add(hibernateRow);
 
-            settings.bind('show-hybrid-sleep-button', hybridSleepRow, 'active', Gio.SettingsBindFlags.DEFAULT);
-            settings.bind('show-hibernate-button', hibernateRow, 'active', Gio.SettingsBindFlags.DEFAULT);
+            settings.bind('hide-hybrid-sleep-button', hybridSleepRow, 'active', Gio.SettingsBindFlags.DEFAULT);
+            settings.bind('hide-hibernate-button', hibernateRow, 'active', Gio.SettingsBindFlags.DEFAULT);
         }
     }
 );
