@@ -1,8 +1,7 @@
 import GObject from 'gi://GObject';
 import Clutter from 'gi://Clutter';
-import Gio from 'gi://Gio';
 
-import { QuickSettingsItem } from 'resource:///org/gnome/shell/ui/quickSettings.js';
+import {QuickSettingsItem} from 'resource:///org/gnome/shell/ui/quickSettings.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 
 import CreateActionItem from './CreateActionItem.js';
@@ -23,12 +22,11 @@ let actionButtons;
 
 const BringoutMenu = new GObject.registerClass(
     class BringoutMenu extends QuickSettingsItem {
-        _init(settings, gettext, pgettext) {
+        _init(settings, gettext, pgettext, lockDownSettings) {
             this._settings = settings;
             this._gettext = gettext;
             this._pgettext = pgettext;
-
-            // this._lockDownSettings = new Gio.Settings({ schema_id: 'org.gnome.desktop.lockdown' });
+            this._lockDownSettings = lockDownSettings;
 
             this._systemItem = Main.panel.statusArea.quickSettings._system._systemItem;
 
@@ -91,7 +89,7 @@ const BringoutMenu = new GObject.registerClass(
                         signal: 'cancel',
                         label: pgettext('button', 'Cancel'),
                         key: Clutter.KEY_Escape,
-                    }
+                    },
                 ],
             };
 
@@ -103,9 +101,9 @@ const BringoutMenu = new GObject.registerClass(
                         signal: 'cancel',
                         label: pgettext('button', 'Cancel'),
                         key: Clutter.KEY_Escape,
-                    }
-                ]
-            }
+                    },
+                ],
+            };
             this._logoutDialog = {
                 subject: pgettext('title', 'Logout'),
                 description: _('Oops Logout is disabled, this means Logout, restart and poweroff are disabled'),
@@ -114,9 +112,9 @@ const BringoutMenu = new GObject.registerClass(
                         signal: 'cancel',
                         label: pgettext('button', 'Cancel'),
                         key: Clutter.KEY_Escape,
-                    }
-                ]
-            }
+                    },
+                ],
+            };
             this._restartDialog = {
                 subject: pgettext('title', 'Restart'),
                 description: _('Oops Logout is disabled, this means Logout, restart and poweroff are disabled'),
@@ -125,9 +123,9 @@ const BringoutMenu = new GObject.registerClass(
                         signal: 'cancel',
                         label: pgettext('button', 'Cancel'),
                         key: Clutter.KEY_Escape,
-                    }
-                ]
-            }
+                    },
+                ],
+            };
             this._powerOffDialog = {
                 subject: pgettext('title', 'Power Off'),
                 description: _('Oops Logout is disabled, this means Logout, restart and poweroff are disabled'),
@@ -136,9 +134,9 @@ const BringoutMenu = new GObject.registerClass(
                         signal: 'cancel',
                         label: pgettext('button', 'Cancel'),
                         key: Clutter.KEY_Escape,
-                    }
-                ]
-            }
+                    },
+                ],
+            };
         }
 
         _createMenu() {
@@ -151,7 +149,7 @@ const BringoutMenu = new GObject.registerClass(
 
             this._createDialogs();
 
-            this._lockItem = new CreateActionItem('system-lock-screen-symbolic', _('Lock Screen'), LOCK, this._lockDialog);
+            this._lockItem = new CreateActionItem('system-lock-screen-symbolic', _('Lock Screen'), LOCK, this._lockDialog, this._lockDownSettings);
             this._suspendItem = new CreateActionItem('media-playback-pause-symbolic', _('Suspend'), SUSPEND, null, null);
 
             // Hibernation
@@ -161,10 +159,10 @@ const BringoutMenu = new GObject.registerClass(
             this._hibernateItem = new CreateActionItem('hibernate-symbolic', _('Hibernate'), HIBERNATE, this._hibernateDialog, null);
             this._hibernateItem.child.set_fallback_icon_name('document-save-symbolic');
             //
-            this._switchUserItem = new CreateActionItem('system-switch-user-symbolic', _('Switch User'), SWITCH_USER, this._switchUserDialog);
-            this._logoutItem = new CreateActionItem('system-log-out-symbolic', _('Log Out'), LOGOUT, this._logoutDialog);
-            this._restartItem = new CreateActionItem('system-reboot-symbolic', _('Restart'), RESTART, this._restartDialog);
-            this._powerItem = new CreateActionItem('system-shutdown-symbolic', _('Power Off'), POWEROFF, this._powerOffDialog);
+            this._switchUserItem = new CreateActionItem('system-switch-user-symbolic', _('Switch User'), SWITCH_USER, this._switchUserDialog, this._lockDownSettings);
+            this._logoutItem = new CreateActionItem('system-log-out-symbolic', _('Log Out'), LOGOUT, this._logoutDialog, this._lockDownSettings);
+            this._restartItem = new CreateActionItem('system-reboot-symbolic', _('Restart'), RESTART, this._restartDialog, this._lockDownSettings);
+            this._powerItem = new CreateActionItem('system-shutdown-symbolic', _('Power Off'), POWEROFF, this._powerOffDialog, this._lockDownSettings);
 
             this._customButtons = [
                 this._lockItem,
@@ -236,14 +234,12 @@ const BringoutMenu = new GObject.registerClass(
         }
 
         _settingsChanged(button, key) {
-
             let shallHideButton = this._settings.get_boolean(key);
 
-            if (shallHideButton) {
+            if (shallHideButton)
                 button.hide();
-            } else {
+            else
                 button.show();
-            }
         }
 
         _destroyTooltips() {

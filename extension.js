@@ -1,6 +1,7 @@
 import {Extension, gettext, pgettext} from 'resource:///org/gnome/shell/extensions/extension.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import GLib from 'gi://GLib';
+import Gio from 'gi://Gio';
 import BringoutMenu from './BringoutMenu.js';
 
 let modifiedMenu;
@@ -11,7 +12,8 @@ export default class BringoutExtension extends Extension {
         modifiedMenu = new BringoutMenu(
             this._settings,
             this._gettext,
-            this._pgettext
+            this._pgettext,
+            this._lockDownSettings
         );
     }
 
@@ -29,6 +31,7 @@ export default class BringoutExtension extends Extension {
         this._settings = this.getSettings();
         this._gettext = gettext;
         this._pgettext = pgettext;
+        this._lockDownSettings = new Gio.Settings({schema_id: 'org.gnome.desktop.lockdown'});
 
         if (Main.panel.statusArea.quickSettings._system)
             this._modifySystemItem();
@@ -43,6 +46,8 @@ export default class BringoutExtension extends Extension {
             GLib.Source.remove(sourceId);
             sourceId = null;
         }
+
+        this._lockDownSettings = null;
         this._pgettext = null;
         this._gettext = null;
         this._settings = null;

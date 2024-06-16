@@ -1,14 +1,12 @@
 import GObject from 'gi://GObject';
-import Gio from 'gi://Gio';
 
-import { QuickSettingsItem } from 'resource:///org/gnome/shell/ui/quickSettings.js';
+import {QuickSettingsItem} from 'resource:///org/gnome/shell/ui/quickSettings.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as SystemActions from 'resource:///org/gnome/shell/misc/systemActions.js';
 
 import ConfirmDialog from './Hibernation/confirmDialog.js';
 import hybridSleepOrHibernate from './Hibernation/hybridSleepOrHibernate.js';
 
-const LOCK_DOWN_SETTINGS = new Gio.Settings({ schema_id: 'org.gnome.desktop.lockdown' });
 
 const LOCK = 'lock';
 const SUSPEND = 'suspend';
@@ -23,7 +21,7 @@ const POWEROFF = 'poweroff';
 
 const CreateActionItem = GObject.registerClass(
     class CreateActionItem extends QuickSettingsItem {
-        _init(ICON_NAME, ACCESSIBLE_NAME, ACTION, DIALOG) {
+        _init(ICON_NAME, ACCESSIBLE_NAME, ACTION, DIALOG, lockDownSettings) {
             super._init({
                 style_class: 'icon-button',
                 can_focus: true,
@@ -36,78 +34,78 @@ const CreateActionItem = GObject.registerClass(
 
             this.connect('clicked', () => {
                 switch (ACTION) {
-                    case LOCK: {
-                        let boolean = LOCK_DOWN_SETTINGS.get_boolean('disable-lock-screen')
-                        if (boolean) {
-                            let lockInformation = new ConfirmDialog(DIALOG);
-                            lockInformation.open();
-                        } else {
-                            TakeAction.activateLockScreen();
-                        }
-                        break;
+                case LOCK: {
+                    let boolean = lockDownSettings.get_boolean('disable-lock-screen');
+                    if (boolean) {
+                        let lockInformation = new ConfirmDialog(DIALOG);
+                        lockInformation.open();
+                    } else {
+                        TakeAction.activateLockScreen();
                     }
-                    case SUSPEND:
-                        TakeAction.activateSuspend();
-                        break;
+                    break;
+                }
+                case SUSPEND:
+                    TakeAction.activateSuspend();
+                    break;
                     // Hibernation
-                    case HYBRID_SLEEP: {
-                        let hybridSleep = new ConfirmDialog(DIALOG);
-                        hybridSleep.connect('proceed', () => {
-                            hybridSleepOrHibernate('HybridSleep');
-                        });
-                        hybridSleep.open();
-                        break;
+                case HYBRID_SLEEP: {
+                    let hybridSleep = new ConfirmDialog(DIALOG);
+                    hybridSleep.connect('proceed', () => {
+                        hybridSleepOrHibernate('HybridSleep');
+                    });
+                    hybridSleep.open();
+                    break;
+                }
+                case HIBERNATE: {
+                    let hibernate = new ConfirmDialog(DIALOG);
+                    hibernate.connect('proceed', () => {
+                        hybridSleepOrHibernate('Hibernate');
+                    });
+                    hibernate.open();
+                    break;
+                }
+                //
+                case SWITCH_USER: {
+                    let boolean = lockDownSettings.get_boolean('disable-user-switching');
+                    if (boolean) {
+                        let switchUserInformation = new ConfirmDialog(DIALOG);
+                        switchUserInformation.open();
+                    } else {
+                        TakeAction.activateSwitchUser();
                     }
-                    case HIBERNATE: {
-                        let hibernate = new ConfirmDialog(DIALOG);
-                        hibernate.connect('proceed', () => {
-                            hybridSleepOrHibernate('Hibernate');
-                        });
-                        hibernate.open();
-                        break;
-                    }
-                    //
-                    case SWITCH_USER: {
-                        let boolean = LOCK_DOWN_SETTINGS.get_boolean('disable-user-switching')
-                        if (boolean) {
-                            let lockInformation = new ConfirmDialog(DIALOG);
-                            lockInformation.open();
-                        } else {
-                            TakeAction.activateSwitchUser();
-                        }
-                        break;
-                    }
+                    break;
+                }
 
-                    case LOGOUT: {
-                        let boolean = LOCK_DOWN_SETTINGS.get_boolean('disable-log-out')
-                        if (boolean) {
-                            let lockInformation = new ConfirmDialog(DIALOG);
-                            lockInformation.open();
-                        } else {
-                            TakeAction.activateLogout();
-                        }
-                        break;
+                case LOGOUT: {
+                    let boolean = lockDownSettings.get_boolean('disable-log-out');
+                    if (boolean) {
+                        let logoutInformation = new ConfirmDialog(DIALOG);
+                        logoutInformation.open();
+                    } else {
+                        TakeAction.activateLogout();
                     }
-                    case RESTART: {
-                        let boolean = LOCK_DOWN_SETTINGS.get_boolean('disable-log-out')
-                        if (boolean) {
-                            let lockInformation = new ConfirmDialog(DIALOG);
-                            lockInformation.open();
-                        } else {
-                            TakeAction.activateRestart();
-                        }
-                        break;
+                    break;
+                }
+                case RESTART: {
+                    let boolean = lockDownSettings.get_boolean('disable-log-out');
+                    if (boolean) {
+                        let restartInformation = new ConfirmDialog(DIALOG);
+                        restartInformation.open();
+                    } else {
+                        TakeAction.activateRestart();
                     }
-                    case POWEROFF: {
-                        let boolean = LOCK_DOWN_SETTINGS.get_boolean('disable-log-out')
-                        if (boolean) {
-                            let lockInformation = new ConfirmDialog(DIALOG);
-                            lockInformation.open();
-                        } else {
-                            TakeAction.activatePowerOff();
-                        }
-                        break;
+                    break;
+                }
+                case POWEROFF: {
+                    let boolean = lockDownSettings.get_boolean('disable-log-out');
+                    if (boolean) {
+                        let powerOffInformation = new ConfirmDialog(DIALOG);
+                        powerOffInformation.open();
+                    } else {
+                        TakeAction.activatePowerOff();
                     }
+                    break;
+                }
                 }
 
                 Main.panel.closeQuickSettings();

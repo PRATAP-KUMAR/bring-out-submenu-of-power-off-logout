@@ -1,0 +1,19 @@
+{
+  "name": "bring-out-extension",
+  "version": "1.0.0",
+  "description": "hides the default poweoff menu icon and create new system action icons",
+  "main": "BringoutMenu.js",
+  "test": "echo \"Error: no test specified\" && exit 1",
+  "author": "PRATAP PANABAKA",
+  "license": "ISC",
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.1.0",
+    "@eslint/js": "^9.5.0",
+    "eslint": "^9.5.0",
+    "eslint-plugin-jsdoc": "^48.2.12",
+    "globals": "^15.5.0"
+  },
+  "dependencies": {
+    "@eslint/migrate-config": "^1.1.0"
+  }
+}
