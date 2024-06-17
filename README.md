@@ -1,10 +1,10 @@
-# Bring Out Submenu of Power Off Button
+# Bring Out the Submenu of the Power Off Button
 
 ## Readme for gnome-shell v45 and v46
 
-### extension v55 Sun Jun 16th 2024
+### extension v56 Sun Jun 16th 2024
 
-1. Removed bindings with the system dconf settings such as disable-lock-screen, disable-user-switching, disable-logout.
+1. Removed bindings with the system dconf settings such as disable-lock-screen, disable-user-switching, and disable-logout.
 2. So that all buttons will stick to extension settings.
 3. Added modal to inform user, if any key is locked.
 
@@ -16,10 +16,10 @@ The default
 With this Extension  
 ![image](https://github.com/PRATAP-KUMAR/bring-out-submenu-of-power-off-logout/assets/40719899/a395f347-f1eb-441c-970d-ed09718f2bf2)
 
-Tooltip - show by default - You can turn off and on via extension settings  
+Tooltip - show by default - You can turn it off and on via extension settings  
 ![image](https://github.com/PRATAP-KUMAR/bring-out-submenu-of-power-off-logout/assets/40719899/4af3c901-247b-4382-bb9c-17e77e7e0ecd)
 
-You can customize the tooltip styling via extension's `stylesheet.css` file, example code
+You can customize the tooltip styling via the extension's `stylesheet.css` file, for example code
 
 ```
 .brng-out-ext-tooltip {
@@ -31,22 +31,12 @@ You can customize the tooltip styling via extension's `stylesheet.css` file, exa
 
 ![image](https://github.com/PRATAP-KUMAR/bring-out-submenu-of-power-off-logout/assets/40719899/df10b360-92cf-49cd-879c-eb190319ad82)
 
-You can hide individual buttons starting from lock-screen to shutdown via extension settings except switch-user
+You can hide individual buttons starting from lock-screen to shutdown via extension settings
 ![image](https://github.com/PRATAP-KUMAR/bring-out-submenu-of-power-off-logout/assets/40719899/683f0588-c04b-4a06-b2a2-3c5ca8dd300b)
-
-switch-user https://github.com/PRATAP-KUMAR/bring-out-submenu-of-power-off-logout/issues/32
 
 ## Install
 
-### Option 1
-
 from extensions.gnome.org <a href="https://extensions.gnome.org/extension/2917/bring-out-submenu-of-power-offlogout-button/">Gnome Extensions</a>
-
-### Option 2
-
-1. Download the zip file BringOutExtension.zip and run the below command
-2. `gnome-extensions install -f BringOutExtension.zip`
-3. Refresh the shell with Alt+F2 'r' Enter or logout and login
 
 ## Optional - Hibernation Buttons
 
