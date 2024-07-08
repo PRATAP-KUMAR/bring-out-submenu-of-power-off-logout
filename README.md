@@ -56,9 +56,9 @@ with the names **hybrid-sleep-symbolic.svg** and **hibernate-symbolic.svg** into
 
 ## Other Language Support
 
-French Language is supported. Once you have installed the extension,
+French and Slovak Languages are supported. Once you have installed the extension,
 then copy the folder `locale` from this repo and paste in the root directory of the extension.
-
+Then keep only your language translation folder for example `fr` or `sk` and remove unwanted translations.
 ```
 $HOME/.local/share/gnome-shell/extensions/BringOutSubmenuOfPowerOffLogoutButton@pratap.fastmail.fm
 ```
