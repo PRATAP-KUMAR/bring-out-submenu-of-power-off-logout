@@ -1,0 +1,179 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Bring Out Submenu Of Power Off Button v56\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-11-17 13:40+0530\n"
+"PO-Revision-Date: 2024-07-05 15:23+0200\n"
+"Last-Translator: Jozef Gaal <preklady@mayday.sk>\n"
+"Language-Team: Jozef Gaál <preklady@mayday.sk>\n"
+"Language: sk_SK\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.4.2\n"
+
+#: BringoutMenu.js:52
+msgctxt "title"
+msgid "Hybrid Sleep"
+msgstr "Hybridný spánok"
+
+#: BringoutMenu.js:53
+msgid "Are you sure to Hybrid Sleep the system?"
+msgstr "Ste si istí, že chcete prejsť do hybridného režimu spánku?"
+
+#: BringoutMenu.js:57 BringoutMenu.js:74
+msgctxt "button"
+msgid "Cancel"
+msgstr "Zrušiť"
+
+#: BringoutMenu.js:62
+msgctxt "button"
+msgid "Hybrid Sleep"
+msgstr "Hybridný spánok"
+
+#: BringoutMenu.js:69
+msgctxt "title"
+msgid "Hibernate"
+msgstr "Hibernovať"
+
+#: BringoutMenu.js:70
+msgid "Are you sure to Hibernate the system?"
+msgstr "Ste si istí, že chcete systém hibernovať?"
+
+#: BringoutMenu.js:79
+msgctxt "button"
+msgid "Hibernate"
+msgstr "Hibernovať"
+
+#: BringoutMenu.js:93
+msgid "Suspend"
+msgstr "Uspať"
+
+#: BringoutMenu.js:96
+msgid "Hybrid Sleep"
+msgstr "Hybridný spánok"
+
+#: BringoutMenu.js:97
+msgid "Hibernate"
+msgstr "Hibernovať"
+
+#: BringoutMenu.js:99
+msgid "Switch User"
+msgstr "Prepnúť používateľa"
+
+#: BringoutMenu.js:100
+msgid "Log Out"
+msgstr "Odhlásiť sa"
+
+#: BringoutMenu.js:101
+msgid "Restart"
+msgstr "Reštartovať"
+
+#: BringoutMenu.js:102
+msgid "Power Off"
+msgstr "Vypnúť"
+
+#: prefs/generalPage.js:10 prefs/generalPage.js:15
+msgid "Action Buttons"
+msgstr "Tlačidlá akcie"
+
+#: prefs/generalPage.js:20
+msgid "Hide Lock Button"
+msgstr "Skryť tlačidlo zamknutia"
+
+#: prefs/generalPage.js:25
+msgid "Hide Suspend Button"
+msgstr "Skryť tlačidlo spánku"
+
+#: prefs/generalPage.js:30
+msgid "Hide Switch User Button"
+msgstr "Skryť tlačidlo prepnutia používateľa"
+
+#: prefs/generalPage.js:30
+msgid "Hide Logout Button"
+msgstr "Skryť tlačidlo odhlásenia"
+
+#: prefs/generalPage.js:35
+msgid "Hide Restart Button"
+msgstr "Skryť tlačidlo reštartovania"
+
+#: prefs/generalPage.js:40
+msgid "Hide Power Button"
+msgstr "Skryť tlačidlo vypnutia"
+
+#: prefs/generalPage.js:45
+msgid "Tooltip"
+msgstr "Pomoc"
+
+#: prefs/generalPage.js:50
+msgid "Show Tooltip"
+msgstr "Zobraziť pomocníka"
+
+#: prefs/generalPage.js:51
+msgid ""
+"You can customize tooltip style using this extensions stylesheet.css file"
+msgstr ""
+"Štýl pomocníka môžete prispôsobiť pomocou tohto súboru rozšírenia stylesheet."
+"css"
+
+#: prefs/hibernationPage.js:11
+msgid ""
+"This page is useful only if Hybrid Sleep and Hibernation are already working "
+"on yoursystem, "
+msgstr ""
+"Táto stránka je užitočná len v prípade, že v systéme už funguje hybridný "
+"spánok a hibernácia, "
+
+#: prefs/hibernationPage.js:12
+msgid "some useful links on this topic are "
+msgstr "niektoré užitočné odkazy na túto tému sú "
+
+#: prefs/hibernationPage.js:20
+msgid "Hibernation Settings"
+msgstr "Nastavenia hibernácie"
+
+#: prefs/hibernationPage.js:25
+msgid "Important Info"
+msgstr "Dôležité informácie"
+
+#: prefs/hibernationPage.js:37
+msgid "Hibernation"
+msgstr "Hibernácia"
+
+#: prefs/hibernationPage.js:42
+msgid "Show Hybrid Sleep Button"
+msgstr "Zobraziť tlačidlo hybridného spánku"
+
+#: prefs/hibernationPage.js:42
+msgid "Hide Hibernate Button"
+msgstr "Skryť tlačidlo hibernácie"
+
+#: prefs/hibernationPage.js:42
+msgid "Hide Hybrid Sleep Button"
+msgstr "Skryť tlačidlo hybridného spánku"
+
+#: prefs/hibernationPage.js:43
+msgid ""
+"you can set the logo by placing an svg icon with the name \"hybrid-sleep-"
+"symbolic.svg\" in \".icons\" folder of home directory"
+msgstr ""
+"logo môžete nastaviť umiestnením ikony svg s názvom \"hybrid-sleep-symbolic."
+"svg\" do priečinka \".icons\" v domovskom adresári"
+
+#: prefs/hibernationPage.js:47
+msgid "Show Hibernate Button"
+msgstr "Zobraziť tlačidlo hibernácie"
+
+#: prefs/hibernationPage.js:49
+msgid ""
+"you can set the logo by placing an svg icon with the name \"hibernate-"
+"symbolic.svg\" in \".icons\" folder of home directory"
+msgstr ""
+"logo môžete nastaviť umiestnením ikony svg s názvom \"hibernate-symbolic."
+"svg\" do priečinka \".icons\" v domovskom adresári"
