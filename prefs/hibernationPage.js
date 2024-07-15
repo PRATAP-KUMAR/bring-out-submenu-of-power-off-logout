@@ -8,7 +8,7 @@ const HibernationPage = new GObject.registerClass(
             const _ = gettext;
 
             const labelText =
-                `${_('This page is useful only if Hybrid Sleep and Hibernation are already working on yoursystem, ') +
+                `${_('This page is useful only if Hybrid Sleep and Hibernation are already working on your system, ') +
                 _('some useful links on this topic are ')
                 }<a href="https://ubuntuhandbook.org/index.php/2021/08/enable-hibernate-ubuntu-21-10/">Ubuntu Hand Book</a> | ` +
                 '<a href="https://github.com/arelange/gnome-shell-extension-hibernate-status#hibernation-button-does-not-show-up-but-systemctl-hibernate-works">Github</a> | ' +

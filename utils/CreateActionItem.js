@@ -4,16 +4,17 @@ import {QuickSettingsItem} from 'resource:///org/gnome/shell/ui/quickSettings.js
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as SystemActions from 'resource:///org/gnome/shell/misc/systemActions.js';
 
-import ConfirmDialog from './Hibernation/confirmDialog.js';
-import hybridSleepOrHibernate from './Hibernation/hybridSleepOrHibernate.js';
-
+import ConfirmDialog from './ConfirmDialog.js';
+import hybridSleepOrHibernate from '../hibernation/hybridSleepOrHibernate.js';
 
 const LOCK = 'lock';
 const SUSPEND = 'suspend';
+
 // Hibernation
 const HYBRID_SLEEP = 'hybrid_sleep';
 const HIBERNATE = 'hibernate';
 //
+
 const SWITCH_USER = 'switch_user';
 const LOGOUT = 'logout';
 const RESTART = 'restart';
@@ -21,7 +22,7 @@ const POWEROFF = 'poweroff';
 
 const CreateActionItem = GObject.registerClass(
     class CreateActionItem extends QuickSettingsItem {
-        _init(ICON_NAME, ACCESSIBLE_NAME, ACTION, DIALOG, lockDownSettings) {
+        _init(ICON_NAME, ACCESSIBLE_NAME, ACTION, DIALOG, lockDownSettings, userManager = null) {
             super._init({
                 style_class: 'icon-button',
                 can_focus: true,
@@ -66,12 +67,16 @@ const CreateActionItem = GObject.registerClass(
                 }
                 //
                 case SWITCH_USER: {
-                    let boolean = lockDownSettings.get_boolean('disable-user-switching');
-                    if (boolean) {
-                        let switchUserInformation = new ConfirmDialog(DIALOG);
-                        switchUserInformation.open();
+                    if (!userManager.has_multiple_users) {
+                        Main.notify('Opps!', 'There are no multiple users');
                     } else {
-                        TakeAction.activateSwitchUser();
+                        let boolean = lockDownSettings.get_boolean('disable-user-switching');
+                        if (boolean) {
+                            let switchUserInformation = new ConfirmDialog(DIALOG);
+                            switchUserInformation.open();
+                        } else {
+                            TakeAction.activateSwitchUser();
+                        }
                     }
                     break;
                 }

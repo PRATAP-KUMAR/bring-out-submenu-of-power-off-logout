@@ -22,4 +22,3 @@ globals:
   global: readonly
 parserOptions:
   sourceType: module
-

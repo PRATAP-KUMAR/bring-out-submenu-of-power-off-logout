@@ -1,18 +1,21 @@
 import GObject from 'gi://GObject';
 import Clutter from 'gi://Clutter';
+import AccountsService from 'gi://AccountsService';
 
 import {QuickSettingsItem} from 'resource:///org/gnome/shell/ui/quickSettings.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 
-import CreateActionItem from './CreateActionItem.js';
-import SyncLabel from './SyncLabel.js';
+import CreateActionItem from './utils/CreateActionItem.js';
+import SyncLabel from './utils/SyncLabel.js';
 
 const LOCK = 'lock';
 const SUSPEND = 'suspend';
+
 // Hibernation
 const HYBRID_SLEEP = 'hybrid_sleep';
 const HIBERNATE = 'hibernate';
 //
+
 const SWITCH_USER = 'switch_user';
 const LOGOUT = 'logout';
 const RESTART = 'restart';
@@ -28,12 +31,14 @@ const BringoutMenu = new GObject.registerClass(
             this._pgettext = pgettext;
             this._lockDownSettings = lockDownSettings;
 
+            this._userManager = AccountsService.UserManager.get_default();
+
             this._systemItem = Main.panel.statusArea.quickSettings._system._systemItem;
-
             this._containerRow = this._systemItem.child;
+            this._systemItems = this._containerRow.get_children();
 
-            this.lockItem = this._containerRow.get_child_at_index(5);
-            this.powerOffMenuItem = this._containerRow.get_child_at_index(6);
+            this.lockItem = this._systemItems.filter(child => child.constructor?.name === 'LockItem')[0] || null;
+            this.powerOffMenuItem = this._systemItems.filter(child => child.constructor?.name === 'ShutdownItem')[0] || null;
 
             this._containerRow.remove_child(this.lockItem);
             this._containerRow.remove_child(this.powerOffMenuItem);
@@ -46,6 +51,8 @@ const BringoutMenu = new GObject.registerClass(
         _createDialogs() {
             const _ = this._gettext;
             const pgettext = this._pgettext;
+
+            Main.notify('hello', 'Hurrey I am working');
 
             this._hybridSleepDialog = {
                 subject: pgettext('title', 'Hybrid Sleep'),
@@ -106,7 +113,7 @@ const BringoutMenu = new GObject.registerClass(
             };
             this._logoutDialog = {
                 subject: pgettext('title', 'Logout'),
-                description: _('Oops Logout is disabled, this means Logout, restart and poweroff are disabled'),
+                description: _('Oops logout key is disabled in dconf, It will effect logout, restart and poweroff'),
                 confirmButtons: [
                     {
                         signal: 'cancel',
@@ -117,7 +124,7 @@ const BringoutMenu = new GObject.registerClass(
             };
             this._restartDialog = {
                 subject: pgettext('title', 'Restart'),
-                description: _('Oops Logout is disabled, this means Logout, restart and poweroff are disabled'),
+                description: _('Oops logout key is disabled in dconf, It will effect logout, restart and poweroff'),
                 confirmButtons: [
                     {
                         signal: 'cancel',
@@ -128,7 +135,7 @@ const BringoutMenu = new GObject.registerClass(
             };
             this._powerOffDialog = {
                 subject: pgettext('title', 'Power Off'),
-                description: _('Oops Logout is disabled, this means Logout, restart and poweroff are disabled'),
+                description: _('Oops logout key is disabled in dconf, It will effect logout, restart and poweroff'),
                 confirmButtons: [
                     {
                         signal: 'cancel',
@@ -159,7 +166,7 @@ const BringoutMenu = new GObject.registerClass(
             this._hibernateItem = new CreateActionItem('hibernate-symbolic', _('Hibernate'), HIBERNATE, this._hibernateDialog, null);
             this._hibernateItem.child.set_fallback_icon_name('document-save-symbolic');
             //
-            this._switchUserItem = new CreateActionItem('system-switch-user-symbolic', _('Switch User'), SWITCH_USER, this._switchUserDialog, this._lockDownSettings);
+            this._switchUserItem = new CreateActionItem('system-switch-user-symbolic', _('Switch User'), SWITCH_USER, this._switchUserDialog, this._lockDownSettings, this._userManager);
             this._logoutItem = new CreateActionItem('system-log-out-symbolic', _('Log Out'), LOGOUT, this._logoutDialog, this._lockDownSettings);
             this._restartItem = new CreateActionItem('system-reboot-symbolic', _('Restart'), RESTART, this._restartDialog, this._lockDownSettings);
             this._powerItem = new CreateActionItem('system-shutdown-symbolic', _('Power Off'), POWEROFF, this._powerOffDialog, this._lockDownSettings);
@@ -286,8 +293,15 @@ const BringoutMenu = new GObject.registerClass(
             this._customButtons = [];
             this._keys = [];
 
+            this._userManager = null;
+
             this._hybridSleepDialog = null;
-            this._hibernationDialog = null;
+            this._hibernateDialog = null;
+            this._lockDialog = null;
+            this._switchUserDialog = null;
+            this._logoutDialog = null;
+            this._restartDialog = null;
+            this._powerOffDialog = null;
 
             this._containerRow.add_child(this.lockItem);
             this._containerRow.add_child(this.powerOffMenuItem);

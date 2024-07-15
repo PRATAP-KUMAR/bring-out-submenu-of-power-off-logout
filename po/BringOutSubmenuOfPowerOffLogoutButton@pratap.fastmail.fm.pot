@@ -1,206 +1,206 @@
-# Slovak translations for PACKAGE package.
-# Copyright (C) 2024 THE PACKAGE'S COPYRIGHT HOLDER
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# ADMIN <admin@xuxa>, 2024.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-07-15 09:44+0530\n"
-"PO-Revision-Date: 2024-07-15 14:00+0530\n"
-"Last-Translator: ADMIN <admin@xuxa>\n"
-"Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
-"Language: sk\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
 #: BringoutMenu.js:56
 msgctxt "title"
 msgid "Hybrid Sleep"
-msgstr "Hybridný spánok"
+msgstr ""
 
 #: BringoutMenu.js:57
 msgid "Are you sure to Hybrid Sleep the system?"
-msgstr "Ste si istý, že systém Hybrid Sleep aktivujete?"
+msgstr ""
 
 #: BringoutMenu.js:61 BringoutMenu.js:78 BringoutMenu.js:95 BringoutMenu.js:107
 #: BringoutMenu.js:118 BringoutMenu.js:129 BringoutMenu.js:140
 msgctxt "button"
 msgid "Cancel"
-msgstr "Zrušiť"
+msgstr ""
 
 #: BringoutMenu.js:66
 msgctxt "button"
 msgid "Hybrid Sleep"
-msgstr "Hybridný spánok"
+msgstr ""
 
 #: BringoutMenu.js:73
 msgctxt "title"
 msgid "Hibernate"
-msgstr "Hibernácia"
+msgstr ""
 
 #: BringoutMenu.js:74
 msgid "Are you sure to Hibernate the system?"
-msgstr "Naozaj chcete systém prepnúť do režimu dlhodobého spánku?"
+msgstr ""
 
 #: BringoutMenu.js:83
 msgctxt "button"
 msgid "Hibernate"
-msgstr "Hibernácia"
+msgstr ""
 
 #: BringoutMenu.js:90
 msgctxt "title"
 msgid "Lock Screen"
-msgstr "Zamknúť obrazovku"
+msgstr ""
 
 #: BringoutMenu.js:91
 msgid "Oops! lock screen is disabled"
-msgstr "Ojoj! uzamknutá obrazovka je vypnutá"
+msgstr ""
 
 #: BringoutMenu.js:102
 msgctxt "title"
 msgid "Switch User"
-msgstr "Zmeniť používateľa"
+msgstr ""
 
 #: BringoutMenu.js:103
 msgid "Oops! user switching is disabled"
-msgstr "Ojoj! prepínanie používateľov je zakázané"
+msgstr ""
 
 #: BringoutMenu.js:113
 msgctxt "title"
 msgid "Logout"
-msgstr "Odhlásiť sa"
+msgstr ""
 
 #: BringoutMenu.js:114 BringoutMenu.js:125 BringoutMenu.js:136
 msgid ""
 "Oops logout key is disabled in dconf, It will effect logout, restart and "
 "poweroff"
-msgstr "Ojoj, odhlasovací kľúč je v dconf zakázaný, ovplyvní odhlásenie, reštart a vypnutie"
+msgstr ""
 
 #: BringoutMenu.js:124
 msgctxt "title"
 msgid "Restart"
-msgstr "Reštart"
+msgstr ""
 
 #: BringoutMenu.js:135
 msgctxt "title"
 msgid "Power Off"
-msgstr "Vypnúť"
+msgstr ""
 
 #: BringoutMenu.js:157
 msgid "Lock Screen"
-msgstr "Zamknúť obrazovku"
+msgstr ""
 
 #: BringoutMenu.js:158
 msgid "Suspend"
-msgstr "Pozastaviť"
+msgstr ""
 
 #: BringoutMenu.js:161
 msgid "Hybrid Sleep"
-msgstr "Hybridný spánok"
+msgstr ""
 
 #: BringoutMenu.js:164
 msgid "Hibernate"
-msgstr "Hibernácia"
+msgstr ""
 
 #: BringoutMenu.js:167
 msgid "Switch User"
-msgstr "Zmeniť používateľa"
+msgstr ""
 
 #: BringoutMenu.js:168
 msgid "Log Out"
-msgstr "Odhlásiť sa"
+msgstr ""
 
 #: BringoutMenu.js:169
 msgid "Restart"
-msgstr "Reštart"
+msgstr ""
 
 #: BringoutMenu.js:170
 msgid "Power Off"
-msgstr "Vypnúť"
+msgstr ""
 
 #: prefs/generalPage.js:10 prefs/generalPage.js:15
 msgid "Action Buttons"
-msgstr "Akčné tlačidlá"
+msgstr ""
 
 #: prefs/generalPage.js:20
 msgid "Hide Lock Button"
-msgstr "Skryť tlačidlo zámku"
+msgstr ""
 
 #: prefs/generalPage.js:25
 msgid "Hide Suspend Button"
-msgstr "Skryť tlačidlo pozastavenia"
+msgstr ""
 
 #: prefs/generalPage.js:30
 msgid "Hide Switch User Button"
-msgstr "Hide Switch User Button"
+msgstr ""
 
 #: prefs/generalPage.js:35
 msgid "Hide Logout Button"
-msgstr "Skryť tlačidlo odhlásiť"
+msgstr ""
 
 #: prefs/generalPage.js:40
 msgid "Hide Restart Button"
-msgstr "Skryť tlačidlo reštartu"
+msgstr ""
 
 #: prefs/generalPage.js:45
 msgid "Hide Power Button"
-msgstr "Skryť tlačidlo napájania"
+msgstr ""
 
 #: prefs/generalPage.js:50
 msgid "Tooltip"
-msgstr "Popis"
+msgstr ""
 
 #: prefs/generalPage.js:55
 msgid "Show Tooltip"
-msgstr "Zobraziť popis"
+msgstr ""
 
 #: prefs/generalPage.js:56
 msgid ""
 "You can customize tooltip style using this extensions stylesheet.css file"
-msgstr "Štýl popisu môžete prispôsobiť pomocou tohto súboru rozšírení stylesheet.css"
+msgstr ""
 
 #: prefs/hibernationPage.js:11
 msgid ""
 "This page is useful only if Hybrid Sleep and Hibernation are already working "
 "on your system, "
-msgstr "Táto stránka je užitočná iba v prípade, že vo vašom systéme už funguje hybridný spánok a režim dlhodobého spánku,“"
+msgstr ""
 
 #: prefs/hibernationPage.js:12
 msgid "some useful links on this topic are "
-msgstr "niekoľko užitočných odkazov na túto tému "
+msgstr ""
 
 #: prefs/hibernationPage.js:20
 msgid "Hibernation Settings"
-msgstr "Nastavenia hibernácie"
+msgstr ""
 
 #: prefs/hibernationPage.js:25
 msgid "Important Info"
-msgstr "Dôležité informácie"
+msgstr ""
 
 #: prefs/hibernationPage.js:37
 msgid "Hibernation"
-msgstr "Hibernácia"
+msgstr ""
 
 #: prefs/hibernationPage.js:42
 msgid "Hide Hybrid Sleep Button"
-msgstr "Skryť tlačidlo hybridného spánku"
+msgstr ""
 
 #: prefs/hibernationPage.js:43
 msgid ""
 "you can set the logo by placing an svg icon with the name \"hybrid-sleep-"
 "symbolic.svg\" in \".icons\" folder of home directory"
-msgstr "logo môžete nastaviť umiestnením ikony svg s názvom 'hybrid-sleep-symbolic.svg' do priečinka '.icons' domovského adresára"
+msgstr ""
 
 #: prefs/hibernationPage.js:48
 msgid "Hide Hibernate Button"
-msgstr "Skryť tlačidlo dlhodobého spánku"
+msgstr ""
 
 #: prefs/hibernationPage.js:49
 msgid ""
 "you can set the logo by placing an svg icon with the name \"hibernate-"
 "symbolic.svg\" in \".icons\" folder of home directory"
-msgstr "logo môžete nastaviť umiestnením ikony svg s názvom 'hibernate-symbolic.svg' do priečinka '.icons' domovského adresára"
+msgstr ""
