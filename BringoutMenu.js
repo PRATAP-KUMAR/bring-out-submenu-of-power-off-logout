@@ -52,8 +52,6 @@ const BringoutMenu = new GObject.registerClass(
             const _ = this._gettext;
             const pgettext = this._pgettext;
 
-            Main.notify('hello', 'Hurrey I am working');
-
             this._hybridSleepDialog = {
                 subject: pgettext('title', 'Hybrid Sleep'),
                 description: _('Are you sure to Hybrid Sleep the system?'),
