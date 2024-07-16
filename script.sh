@@ -8,6 +8,7 @@ ZIP_NAME=$UUID.zip
 JS_FILES=$(find -type f -and \( -name '*.js' \) ! -path '*/node_modules/*')
 
 create_zip() {
+	echo Creating zip file ...
 	zip -r $ZIP_NAME $JS_FILES \
 		schemas/org.gnome.shell.extensions.bring-out-submenu-of-power-off-logout.gschema.xml \
 		metadata.json \
@@ -24,7 +25,7 @@ fi
 case $1 in
 --install)
 	create_zip
-	gnome-extensions install $ZIP_NAME
+	gnome-extensions install -f $ZIP_NAME
 	;;
 --uninstall)
 	gnome-extensions uninstall $UUID
