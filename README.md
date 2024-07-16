@@ -2,9 +2,18 @@
 
 ## This readme is for GNOME v45 and v46
 
-Installation
+### Install
 
+```
+git clone https://github.com/PRATAP-KUMAR/bring-out-submenu-of-power-off-logout.git
+cd bring-out-submenu-of-power-off-logout
+./script.sh --install
+```
 
+### Uninstall
+```
+./script.sh --uninstall
+```
 
 <hr/>
 
