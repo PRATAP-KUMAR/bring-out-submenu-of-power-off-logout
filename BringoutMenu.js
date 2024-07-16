@@ -40,8 +40,11 @@ const BringoutMenu = new GObject.registerClass(
             this.lockItem = this._systemItems.filter(child => child.constructor?.name === 'LockItem')[0] || null;
             this.powerOffMenuItem = this._systemItems.filter(child => child.constructor?.name === 'ShutdownItem')[0] || null;
 
-            this._containerRow.remove_child(this.lockItem);
-            this._containerRow.remove_child(this.powerOffMenuItem);
+            if (this.lockItem)
+                this._containerRow.remove_child(this.lockItem);
+
+            if (this.powerOffMenuItem)
+                this._containerRow.remove_child(this.powerOffMenuItem);
 
             this._createMenu();
             this._connectSettings();
@@ -301,8 +304,11 @@ const BringoutMenu = new GObject.registerClass(
             this._restartDialog = null;
             this._powerOffDialog = null;
 
-            this._containerRow.add_child(this.lockItem);
-            this._containerRow.add_child(this.powerOffMenuItem);
+            if (this.lockItem)
+                this._containerRow.add_child(this.lockItem);
+
+            if (this.powerOffMenuItem)
+                this._containerRow.add_child(this.powerOffMenuItem);
         }
     }
 );
