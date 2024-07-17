@@ -1,4 +1,4 @@
-#!/bin/bash
+﻿#!/bin/bash
 
 NAME=BringOutSubmenuOfPowerOffLogoutButton
 DOMAIN=pratap.fastmail.fm
@@ -36,7 +36,7 @@ case $1 in
 	;;
 esac
 
-if [[ -e $ZIP_NAME ]]; then
+if [[ -f $ZIP_NAME ]]; then
 	rm $ZIP_NAME
 	echo $ZIP_NAME file is removed.
 fi
